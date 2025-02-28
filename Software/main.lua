@@ -11,7 +11,7 @@ queue_on_teleport[[
 -- loader
 local currentPlaceId = game.PlaceId
 local supportedGames = { 
-
+        [{893973440}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/FleeTheFacility/src.lua',
 }
 local function findScript()
     for key, scriptUrl in pairs(supportedGames) do
