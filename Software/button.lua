@@ -59,7 +59,7 @@ local function BTXLWOH_fake_script() -- Main.hideUi
 		return game:GetService('VirtualInputManager'):SendKeyEvent(true,tostring(Key),true) and game:GetService('VirtualInputManager'):SendKeyEvent(false,tostring(Key),false)
 	end
 	button.MouseButton1Click:Connect(function()
-		Key('E')
+		Key('K')
 	end)
 end
 coroutine.wrap(BTXLWOH_fake_script)()
