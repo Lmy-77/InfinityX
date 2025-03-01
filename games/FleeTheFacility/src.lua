@@ -829,3 +829,4 @@ sections.EspSeettingsSection1:Button({
         beastPicker:SetColor(Color3.new(255, 0, 0))
 	end,
 })
+warn('Script loaded')
