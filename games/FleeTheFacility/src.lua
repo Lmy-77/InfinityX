@@ -25,7 +25,7 @@ print[[
 
 -- load preference
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/Infinity-Hub/refs/heads/modules/Mobile/Button/src.lua",true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua",true))()
 end
 
 
@@ -197,6 +197,13 @@ local function CreatePlataform()
     plataform.Name = 'handle'
     plataform.Anchored = true
 end
+function GetSize()
+    if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
+        return UDim2.fromOffset(600, 350)
+    else
+        return UDim2.fromOffset(830, 525)
+    end
+end
 scriptVersion = '3.2a'
 
 
@@ -205,7 +212,7 @@ local MacLib = loadstring(game:HttpGet("https://github.com/biggaboy212/Maclib/re
 local Window = MacLib:Window({
 	Title = "InfinityX "..scriptVersion,
 	Subtitle = "By lmy77 - Free | "..game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
-	Size = UDim2.fromOffset(830, 525),
+	Size = GetSize(),
 	DragStyle = 2,
 	DisabledWindowControls = {},
 	ShowUserInfo = true,
