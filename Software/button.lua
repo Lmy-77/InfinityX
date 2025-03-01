@@ -50,20 +50,22 @@ UIAspectRatioConstraint_2.AspectRatio = 1.023
 
 -- Scripts:
 
-local function BTXLWOH_fake_script() -- Main.hideUi 
+local function MHFYJL_fake_script() -- Main.hideUi 
 	local script = Instance.new('LocalScript', Main)
 
-	local button = script.Parent
-	local guiPath = game:GetService('CoreGui')
-	local Key = function(Key)
-		return game:GetService('VirtualInputManager'):SendKeyEvent(true,tostring(Key),true) and game:GetService('VirtualInputManager'):SendKeyEvent(false,tostring(Key),false)
+	local KeyPress = function(v)
+		return game:GetService("VirtualInputManager"):SendKeyEvent(true, v, false, game)
 	end
+	
+	
+	
+	local button = script.Parent
 	button.MouseButton1Click:Connect(function()
-		Key('K')
+		KeyPress('K')
 	end)
 end
-coroutine.wrap(BTXLWOH_fake_script)()
-local function QEHVEB_fake_script() -- Main.dragable 
+coroutine.wrap(MHFYJL_fake_script)()
+local function QFEYM_fake_script() -- Main.dragable 
 	local script = Instance.new('LocalScript', Main)
 
 	local frame = script.Parent
@@ -109,4 +111,4 @@ local function QEHVEB_fake_script() -- Main.dragable
 	end)
 	
 end
-coroutine.wrap(QEHVEB_fake_script)()
+coroutine.wrap(QFEYM_fake_script)()
