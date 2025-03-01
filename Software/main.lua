@@ -29,9 +29,9 @@ local function findScript()
 end
 local scriptUrl = findScript()
 if scriptUrl then
-    print("Infinity Hub - Game supported")
+    print("InfinityX - Game supported")
     loadstring(game:HttpGet(scriptUrl))()
 else
-    print("Infinity Hub - Game not supported")
+    print("InfinityX - Game not supported")
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/Infinity-Hub/refs/heads/modules/Notification/Support.lua"))()
 end
