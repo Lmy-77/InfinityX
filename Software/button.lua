@@ -52,16 +52,13 @@ UIAspectRatioConstraint_2.AspectRatio = 1.023
 
 local function MHFYJL_fake_script() -- Main.hideUi 
 	local script = Instance.new('LocalScript', Main)
-
-	local KeyPress = function(v)
-		return game:GetService("VirtualInputManager"):SendKeyEvent(true, v, false, game)
-	end
-	
-	
 	
 	local button = script.Parent
 	button.MouseButton1Click:Connect(function()
-		KeyPress('K')
+		local VirtualInputManager = game:GetService("VirtualInputManager")
+		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.K, false, nil)
+		task.wait(0.1)
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.K, false, nil)
 	end)
 end
 coroutine.wrap(MHFYJL_fake_script)()
