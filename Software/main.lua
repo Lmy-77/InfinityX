@@ -3,7 +3,7 @@ local queue_on_teleport = queue_on_teleport or syn and syn.queue_on_teleport
 queue_on_teleport[[
     repeat wait() until game:IsLoaded() print("ServerHoped or rejoined")
     wait(2)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/Infinity-Hub/refs/heads/main/Software/src.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/main.lua",true))()
 ]]
 
 
