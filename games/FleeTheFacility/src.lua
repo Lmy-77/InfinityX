@@ -490,19 +490,6 @@ sections.LPlayerSection1:Toggle({
         end
 	end,
 }, "Toggle")
-local Method;
-sections.LPlayerSection1:Dropdown({
-	Name = "Method",
-	Search = false,
-	Multi = false,
-	Required = false,
-	Options = {"Remote", "Speed"},
-	Default = {"Remote"},
-	Callback = function(Options)
-        Method = Options
-        print(Method)
-	end,
-}, "Dropdown")
 sections.LPlayerSection1:Toggle({
 	Name = "No slow",
 	Default = false,
@@ -514,24 +501,11 @@ sections.LPlayerSection1:Toggle({
                 Description = "No slow actived!"
             })
         end
-        if NoSlow then
-            if Method == 'Remote' then
-                local oldnc
-                oldnc = hookmetamethod(game, "__namecall", newcclosure(function(name, ...)
-                       local Args = {...}
-                       if not checkcaller() and tostring(name) == "PowersEvent" and Args[1] == "Jumped" then
-                           return wait(9e9)
-                       end
-                       return oldnc(name, unpack(Args))
-                end))
-            elseif Method == 'Speed' then
-                WalkSpeedBypass()
-                while NoSlow do task.wait()
-                    while NoSlow do task.wait()
-                        if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
-                            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-                        end
-                    end
+        WalkSpeedBypass()
+        while NoSlow do task.wait()
+            while NoSlow do task.wait()
+                if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
                 end
             end
         end
