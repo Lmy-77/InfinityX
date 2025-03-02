@@ -55,15 +55,11 @@ local function MHFYJL_fake_script() -- Main.hideUi
 	
         local button = script.Parent
         local function toggleVisibility()
-            for _, v in pairs(game:GetService("CoreGui").RobloxGui:GetDescendants()) do
-                if v:IsA('Frame') and v.Name == 'Base' then
-                    if v.Visible == false then
-                        v.Visible = true
-                    elseif v.Visible == true then
-                        v.Visible = false
-                    end
-                end
-            end
+		local VirtualInputManager = game:GetService("VirtualInputManager")
+		task.wait(1)
+		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.K, false, nil)
+		task.wait(0.1)
+		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.K, false, nil)
         end
         
         button.MouseButton1Click:Connect(toggleVisibility)
