@@ -52,17 +52,15 @@ UIAspectRatioConstraint_2.AspectRatio = 1.023
 
 local function MHFYJL_fake_script() -- Main.hideUi 
 	local script = Instance.new('LocalScript', Main)
-	
+
         local button = script.Parent
         local function toggleVisibility()
-		local VirtualInputManager = game:GetService("VirtualInputManager")
-		task.wait(1)
-		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.K, false, nil)
-		task.wait(0.1)
-		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.K, false, nil)
+			local VirtualInputManager = game:GetService("VirtualInputManager")
+			VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.K, false, nil)
+			task.wait(0.1)
+			VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.K, false, nil)
         end
-        
-        button.MouseButton1Click:Connect(toggleVisibility)
+
         button.TouchTap:Connect(toggleVisibility)
 end
 coroutine.wrap(MHFYJL_fake_script)()
