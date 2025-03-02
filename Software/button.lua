@@ -53,8 +53,8 @@ UIAspectRatioConstraint_2.AspectRatio = 1.023
 local function MHFYJL_fake_script() -- Main.hideUi 
 	local script = Instance.new('LocalScript', Main)
 	
-	local button = script.Parent
-	button.MouseButton1Click:Connect(function()
+        local button = script.Parent
+        local function toggleVisibility()
             for _, v in pairs(game:GetService("CoreGui").RobloxGui:GetDescendants()) do
                 if v:IsA('Frame') and v.Name == 'Base' then
                     if v.Visible == false then
@@ -64,7 +64,10 @@ local function MHFYJL_fake_script() -- Main.hideUi
                     end
                 end
             end
-	end)
+        end
+        
+        button.MouseButton1Click:Connect(toggleVisibility)
+        button.TouchTap:Connect(toggleVisibility)
 end
 coroutine.wrap(MHFYJL_fake_script)()
 local function QFEYM_fake_script() -- Main.dragable 
