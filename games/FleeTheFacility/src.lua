@@ -28,7 +28,7 @@ print[[
 
 -- load preference
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua",true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua"))()
 end
 
 
@@ -211,7 +211,7 @@ scriptVersion = '3.2a'
 
 
 -- ui library
-local MacLib = loadstring(game:HttpGet("https://github.com/biggaboy212/Maclib/releases/latest/download/maclib.txt"))()
+local MacLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/library/Maclib/src.lua"))()
 local Window = MacLib:Window({
 	Title = "InfinityX "..scriptVersion,
 	Subtitle = "By lmy77 - Free | "..game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
@@ -426,6 +426,20 @@ sections.GameSection2:Button({
             game:GetService("Players").LocalPlayer.PlayerGui.MenusScreenGui.MainMenuWindow.Visible = true
         elseif game:GetService("Players").LocalPlayer.PlayerGui.MenusScreenGui.MainMenuWindow.Visible == true then
             game:GetService("Players").LocalPlayer.PlayerGui.MenusScreenGui.MainMenuWindow.Visible = false
+        end
+	end,
+})
+sections.GameSection2:Button({
+	Name = "Reset button [ Mobile ]",
+	Callback = function()
+        Window:Notify({
+            Title = 'InfinityX',
+            Description = "New button generated!"
+        })
+        for _, v in pairs(game:GetService('CoreGui'):GetChildren()) do
+            if v:IsA('ScreenGui') and v.Name == 'Button' then
+                v:Destroy() wait() loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua"))()
+            end
         end
 	end,
 })
@@ -829,4 +843,3 @@ sections.EspSeettingsSection1:Button({
         beastPicker:SetColor(Color3.new(255, 0, 0))
 	end,
 })
-warn('InfinityX - [ LOADED ]')
