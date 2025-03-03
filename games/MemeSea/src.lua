@@ -10,7 +10,7 @@ end
 
 -- start
 print[[                                                                     
-                                                                                                                                                 
+
  /$$$$$$            /$$$$$$  /$$           /$$   /$$               /$$   /$$
 |_  $$_/           /$$__  $$|__/          |__/  | $$              | $$  / $$
   | $$   /$$$$$$$ | $$  \__/ /$$ /$$$$$$$  /$$ /$$$$$$   /$$   /$$|  $$/ $$/
@@ -23,6 +23,13 @@ print[[
                                                         |  $$$$$$/          
                                                          \______/           
 ]]
+
+
+
+-- load preference
+if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua"))()
+end
 
 
 
@@ -202,7 +209,11 @@ local sections = {
     ShopSection3 = tabs.Shop:Section({ Side = "Left" }),
     ShopSection4 = tabs.Shop:Section({ Side = "Right" }),
     QuestSection1 = tabs.Quest:Section({ Side = "Left" }),
-    RaidBossSection1 = tabs.RaidBoss:Section({ Side = "Left" })
+    RaidBossSection1 = tabs.RaidBoss:Section({ Side = "Left" }),
+    RaidBossSection2 = tabs.RaidBoss:Section({ Side = "Right" }),
+    RaidBossSection3 = tabs.RaidBoss:Section({ Side = "Left" }),
+    RaidBossSection4 = tabs.RaidBoss:Section({ Side = "Right" }),
+    MiscSection1 = tabs.Misc:Section({ Side = 'Left' })
 }
 tabs.AutoFarm:Select()
 
@@ -1352,6 +1363,13 @@ task.spawn(function()
         )
     end
 end)
+sections.StatsSection2:Button({
+	Name = "Refound stats [ 50 Gems ]",
+	Callback = function()
+        local args = {[1] = {["Action"] = "ResetStats"}}
+        game:GetService("ReplicatedStorage"):WaitForChild("OtherEvent"):WaitForChild("MainEvents"):WaitForChild("StatsFunction"):InvokeServer(unpack(args))        
+	end,
+})
 
 
 sections.ShopSection1:Header({
@@ -1577,6 +1595,15 @@ sections.QuestSection1:Toggle({
 sections.RaidBossSection1:Header({
 	Name = "[🎃] Giant Pumpkin"
 })
+sections.RaidBossSection2:Header({
+	Name = "[🦹] Evil Noob"
+})
+sections.RaidBossSection3:Header({
+	Name = "[👨‍🚀] Lord Sus"
+})
+sections.RaidBossSection4:Header({
+	Name = "[👺] Meme Beast"
+})
 sections.RaidBossSection1:Toggle({
 	Name = "Auto farm",
 	Default = false,
@@ -1651,6 +1678,220 @@ sections.RaidBossSection1:Toggle({
         until giantPumpkinSpawn == false
 	end,
 }, "Toggle")
+sections.RaidBossSection2:Toggle({
+	Name = "Auto farm",
+	Default = false,
+	Callback = function(bool)
+        evilNoob = bool
+        if evilNoob then
+            for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                if weapon:IsA('Tool') and weapon.Name == _G.Weapon then
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(weapon)
+                end
+            end
+        end
+        while evilNoob do task.wait()
+            local currentQuest = game:GetService("Players").LocalPlayer.PlayerData.CurrentQuest
+            if currentQuest.Value == 0 then
+                getQuest('Floppa Quest 29')
+            else
+                for _, v in pairs(workspace.Monster:GetChildren()) do
+                    if v:IsA('Model') and v.Name == 'Evil Noob' then
+                        if v:FindFirstChild('Humanoid') and v:FindFirstChild('Humanoid').Health ~= 0 then
+                            local backpack = game.Players.LocalPlayer.Backpack
+                            local character = game.Players.LocalPlayer.Character
+                            local tool = backpack:FindFirstChild(_G.Weapon)
+                            local ctool = character:FindFirstChild(_G.Weapon)
+                            for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                                if weapon:IsA('Tool') then
+                                    for _, x in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                                        if x.Name == 'Humanoid' then
+                                            if not tool and not ctool then
+                                                x.Health = 0
+                                            else
+                                                x:EquipTool(tool)
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                            for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                                if weapon:IsA('Tool') and weapon.Name == _G.Weapon then
+                                    for _, x in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                                        if x.Name == 'Humanoid' then
+                                            x:EquipTool(weapon)
+                                        end
+                                    end
+                                end
+                            end
+                            if _G.Skills then
+                                useSkills()
+                            end
+                            teleportMob('Evil Noob', 5.5)
+                            fireTool(_G.Weapon)
+                        else
+                            teleportToQuest('Floppa Quest 29')
+                        end
+                    end
+                end
+            end
+        end
+	end,
+}, "Toggle")
+sections.RaidBossSection2:Toggle({
+	Name = "Auto spawn",
+	Default = false,
+	Callback = function(bool)
+        evilNoobSpawn = bool
+        repeat task.wait()
+            local mob = workspace.Monster:findFirstChild('Evil Noob')
+            if not mob then
+                teleportPlayersTo(false, nil, true, -2357, -81, 3176)
+                for _, v in pairs(workspace.Island.MoaiIsland:GetChildren()) do
+                    if v:IsA('Model') and v.Name == 'Summon2' then
+                        for _, x in pairs(v:GetDescendants()) do
+                            if x:IsA('ProximityPrompt') and x.Name == 'SummonPrompt' then
+                                fireproximityprompt(x);
+                            end
+                        end
+                    end
+                end
+            end
+        until evilNoobSpawn == false
+	end,
+}, "Toggle")
+sections.RaidBossSection3:Toggle({
+	Name = "Auto farm",
+	Default = false,
+	Callback = function(bool)
+        lordSus = bool
+        if lordSus then
+            for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                if weapon:IsA('Tool') and weapon.Name == _G.Weapon then
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(weapon)
+                end
+            end
+        end
+        while lordSus do task.wait()
+            for _, v in pairs(workspace.Monster:GetChildren()) do
+                if v:IsA('Model') and v.Name == 'Lord Sus' then
+                    if v:FindFirstChild('Humanoid') and v:FindFirstChild('Humanoid').Health ~= 0 then
+                        local backpack = game.Players.LocalPlayer.Backpack
+                        local character = game.Players.LocalPlayer.Character
+                        local tool = backpack:FindFirstChild(_G.Weapon)
+                        local ctool = character:FindFirstChild(_G.Weapon)
+                        for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                            if weapon:IsA('Tool') then
+                                for _, x in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                                    if x.Name == 'Humanoid' then
+                                        if not tool and not ctool then
+                                            x.Health = 0
+                                        else
+                                            x:EquipTool(tool)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                            if weapon:IsA('Tool') and weapon.Name == _G.Weapon then
+                                for _, x in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                                    if x.Name == 'Humanoid' then
+                                        x:EquipTool(weapon)
+                                    end
+                                end
+                            end
+                        end
+                        if _G.Skills then
+                            useSkills()
+                        end
+                        teleportMob('Lord Sus', 5.5)
+                        fireTool(_G.Weapon)
+                    else
+                        teleportToQuest('Floppa Quest 32')
+                    end
+                end
+            end
+        end
+	end,
+}, "Toggle")
+sections.RaidBossSection3:Toggle({
+	Name = "Auto spawn",
+	Default = false,
+	Callback = function(bool)
+        lordSusSpawn = bool
+        repeat task.wait()
+            local mob = workspace.Monster:findFirstChild('Lord Sus')
+            if not mob then
+                teleportPlayersTo(false, nil, true, 6639, -95, 4812)
+                for _, v in pairs(workspace.Island.ForgottenIsland:GetChildren()) do
+                    if v:IsA('Model') and v.Name == 'Summon3' then
+                        for _, x in pairs(v:GetDescendants()) do
+                            if x:IsA('ProximityPrompt') and x.Name == 'SummonPrompt' then
+                                fireproximityprompt(x);
+                            end
+                        end
+                    end
+                end
+            end
+        until lordSusSpawn == false
+	end,
+}, "Toggle")
+sections.RaidBossSection4:Toggle({
+	Name = "Auto farm",
+	Default = false,
+	Callback = function(bool)
+        memeBeast = bool
+        if memeBeast then
+           for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+               if weapon:IsA('Tool') and weapon.Name == _G.Weapon then
+                   game.Players.LocalPlayer.Character.Humanoid:EquipTool(weapon)
+               end
+           end
+        end
+        while memeBeast do task.wait()
+            local backpack = game.Players.LocalPlayer.Backpack
+            local character = game.Players.LocalPlayer.Character
+            local tool = backpack:FindFirstChild(_G.Weapon)
+            local ctool = character:FindFirstChild(_G.Weapon)
+            for _, weapon in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+                if weapon:IsA('Tool') then
+                    for _, x in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                        if x.Name == 'Humanoid' then
+                            if not tool and not ctool then
+                                x.Health = 0
+                            else
+                                x:EquipTool(tool)
+                            end
+                        end
+                    end
+                end
+            end
+            if _G.Skills then
+                useSkills()
+            end
+            teleportMob('Meme Beast', 5.5)
+            fireTool(_G.Weapon)
+        end
+	end,
+}, "Toggle")
+
+
+sections.MiscSection1:Header({
+	Name = "[➕] Misc Options"
+})
+sections.MiscSection1:Button({
+	Name = "Reedem all codes",
+	Callback = function()
+        local codes = { "100MVisits", "100KLikes", "100KFavorites", "100KActive", "70KActive", "40KActive", "20KActive", "10KActive", "10KMembers", "Update4", "4KActive", "10KLikes", "10MVisits", "9MVisits" }
+        for _, v in next, codes do  
+            local args = {
+                [1] = v
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("OtherEvent"):WaitForChild("MainEvents"):WaitForChild("Code"):InvokeServer(unpack(args))
+        end
+	end,
+})
 
 
 
@@ -1664,10 +1905,4 @@ end)
 
 
 
-
-
-
-Window:Notify({
-    Title = 'InfinityX',
-    Description = "This script is still being developed, so what you have here isn't finished yet, wait until the script is finished and go to rscripts.net to get it complete"
-})
+warn('InfinityX - [ LOADED ]')
