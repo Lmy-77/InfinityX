@@ -72,6 +72,7 @@ local function JumpPowerBypass()
         return oldIndex(self, b)
     end)
 end
+local Players = game:GetService("Players")
 local BeastColor = Color3.new(255, 0, 0)
 local InoccentColor = Color3.new(255, 255, 255)
 local ESPEnabled = nil
@@ -268,6 +269,7 @@ local tabs = {
 local sections = {
 	GameSection1 = tabs.Game:Section({ Side = "Left" }),
     GameSection2 = tabs.Game:Section({ Side = "Right" }),
+    GameSection3 = tabs.Game:Section({ Side = "Left" }),
     LPlayerSection1 = tabs.LPayer:Section({ Side = "Left" }),
     LPlayerSection2 = tabs.LPayer:Section({ Side = "Right" }),
     LPlayerSection3 = tabs.LPayer:Section({ Side = "Left" }),
@@ -285,6 +287,9 @@ sections.GameSection1:Header({
 })
 sections.GameSection2:Header({
 	Name = "[📋] Stats"
+})
+sections.GameSection3:Header({
+	Name = "[🎮] Game Stats"
 })
 sections.GameSection1:Toggle({
 	Name = "Auto hack",
@@ -443,6 +448,62 @@ sections.GameSection2:Button({
         end
 	end,
 })
+local p1 = sections.GameSection3:Label({ Text = 'nil' }, nil)
+local p2 = sections.GameSection3:Label({ Text = 'nil' }, nil)
+local p3 = sections.GameSection3:Label({ Text = 'nil' }, nil)
+local p4 = sections.GameSection3:Label({ Text = 'nil' }, nil)
+local p5 = sections.GameSection3:Label({ Text = 'nil' }, nil)
+local labels = {p1, p2, p3, p4, p5}
+local assignedLabels = {}
+local function updateLabels()
+    local availableLabels = {unpack(labels)}
+    local playersList = Players:GetPlayers()
+
+    for i, player in ipairs(playersList) do
+        if availableLabels[i] then
+            assignedLabels[player] = availableLabels[i]
+            availableLabels[i]:UpdateName(player.Name)
+        end
+    end
+
+    for i = #playersList + 1, #labels do
+        labels[i]:UpdateName("Empty player")
+    end
+end
+local function updateStats()
+    for player, label in pairs(assignedLabels) do
+        if label and label.Text ~= "Empty player" then
+            local statsModule = player:FindFirstChild("SavedPlayerStatsModule")
+            local tempStatsModule = player:FindFirstChild("TempPlayerStatsModule")
+
+            if statsModule and tempStatsModule then
+                local LevelValue = statsModule:FindFirstChild("Level") and statsModule.Level.Value or "N/A"
+                local CapturedValue = tempStatsModule:FindFirstChild("Captured") and (tempStatsModule.Captured.Value and "Yes" or "No") or "N/A"
+                local HealthValue = tempStatsModule:FindFirstChild("Health") and tempStatsModule.Health.Value or "N/A"
+                local BeastValue = tempStatsModule:FindFirstChild("IsBeast") and (tempStatsModule.IsBeast.Value and "Yes" or "No") or "N/A"
+
+                label:UpdateName(player.Name .. " | Level: " .. LevelValue .. ", Captured: " .. CapturedValue .. ", Health: " .. HealthValue .. ", Is Beast: " .. BeastValue)
+            else
+                label:UpdateName(player.Name .. " | Loading stats...")
+            end
+        end
+    end
+end
+Players.PlayerAdded:Connect(updateLabels) Players.PlayerRemoving:Connect(updateLabels)
+updateLabels()
+task.spawn(function()
+    while true do
+        updateStats()
+        task.wait(1)
+    end
+end)
+
+
+
+
+
+
+
 
 
 sections.LPlayerSection1:Header({
