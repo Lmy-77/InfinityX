@@ -455,9 +455,12 @@ local p4 = sections.GameSection3:Label({ Text = 'nil' }, nil)
 local p5 = sections.GameSection3:Label({ Text = 'nil' }, nil)
 local labels = {p1, p2, p3, p4, p5}
 local assignedLabels = {}
+
 local function updateLabels()
     local availableLabels = {unpack(labels)}
     local playersList = Players:GetPlayers()
+
+    assignedLabels = {}
 
     for i, player in ipairs(playersList) do
         if availableLabels[i] then
@@ -482,21 +485,26 @@ local function updateStats()
                 local HealthValue = tempStatsModule:FindFirstChild("Health") and tempStatsModule.Health.Value or "N/A"
                 local BeastValue = tempStatsModule:FindFirstChild("IsBeast") and (tempStatsModule.IsBeast.Value and "Yes" or "No") or "N/A"
 
-                label:UpdateName(player.Name .. " | Level: " .. LevelValue .. ", Captured: " .. CapturedValue .. ", Health: " .. HealthValue .. ", Is Beast: " .. BeastValue)
+                label:UpdateName(player.Name .. " | Level: " .. LevelValue .. " Captured: " .. CapturedValue .. " Health: " .. HealthValue .. " Is Beast: " .. BeastValue)
             else
                 label:UpdateName(player.Name .. " | Loading stats...")
             end
         end
     end
 end
-Players.PlayerAdded:Connect(updateLabels) Players.PlayerRemoving:Connect(updateLabels)
+
+Players.PlayerAdded:Connect(updateLabels)
+Players.PlayerRemoving:Connect(updateLabels)
+
 updateLabels()
+
 task.spawn(function()
     while true do
         updateStats()
         task.wait(1)
     end
 end)
+
 
 
 
