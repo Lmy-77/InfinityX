@@ -226,7 +226,7 @@ local Window = MacLib:Window({
 local globalSettings = {
 	FPSToggle = Window:GlobalSetting({
 		Name = "Unlock FPS",
-		Default = true,
+		Default = false,
 		Callback = function(bool)
             local fps = bool
             local function UnlockFPS()
@@ -245,7 +245,7 @@ local globalSettings = {
 	}),
     ViewGame = Window:GlobalSetting({
 		Name = "Auto Update",
-		Default = true,
+		Default = false,
 		Callback = function(bool)
 			if bool then
                 warn('Auto update actived!')
@@ -270,6 +270,7 @@ local sections = {
 	GameSection1 = tabs.Game:Section({ Side = "Left" }),
     GameSection2 = tabs.Game:Section({ Side = "Right" }),
     GameSection3 = tabs.Game:Section({ Side = "Left" }),
+    GameSection4 = tabs.Game:Section({ Side = "Right" }),
     LPlayerSection1 = tabs.LPayer:Section({ Side = "Left" }),
     LPlayerSection2 = tabs.LPayer:Section({ Side = "Right" }),
     LPlayerSection3 = tabs.LPayer:Section({ Side = "Left" }),
@@ -290,6 +291,9 @@ sections.GameSection2:Header({
 })
 sections.GameSection3:Header({
 	Name = "[🎮] Game Stats"
+})
+sections.GameSection4:Header({
+	Name = "[📶] Misc"
 })
 sections.GameSection1:Toggle({
 	Name = "Auto hack",
@@ -485,7 +489,7 @@ local function updateStats()
                 local HealthValue = tempStatsModule:FindFirstChild("Health") and tempStatsModule.Health.Value or "N/A"
                 local BeastValue = tempStatsModule:FindFirstChild("IsBeast") and (tempStatsModule.IsBeast.Value and "Yes" or "No") or "N/A"
 
-                label:UpdateName(player.Name .. " | Level: " .. LevelValue .. " Captured: " .. CapturedValue .. " Health: " .. HealthValue .. " Is Beast: " .. BeastValue)
+                label:UpdateName(player.Name .. " |\n  - Level: " .. LevelValue .. "\n  - Captured: " .. CapturedValue .. "\n  - Health: " .. HealthValue .. "\n  - Is Beast: " .. BeastValue)
             else
                 label:UpdateName(player.Name .. " | Loading stats...")
             end
@@ -495,7 +499,6 @@ end
 
 Players.PlayerAdded:Connect(updateLabels)
 Players.PlayerRemoving:Connect(updateLabels)
-
 updateLabels()
 
 task.spawn(function()
@@ -504,14 +507,7 @@ task.spawn(function()
         task.wait(1)
     end
 end)
-
-
-
-
-
-
-
-
+sections.GameSection4:Label({ Text = 'In dev 😴' }, nil)
 
 
 sections.LPlayerSection1:Header({
