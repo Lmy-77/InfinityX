@@ -145,7 +145,7 @@ end
 local MacLib = loadstring(game:HttpGet("https://github.com/biggaboy212/Maclib/releases/latest/download/maclib.txt"))()
 local Window = MacLib:Window({
 	Title = "InfinityX "..scriptVersion,
-	Subtitle = "By lmy77 - Free | "..game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
+	Subtitle = "By lmy77 | "..game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
 	Size = GetSize(),
 	DragStyle = 2,
 	DisabledWindowControls = {},
