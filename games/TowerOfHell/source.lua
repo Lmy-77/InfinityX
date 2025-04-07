@@ -140,9 +140,9 @@ sections.AutoFarmSection1:Button({
         elseif game.PlaceId == 3582763398 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(30, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(25.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(30.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end
 	end,
 })
@@ -162,9 +162,9 @@ sections.AutoFarmSection1:Button({
         elseif game.PlaceId == 3582763398 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(30, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(25.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(30.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
             wait(1.5)
             game:GetService("TeleportService"):TeleportToPlaceInstance(
                 game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer
