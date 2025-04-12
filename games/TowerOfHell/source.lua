@@ -196,6 +196,14 @@ sections.GameSection2:Button({
         end
 	end,
 })
+sections.GameSection2:Button({
+	Name = "Rejoin",
+	Callback = function()
+        game:GetService("TeleportService"):TeleportToPlaceInstance(
+            game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer
+        )
+	end,
+})
 sections.GameSection2:Input({
 	Name = "Walkspeed",
 	Placeholder = "16",
