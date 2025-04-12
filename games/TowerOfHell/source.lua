@@ -111,50 +111,50 @@ local tabGroups = {
 	TabGroup1 = Window:TabGroup()
 }
 local tabs = {
-	AutoFarm  = tabGroups.TabGroup1:Tab({ Name = "| Auto Farm", Image = "rbxassetid://10709811110" }),
+	AutoFarm  = tabGroups.TabGroup1:Tab({ Name = "| Game", Image = "rbxassetid://10723424505" }),
 }
 local sections = {
-	AutoFarmSection1 = tabs.AutoFarm:Section({ Side = "Left" }),
-    AutoFarmSection2 = tabs.AutoFarm:Section({ Side = "Right" }),
+	GameSection1 = tabs.AutoFarm:Section({ Side = "Left" }),
+    GameSection2 = tabs.AutoFarm:Section({ Side = "Right" }),
 }
 tabs.AutoFarm:Select()
 
 
 
 -- source
-sections.AutoFarmSection1:Header({
+sections.GameSection1:Header({
 	Name = "[🗼] Tower"
 })
-sections.AutoFarmSection2:Header({
+sections.GameSection2:Header({
 	Name = "[🏃] Player"
 })
-sections.AutoFarmSection1:Button({
+sections.GameSection1:Button({
 	Name = "Finish tower",
 	Callback = function()
         if game.PlaceId == 1962086868 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(20, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(20.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(25.2) game.Players.LocalPlayer.Character.Humanoid.Health = 0
         elseif game.PlaceId == 3582763398 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(30, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(35, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(30.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(35.2) game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end
 	end,
 })
-sections.AutoFarmSection1:Button({
+sections.GameSection1:Button({
 	Name = "Finish tower + rejoin",
 	Callback = function()
         if game.PlaceId == 1962086868 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(20, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(20.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(25.2) game.Players.LocalPlayer.Character.Humanoid.Health = 0
             wait(1.5)
             game:GetService("TeleportService"):TeleportToPlaceInstance(
                 game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer
@@ -162,9 +162,9 @@ sections.AutoFarmSection1:Button({
         elseif game.PlaceId == 3582763398 then
             game:GetService("TweenService"):Create(
                 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart"),
-                TweenInfo.new(30, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+                TweenInfo.new(35, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
                 {Position = tweenPart.Position + Vector3.new(0, 10, 0)}
-            ):Play() wait(30.5) game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            ):Play() wait(35.2) game.Players.LocalPlayer.Character.Humanoid.Health = 0
             wait(1.5)
             game:GetService("TeleportService"):TeleportToPlaceInstance(
                 game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer
@@ -172,7 +172,12 @@ sections.AutoFarmSection1:Button({
         end
 	end,
 })
-sections.AutoFarmSection2:Toggle({
+sections.GameSection1:Divider()
+sections.GameSection1:Paragraph({
+    Header = "WARING",
+    Body = "The finish tower is working, but be careful, after several tests even taking time to get kicked or banned the code is still not 100% secure, so use with moderation.\n\n(I recommend using it on a private server, but still be careful when using it)"
+}, "Paragraph")
+sections.GameSection2:Toggle({
 	Name = "God mode",
 	Default = false,
 	Callback = function(bool)
@@ -180,7 +185,7 @@ sections.AutoFarmSection2:Toggle({
         ls3.Disabled = gm
 	end,
 }, "Toggle")
-sections.AutoFarmSection2:Button({
+sections.GameSection2:Button({
 	Name = "Get all tools",
 	Callback = function()
         for _, v in pairs(game:GetService("ReplicatedStorage").Gear:GetChildren()) do
@@ -191,7 +196,7 @@ sections.AutoFarmSection2:Button({
         end
 	end,
 })
-sections.AutoFarmSection2:Input({
+sections.GameSection2:Input({
 	Name = "Walkspeed",
 	Placeholder = "16",
 	AcceptedCharacters = "Numeric",
@@ -199,9 +204,9 @@ sections.AutoFarmSection2:Input({
 		game:GetService("ReplicatedStorage").globalSpeed.Value = input
 	end,
 }, "TargetInput")
-sections.AutoFarmSection2:Input({
-	Name = "Jumppower",
-	Placeholder = "50",
+sections.GameSection2:Input({
+	Name = "Extra jumps",
+	Placeholder = "1",
 	AcceptedCharacters = "Numeric",
 	Callback = function(input)
 		game:GetService("ReplicatedStorage").globalJumps.Value = input
