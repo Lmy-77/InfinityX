@@ -1673,15 +1673,15 @@ function Library:createManager(options: table)
 end
 
 -- Set users theme choice or default theme when initiliazed, could make this cleaner lol, but nah.
-Library.Theme.PrimaryBackgroundColor = Library.Theme.PrimaryBackgroundColor
-Library.Theme.SecondaryBackgroundColor = Library.Theme.SecondaryBackgroundColor
-Library.Theme.TertiaryBackgroundColor = Library.Theme.TertiaryBackgroundColor -- new
-Library.Theme.TabBackgroundColor = Library.Theme.TabBackgroundColor
-Library.Theme.PrimaryTextColor = Library.Theme.PrimaryTextColor
-Library.Theme.SecondaryTextColor = Library.Theme.SecondaryTextColor
-Library.Theme.PrimaryColor = Library.Theme.PrimaryColor
-Library.Theme.ScrollingBarImageColor = Library.Theme.ScrollingBarImageColor
-Library.Theme.Line = Library.Theme.Line
+Library.Theme.PrimaryBackgroundColor = Color3.fromRGB(255, 255, 255)
+Library.Theme.SecondaryBackgroundColor = Color3.fromRGB(247, 248, 250)
+Library.Theme.TertiaryBackgroundColor = Color3.fromRGB(255, 255, 255)
+Library.Theme.TabBackgroundColor = Color3.fromRGB(232, 243, 254)
+Library.Theme.PrimaryTextColor = Color3.fromRGB(49, 64, 90)
+Library.Theme.SecondaryTextColor = Color3.fromRGB(122, 134, 162)
+Library.Theme.PrimaryColor = Color3.fromRGB(97, 118, 255)
+Library.Theme.ScrollingBarImageColor = Color3.fromRGB(151, 151, 172)
+Library.Theme.Line = Color3.fromRGB(236, 236, 236)
 
 Theme:registerToObjects({
 	{object = Glow, property = "ImageColor3", theme = {"PrimaryBackgroundColor"}},
