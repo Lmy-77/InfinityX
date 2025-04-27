@@ -19,84 +19,96 @@ local placeIds = {
     Main = 6284881984,
 }
 if game.PlaceId == placeIds.Main then
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = game.CoreGui
+    local BlurEffect = Instance.new("BlurEffect")
+    BlurEffect.Size = 10
+    BlurEffect.Parent = game.Lighting
+    local NotificationFrame = Instance.new("Frame")
+    NotificationFrame.Size = UDim2.new(0, 320, 0, 180)
+    NotificationFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
+    NotificationFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    NotificationFrame.BorderSizePixel = 0
+    NotificationFrame.BackgroundTransparency = 0.1
+    NotificationFrame.Parent = ScreenGui
+    local UICornerFrame = Instance.new("UICorner")
+    UICornerFrame.CornerRadius = UDim.new(0, 12)
+    UICornerFrame.Parent = NotificationFrame
+    local UIStrokeFrame = Instance.new("UIStroke")
+    UIStrokeFrame.Thickness = 2
+    UIStrokeFrame.Color = Color3.fromRGB(90, 90, 90)
+    UIStrokeFrame.Transparency = 0.3
+    UIStrokeFrame.Parent = NotificationFrame
+    local UIGradientFrame = Instance.new("UIGradient")
+    UIGradientFrame.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(70,70,70)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(50,50,50))
+    }
+    UIGradientFrame.Rotation = 90
+    UIGradientFrame.Parent = NotificationFrame
+    local UIScale = Instance.new("UIScale")
+    UIScale.Scale = 1
+    UIScale.Parent = NotificationFrame
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 28)
+    Title.Position = UDim2.new(0, 0, 0.1, 0)
+    Title.BackgroundTransparency = 1
+    Title.Text = "Welcome to InfinityX"
+    Title.TextScaled = true
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 26
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.Parent = NotificationFrame
+    local Content = Instance.new("TextLabel")
+    Content.Size = UDim2.new(1, -20, 0, 70)
+    Content.Position = UDim2.new(0, 10, 0, 55)
+    Content.BackgroundTransparency = 1
+    Content.Text = "We've detected that you're not inside the Arena. In order for the script to work properly, run it inside the Arena so that you can access the AutoFarm functions, for example."
+    Content.Font = Enum.Font.Gotham
+    Content.TextScaled = true
+    Content.TextColor3 = Color3.fromRGB(220, 220, 220)
+    Content.TextWrapped = true
+    Content.TextYAlignment = Enum.TextYAlignment.Top
+    Content.Parent = NotificationFrame
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(0, 120, 0, 30)
+    Button.Position = UDim2.new(0.5, -60, 1, -40)
+    Button.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    Button.BorderSizePixel = 0
+    Button.Text = "Ok!"
+    Button.Font = Enum.Font.GothamBold
+    Button.TextSize = 20
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.TextTransparency = 0
+    Button.Parent = NotificationFrame
+    local UICornerButton = Instance.new("UICorner")
+    UICornerButton.CornerRadius = UDim.new(0, 8)
+    UICornerButton.Parent = Button
+    local UIStrokeButton = Instance.new("UIStroke")
+    UIStrokeButton.Thickness = 1.5
+    UIStrokeButton.Color = Color3.fromRGB(0, 140, 220)
+    UIStrokeButton.Transparency = 0.3
+    UIStrokeButton.Parent = Button
     local TweenService = game:GetService("TweenService")
-    local Notification = Instance.new("ScreenGui")
-    local Background = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local UIStroke = Instance.new("UIStroke")
-    local Text = Instance.new("TextLabel")
-    local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-    local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
-    local sound = Instance.new("Sound")
-    sound.SoundId = "rbxassetid://8551372796"
-    sound.Volume = 10
-    sound.Looped = false
-    sound.Parent = workspace
-    Notification.Name = "Notification"
-    Notification.Parent = (game:GetService("CoreGui") or gethui())
-    Notification.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    Background.Name = "Background"
-    Background.Parent = Notification
-    Background.BackgroundColor3 = Color3.fromRGB(79, 79, 79)
-    Background.BackgroundTransparency = 1
-    Background.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Background.BorderSizePixel = 0
-    Background.Position = UDim2.new(0.449, 0, 0.95, 0)
-    Background.Size = UDim2.new(0.05, 0, 0.01, 0)
-    UICorner.Parent = Background
-    UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    UIStroke.Color = Color3.fromRGB(57, 57, 57)
-    UIStroke.Thickness = 1.500
-    UIStroke.Parent = Background
-    Text.Name = "Text"
-    Text.Parent = Background
-    Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Text.BackgroundTransparency = 1
-    Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Text.BorderSizePixel = 0
-    Text.Position = UDim2.new(0.05, 0, 0.1, 0)
-    Text.Size = UDim2.new(0.9, 0, 0.8, 0)
-    Text.Font = Enum.Font.Code
-    Text.Text = "Run script in arena"
-    Text.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Text.TextScaled = true
-    Text.TextSize = 16.000
-    Text.TextTransparency = 1
-    Text.TextWrapped = true
-    UIAspectRatioConstraint.Parent = Text
-    UIAspectRatioConstraint.AspectRatio = 5.208
-    UIAspectRatioConstraint_2.Parent = Background
-    UIAspectRatioConstraint_2.AspectRatio = 4.633
-    local targetPosition = UDim2.new(0.449, 0, 0.934, 0)
-    local targetSize = UDim2.new(0.13, 0, 0.05, 0)
-    local backgroundTweenInfo = TweenInfo.new(
-        0.1,
-        Enum.EasingStyle.Quad,
-        Enum.EasingDirection.Out
-    )
-    local textTweenInfo = TweenInfo.new(
-        0.1,
-        Enum.EasingStyle.Quad,
-        Enum.EasingDirection.Out
-    )
-    local backgroundTween = TweenService:Create(Background, backgroundTweenInfo, {
-        Position = targetPosition,
-        Size = targetSize,
-        BackgroundTransparency = 0
-    })
-    local textTween = TweenService:Create(Text, textTweenInfo, {
-        TextTransparency = 0
-    })
-    sound:Play()
-    sound.Ended:Connect(function()
-        sound:Destroy()
+    Button.MouseEnter:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 32)}):Play()
     end)
-    backgroundTween:Play()
-    backgroundTween.Completed:Connect(function()
-        textTween:Play()
+    Button.MouseLeave:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 30)}):Play()
     end)
-    wait(5)
-    Notification:Destroy()
+    local function CloseNotification()
+        TweenService:Create(NotificationFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }):Play()
+        wait(0.4)
+        BlurEffect:Destroy()
+        NotificationFrame:Destroy()
+    end
+    Button.MouseButton1Click:Connect(function()
+        Button.Visible = false
+        CloseNotification()
+    end)
 else
     local saveSettings = false
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/source.lua", true))()
@@ -157,6 +169,28 @@ else
             game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 4})
         end
     end)
+    local switch6 = tab1.new("switch", {
+        text = "Auto team assist";
+    })
+    switch6.event:Connect(function(bool)
+        assist = bool
+        if saveSettings then
+            if not isfile('InfinityX/Settings/6284881984/switch6.lua') then
+                writefile('InfinityX/Settings/6284881984/switch6.lua', tostring(assist))
+            elseif isfile('InfinityX/Settings/6284881984/switch6.lua') then
+                writefile('InfinityX/Settings/6284881984/switch6.lua', tostring(assist))
+            end
+        end
+        while assist do task.wait()
+            local args = {
+                [1] = {
+                    [1] = "Skill",
+                    [2] = "TeamAssist"
+                }
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer(unpack(args))
+        end
+    end)
     local switch5 = tab1.new("switch", {
         text = "Auto Replay";
     })
@@ -170,7 +204,7 @@ else
             end
         end
         while replay do task.wait()
-            print('in dev')
+            print('In dev')
         end
     end)
     local switch3 = tab1.new("switch", {
@@ -274,6 +308,9 @@ else
             end
             if readfile('InfinityX/Settings/6284881984/switch5.lua') == 'true' then
                 switch5.set(true)
+            end
+            if readfile('InfinityX/Settings/6284881984/switch6.lua') == 'true' then
+                switch6.set(true)
             end
         end
     end
