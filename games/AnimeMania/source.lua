@@ -1,3 +1,39 @@
+-- detect service
+local UserInputService = game:GetService("UserInputService")
+if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
+	print("Mobile device")
+elseif not UserInputService.TouchEnabled and UserInputService.KeyboardEnabled and UserInputService.MouseEnabled then
+	print("Computer device")
+end
+
+
+
+-- start
+print[[                                                                     
+
+ /$$$$$$            /$$$$$$  /$$           /$$   /$$               /$$   /$$
+|_  $$_/           /$$__  $$|__/          |__/  | $$              | $$  / $$
+  | $$   /$$$$$$$ | $$  \__/ /$$ /$$$$$$$  /$$ /$$$$$$   /$$   /$$|  $$/ $$/
+  | $$  | $$__  $$| $$$$    | $$| $$__  $$| $$|_  $$_/  | $$  | $$ \  $$$$/ 
+  | $$  | $$  \ $$| $$_/    | $$| $$  \ $$| $$  | $$    | $$  | $$  >$$  $$ 
+  | $$  | $$  | $$| $$      | $$| $$  | $$| $$  | $$ /$$| $$  | $$ /$$/\  $$
+ /$$$$$$| $$  | $$| $$      | $$| $$  | $$| $$  |  $$$$/|  $$$$$$$| $$  \ $$
+|______/|__/  |__/|__/      |__/|__/  |__/|__/   \___/   \____  $$|__/  |__/
+                                                         /$$  | $$          
+                                                        |  $$$$$$/          
+                                                         \______/           
+]]
+
+
+
+-- load preference
+if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/button.lua"))()
+end
+
+
+
+-- make folder
 if not isfolder('InfinityX') then
     makefolder('InfinityX')
     makefolder('InfinityX/Key-System')
@@ -12,9 +48,11 @@ if not isfile('InfinityX/Game/Info.lua') then
 elseif isfile('InfinityX/Game/Info.lua') then
 	writefile('InfinityX/Game/Info.lua', '{Id = "'..tostring(game.PlaceId)..'", Name = "'..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)..'"}')
 end
+
+
+
+-- source
 repeat task.wait() until game:IsLoaded()
-
-
 local placeIds = {
     Main = 6284881984,
 }
