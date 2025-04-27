@@ -192,7 +192,7 @@ else
         end
     end)
     local switch5 = tab1.new("switch", {
-        text = "Auto Replay";
+        text = "Auto Replay (in dev)";
     })
     switch5.event:Connect(function(bool)
         replay = bool
