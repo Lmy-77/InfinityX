@@ -32,6 +32,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Content.BackgroundTransparency = 1
     Content.Text = notsubtitle
     Content.Font = Enum.Font.Gotham
+    Content.TextScale = true
     Content.TextSize = 20
     Content.TextColor3 = Color3.fromRGB(200, 200, 200)
     Content.TextWrapped = true
