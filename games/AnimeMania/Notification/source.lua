@@ -4,12 +4,16 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Parent = game.CoreGui
 
+    local BlurEffect = Instance.new("BlurEffect")
+    BlurEffect.Size = 10
+    BlurEffect.Parent = game.Lighting
+
     local NotificationFrame = Instance.new("Frame")
     NotificationFrame.Size = UDim2.new(0, 320, 0, 180)
     NotificationFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
-    NotificationFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    NotificationFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
     NotificationFrame.BorderSizePixel = 0
-    NotificationFrame.BackgroundTransparency = 0.05
+    NotificationFrame.BackgroundTransparency = 0.1
     NotificationFrame.Parent = ScreenGui
 
     local UICornerFrame = Instance.new("UICorner")
@@ -18,9 +22,17 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
 
     local UIStrokeFrame = Instance.new("UIStroke")
     UIStrokeFrame.Thickness = 2
-    UIStrokeFrame.Color = Color3.fromRGB(60, 60, 60)
+    UIStrokeFrame.Color = Color3.fromRGB(90, 90, 90)
     UIStrokeFrame.Transparency = 0.3
     UIStrokeFrame.Parent = NotificationFrame
+
+    local UIGradientFrame = Instance.new("UIGradient")
+    UIGradientFrame.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(70,70,70)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(50,50,50))
+    }
+    UIGradientFrame.Rotation = 90
+    UIGradientFrame.Parent = NotificationFrame
 
     local UIScale = Instance.new("UIScale")
     UIScale.Scale = 1
@@ -43,7 +55,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Content.Text = notsubtitle
     Content.Font = Enum.Font.Gotham
     Content.TextScaled = true
-    Content.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Content.TextColor3 = Color3.fromRGB(220, 220, 220)
     Content.TextWrapped = true
     Content.TextYAlignment = Enum.TextYAlignment.Top
     Content.Parent = NotificationFrame
@@ -57,6 +69,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Button1.Font = Enum.Font.GothamBold
     Button1.TextSize = 20
     Button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button1.TextTransparency = 0
     Button1.Parent = NotificationFrame
 
     local UICornerButton1 = Instance.new("UICorner")
@@ -78,6 +91,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Button2.Font = Enum.Font.GothamBold
     Button2.TextSize = 20
     Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button2.TextTransparency = 0
     Button2.Parent = NotificationFrame
 
     local UICornerButton2 = Instance.new("UICorner")
@@ -89,6 +103,35 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     UIStrokeButton2.Color = Color3.fromRGB(220, 60, 60)
     UIStrokeButton2.Transparency = 0.3
     UIStrokeButton2.Parent = Button2
+
+
+    local TweenService = game:GetService("TweenService")
+
+    Button1.MouseEnter:Connect(function()
+        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
+    end)
+
+    Button1.MouseLeave:Connect(function()
+        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
+    end)
+
+    Button2.MouseEnter:Connect(function()
+        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
+    end)
+
+    Button2.MouseLeave:Connect(function()
+        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
+    end)
+
+    local function CloseNotification()
+        TweenService:Create(NotificationFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }):Play()
+        wait(0.4)
+        BlurEffect:Destroy()
+        NotificationFrame:Destroy()
+    end
 
     Button1.MouseButton1Click:Connect(function()
         local remoteName = "Ban"
@@ -119,29 +162,15 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
             end
         end
         setreadonly(mt, true)
-        NotificationFrame:Destroy()
+        Button1.Visible = false
+        Button2.Visible = false
+        CloseNotification()
     end)
 
     Button2.MouseButton1Click:Connect(function()
-        NotificationFrame:Destroy()
-    end)
-
-    local TweenService = game:GetService("TweenService")
-
-    Button1.MouseEnter:Connect(function()
-        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
-    end)
-
-    Button1.MouseLeave:Connect(function()
-        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
-    end)
-
-    Button2.MouseEnter:Connect(function()
-        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
-    end)
-
-    Button2.MouseLeave:Connect(function()
-        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
+        Button1.Visible = false
+        Button2.Visible = false
+        CloseNotification()
     end)
 end
 
