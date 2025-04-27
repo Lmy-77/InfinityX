@@ -30,7 +30,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Title.Size = UDim2.new(1, 0, 0, 50)
     Title.Position = UDim2.new(0, 0, 0, 0)
     Title.BackgroundTransparency = 1
-    Title.Text = nottile
+    Title.Text = nottitle
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 26
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
