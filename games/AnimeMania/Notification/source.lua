@@ -12,6 +12,16 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     NotificationFrame.BackgroundTransparency = 0.05
     NotificationFrame.Parent = ScreenGui
 
+    local UICornerFrame = Instance.new("UICorner")
+    UICornerFrame.CornerRadius = UDim.new(0, 12)
+    UICornerFrame.Parent = NotificationFrame
+
+    local UIStrokeFrame = Instance.new("UIStroke")
+    UIStrokeFrame.Thickness = 2
+    UIStrokeFrame.Color = Color3.fromRGB(60, 60, 60)
+    UIStrokeFrame.Transparency = 0.3
+    UIStrokeFrame.Parent = NotificationFrame
+
     local UIScale = Instance.new("UIScale")
     UIScale.Scale = 1
     UIScale.Parent = NotificationFrame
@@ -20,7 +30,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Title.Size = UDim2.new(1, 0, 0, 50)
     Title.Position = UDim2.new(0, 0, 0, 0)
     Title.BackgroundTransparency = 1
-    Title.Text = nottitle
+    Title.Text = nottile
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 26
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -33,7 +43,6 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Content.Text = notsubtitle
     Content.Font = Enum.Font.Gotham
     Content.TextScaled = true
-    Content.TextSize = 20
     Content.TextColor3 = Color3.fromRGB(200, 200, 200)
     Content.TextWrapped = true
     Content.TextYAlignment = Enum.TextYAlignment.Top
@@ -44,22 +53,42 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Button1.Position = UDim2.new(0.5, -130, 1, -50)
     Button1.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
     Button1.BorderSizePixel = 0
-    Button1.Text = "Execute"
+    Button1.Text = "Confirmar"
     Button1.Font = Enum.Font.GothamBold
     Button1.TextSize = 20
     Button1.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button1.Parent = NotificationFrame
+
+    local UICornerButton1 = Instance.new("UICorner")
+    UICornerButton1.CornerRadius = UDim.new(0, 8)
+    UICornerButton1.Parent = Button1
+
+    local UIStrokeButton1 = Instance.new("UIStroke")
+    UIStrokeButton1.Thickness = 1.5
+    UIStrokeButton1.Color = Color3.fromRGB(0, 140, 220)
+    UIStrokeButton1.Transparency = 0.3
+    UIStrokeButton1.Parent = Button1
 
     local Button2 = Instance.new("TextButton")
     Button2.Size = UDim2.new(0, 120, 0, 40)
     Button2.Position = UDim2.new(0.5, 10, 1, -50)
     Button2.BackgroundColor3 = Color3.fromRGB(255, 75, 75)
     Button2.BorderSizePixel = 0
-    Button2.Text = "Cancel"
+    Button2.Text = "Cancelar"
     Button2.Font = Enum.Font.GothamBold
     Button2.TextSize = 20
     Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
     Button2.Parent = NotificationFrame
+
+    local UICornerButton2 = Instance.new("UICorner")
+    UICornerButton2.CornerRadius = UDim.new(0, 8)
+    UICornerButton2.Parent = Button2
+
+    local UIStrokeButton2 = Instance.new("UIStroke")
+    UIStrokeButton2.Thickness = 1.5
+    UIStrokeButton2.Color = Color3.fromRGB(220, 60, 60)
+    UIStrokeButton2.Transparency = 0.3
+    UIStrokeButton2.Parent = Button2
 
     Button1.MouseButton1Click:Connect(function()
         local remoteName = "Ban"
@@ -75,8 +104,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
                 return
             end
             return oldNamecall(self, ...)
-        end)
-
+        end)    
         for k, v in pairs(senv) do
             if typeof(v) == "function" and islclosure(v) then
                 hookfunction(v, function(...)
@@ -96,6 +124,24 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
 
     Button2.MouseButton1Click:Connect(function()
         NotificationFrame:Destroy()
+    end)
+
+    local TweenService = game:GetService("TweenService")
+
+    Button1.MouseEnter:Connect(function()
+        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
+    end)
+
+    Button1.MouseLeave:Connect(function()
+        TweenService:Create(Button1, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
+    end)
+
+    Button2.MouseEnter:Connect(function()
+        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 125, 0, 42)}):Play()
+    end)
+
+    Button2.MouseLeave:Connect(function()
+        TweenService:Create(Button2, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {Size = UDim2.new(0, 120, 0, 40)}):Play()
     end)
 end
 
