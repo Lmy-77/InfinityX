@@ -288,6 +288,27 @@ else
             end
         end
     end)
+    local switch7 = tab2.new("switch", {
+        text = "Anti afk";
+    })
+    switch7.event:Connect(function(bool)
+        afk = bool
+        if saveSettings then
+            if not isfile('InfinityX/Settings/6284881984/switch7.lua') then
+                writefile('InfinityX/Settings/6284881984/switch7.lua', tostring(afk))
+            elseif isfile('InfinityX/Settings/6284881984/switch7.lua') then
+                writefile('InfinityX/Settings/6284881984/switch7.lua', tostring(afk))
+            end
+        end
+        if afk then
+            local VirtualUser = game:GetService("VirtualUser")
+            game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                task.wait(1)
+                VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+            end)
+        end
+    end)
     local label1 = tab2.new("label", {
         text = "",
         color = Color3.new(1, 1, 1),
@@ -348,6 +369,9 @@ else
                 switch5.set(true)
             end
             if readfile('InfinityX/Settings/6284881984/switch6.lua') == 'true' then
+                switch6.set(true)
+            end
+            if readfile('InfinityX/Settings/6284881984/switch7.lua') == 'true' then
                 switch6.set(true)
             end
         end
