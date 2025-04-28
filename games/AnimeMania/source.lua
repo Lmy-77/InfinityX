@@ -33,24 +33,6 @@ end
 
 
 
--- make folder
-if not isfolder('InfinityX') then
-    makefolder('InfinityX')
-    makefolder('InfinityX/Key-System')
-    makefolder('InfinityX/Game')
-    makefolder('InfinityX/Settings')
-end
-if not isfolder('InfinityX/Settings/6284881984') then
-    makefolder('InfinityX/Settings/6284881984')
-end
-if not isfile('InfinityX/Game/Info.lua') then
-	writefile('InfinityX/Game/Info.lua', '{Id = "'..tostring(game.PlaceId)..'", Name = "'..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)..'"}')
-elseif isfile('InfinityX/Game/Info.lua') then
-	writefile('InfinityX/Game/Info.lua', '{Id = "'..tostring(game.PlaceId)..'", Name = "'..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)..'"}')
-end
-
-
-
 -- source
 repeat task.wait() until game:IsLoaded()
 local placeIds = {
@@ -150,235 +132,171 @@ if game.PlaceId == placeIds.Main then
 else
     local saveSettings = false
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/source.lua", true))()
-    local engine = loadstring(game:HttpGet("https://raw.githubusercontent.com/Singularity5490/rbimgui-2/main/rbimgui-2.lua"))()
-    local window1 = engine.new({
-        text = "Inifnity X - Anime Mania",
-        size = UDim2.new(300, 200),
-    })
-    window1.open()
-
-    local tab1 = window1.new({
-        text = "AutoFarm",
-    })
-    local tab2 = window1.new({
-        text = "Settings",
-    })
+    local SourceURL = 'https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'
+    ImGui = loadstring(game:HttpGet(SourceURL))()
 
 
-    local switch1 = tab1.new("switch", {
-        text = "Teleport to mob";
+    local Window = ImGui:CreateWindow({
+        Title = "InfinityX - Anime Mania",
+        Size = UDim2.new(0, 400, 0, 250),
+        Position = UDim2.new(0.5, 0, 0, 70),
+        BackgroundTransparency = 0.2
     })
-    switch1.event:Connect(function(bool)
-        farm = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch1.lua') then
-                writefile('InfinityX/Settings/6284881984/switch1.lua', tostring(farm))
-            elseif isfile('InfinityX/Settings/6284881984/switch1.lua') then
-                writefile('InfinityX/Settings/6284881984/switch1.lua', tostring(farm))
-            end
-        end
-        while farm do task.wait()
-            for _, v in pairs(workspace.Living:GetChildren()) do
-                if v:IsA('Model') and not game.Players:FindFirstChild(v.Name) then
-                    if v:FindFirstChild('HumanoidRootPart') then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 5.5, 0) * CFrame.Angles(math.rad(270), 0, 0)
+    local Tab1 = Window:CreateTab({
+        Name = "AutoFarm"
+    })
+    local Table = Tab1:Table({
+        RowBackground = true,
+        Border = true,
+        RowsFill = false,
+        Size = UDim2.fromScale(1, 0)
+    })
+    local Tab2 = Window:CreateTab({
+        Name = "Settings"
+    })
+    local Table = Tab2:Table({
+        RowBackground = true,
+        Border = true,
+        RowsFill = false,
+        Size = UDim2.fromScale(1, 0)
+    })
+    Window:Center()
+    Window:ShowTab(Tab1)
+
+
+    local switch1 = Tab1:Checkbox({
+        Label = "Teleport to mob",
+        Value = false,
+        Callback = function(self, bool)
+            farm = bool
+            while farm do task.wait()
+                for _, v in pairs(workspace.Living:GetChildren()) do
+                    if v:IsA('Model') and not game.Players:FindFirstChild(v.Name) then
+                        if v:FindFirstChild('HumanoidRootPart') then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 5.5, 0) * CFrame.Angles(math.rad(270), 0, 0)
+                        end
                     end
                 end
             end
-        end
-    end)
-    local switch2 = tab1.new("switch", {
-        text = "Use skills + m1";
+        end,
     })
-    switch2.event:Connect(function(bool)
-        skills = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch2.lua') then
-                writefile('InfinityX/Settings/6284881984/switch2.lua', tostring(skills))
-            elseif isfile('InfinityX/Settings/6284881984/switch2.lua') then
-                writefile('InfinityX/Settings/6284881984/switch2.lua', tostring(skills))
+    local switch2 = Tab1:Checkbox({
+        Label = "Use skills + m1",
+        Value = false,
+        Callback = function(self, bool)
+            skills = bool
+            while skills do task.wait()
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Light'}, false)
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 1})
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 2})
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 3})
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 4})
             end
-        end
-        while skills do task.wait()
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Light'}, false)
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 1})
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 2})
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 3})
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', 4})
-        end
-    end)
-    local switch6 = tab1.new("switch", {
-        text = "Auto team assist";
+        end,
     })
-    switch6.event:Connect(function(bool)
-        assist = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch6.lua') then
-                writefile('InfinityX/Settings/6284881984/switch6.lua', tostring(assist))
-            elseif isfile('InfinityX/Settings/6284881984/switch6.lua') then
-                writefile('InfinityX/Settings/6284881984/switch6.lua', tostring(assist))
-            end
-        end
-        while assist do task.wait()
-            local args = {
-                [1] = {
-                    [1] = "Skill",
-                    [2] = "TeamAssist"
+    local switch6 = Tab1:Checkbox({
+        Label = "Auto team assist",
+        Value = false,
+        Callback = function(self, bool)
+            assist = bool
+            while assist do task.wait()
+                local args = {
+                    [1] = {
+                        [1] = "Skill",
+                        [2] = "TeamAssist"
+                    }
                 }
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer(unpack(args))
-        end
-    end)
-    local switch5 = tab1.new("switch", {
-        text = "Auto Replay (in dev)";
-    })
-    switch5.event:Connect(function(bool)
-        replay = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch5.lua') then
-                writefile('InfinityX/Settings/6284881984/switch5.lua', tostring(replay))
-            elseif isfile('InfinityX/Settings/6284881984/switch5.lua') then
-                writefile('InfinityX/Settings/6284881984/switch5.lua', tostring(replay))
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer(unpack(args))
             end
-        end
-        while replay do task.wait()
-            print('In dev')
-        end
-    end)
-    local switch3 = tab1.new("switch", {
-        text = "God mode";
+        end,
     })
-    switch3.event:Connect(function(bool)
-        godm = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch3.lua') then
-                writefile('InfinityX/Settings/6284881984/switch3.lua', tostring(godm))
-            elseif isfile('InfinityX/Settings/6284881984/switch3.lua') then
-                writefile('InfinityX/Settings/6284881984/switch3.lua', tostring(godm))
+    local switch5 = Tab1:Checkbox({
+        Label = "Auto replay (in dev)",
+        Value = false,
+        Callback = function(self, bool)
+            replay = bool
+            if replay then
+                print('a')
             end
-        end
-        while godm do task.wait()
-            local clCheck = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("clCheck")
-            local character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
-            local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-            if humanoid and humanoid.Health ~= 0 then
-                clCheck:InvokeServer('Dash')
-            end
-        end
-    end)
-
-
-    local switch4 = tab2.new("switch", {
-        text = "Save settings";
+        end,
     })
-    switch4.event:Connect(function(bool)
-        saveSettings = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch4.lua') then
-                writefile('InfinityX/Settings/6284881984/switch4.lua', 'true')
-            elseif isfile('InfinityX/Settings/6284881984/switch4.lua') then
-                writefile('InfinityX/Settings/6284881984/switch4.lua', 'true')
-            end
-        end
-        if not saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch4.lua') then
-                writefile('InfinityX/Settings/6284881984/switch4.lua', 'false')
-            elseif isfile('InfinityX/Settings/6284881984/switch4.lua') then
-                writefile('InfinityX/Settings/6284881984/switch4.lua', 'false')
-            end
-        end
-    end)
-    local switch7 = tab2.new("switch", {
-        text = "Anti afk";
-    })
-    switch7.event:Connect(function(bool)
-        afk = bool
-        if saveSettings then
-            if not isfile('InfinityX/Settings/6284881984/switch7.lua') then
-                writefile('InfinityX/Settings/6284881984/switch7.lua', tostring(afk))
-            elseif isfile('InfinityX/Settings/6284881984/switch7.lua') then
-                writefile('InfinityX/Settings/6284881984/switch7.lua', tostring(afk))
-            end
-        end
-        if afk then
-            local VirtualUser = game:GetService("VirtualUser")
-            game:GetService("Players").LocalPlayer.Idled:Connect(function()
-                VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-                task.wait(1)
-                VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-            end)
-        end
-    end)
-    local label1 = tab2.new("label", {
-        text = "",
-        color = Color3.new(1, 1, 1),
-    })
-    local label2 = tab2.new("label", {
-        text = "--         AntiCheater Bypass         --",
-        color = Color3.new(1, 1, 1),
-    })
-    local button1 = tab2.new("button", {
-        text = " Remove remote event (recommended) ",
-    })
-    button1.event:Connect(function()
-        local pressed = false
-        if not pressed then
-            local remoteName = "Ban"
-            local mt = getrawmetatable(game)
-
-            setreadonly(mt, false)
-            local oldNamecall = mt.__namecall
-            mt.__namecall = newcclosure(function(self, ...)
-                local method = getnamecallmethod()
-                if method == "FireServer" and tostring(self) == remoteName then
-                    return
+    local switch3 = Tab1:Checkbox({
+        Label = "God mode",
+        Value = false,
+        Callback = function(self, bool)
+            godm = bool
+            while godm do task.wait()
+                local clCheck = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("clCheck")
+                local character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
+                local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+                if humanoid and humanoid.Health ~= 0 then
+                    clCheck:InvokeServer('Dash')
                 end
-                return oldNamecall(self, ...)
-            end)
-            setreadonly(mt, true)
-            pressed = true
-        end
-    end)
-    local button2 = tab2.new("button", {
-        text = " Remove kick + remote event ",
+            end
+        end,
     })
-    button2.event:Connect(function()
-        local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
-        if IsOnMobile then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/support.lua", true))()
-        else
-            library:Notify(
-                'WARING',
-                'By executing this function you will also have the function above being executed, but be careful, because by executing this function you will be safer, but some codes like god mode may end up not working over time because of the hook in the localscript. So use with caution.'
-            )
-        end
-    end)
-    tab1.show()
 
 
-    if not isfile('InfinityX/Settings/6284881984/switch4.lua') then
-        warn('This file was not found')
-    else
-        if readfile('InfinityX/Settings/6284881984/switch4.lua') == 'true' then
-            switch4.set(true)
-            if readfile('InfinityX/Settings/6284881984/switch1.lua') == 'true' then
-                switch1.set(true)
+    local switch7 = Tab2:Checkbox({
+        Label = "Anti afk",
+        Value = false,
+        Callback = function(bool)
+            afk = bool
+            if afk then
+                local VirtualUser = game:GetService("VirtualUser")
+                game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                    VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                    task.wait(1)
+                    VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                end)
             end
-            if readfile('InfinityX/Settings/6284881984/switch2.lua') == 'true' then
-                switch2.set(true)
+        end,
+    })
+    Tab2:Label({
+        Text = ''
+    })
+    Tab2:Label({
+        Text = '--// AntiCheater Bypass',
+    })
+    Tab2:Button({
+        Text = "Remove remote event (recommended)",
+        CornerRadius = UDim.new(0.30, 0),
+        Callback = function()
+            local pressed = false
+            if not pressed then
+                local remoteName = "Ban"
+                local mt = getrawmetatable(game)
+
+                setreadonly(mt, false)
+                local oldNamecall = mt.__namecall
+                mt.__namecall = newcclosure(function(self, ...)
+                    local method = getnamecallmethod()
+                    if method == "FireServer" and tostring(self) == remoteName then
+                        return
+                    end
+                    return oldNamecall(self, ...)
+                end)
+                setreadonly(mt, true)
+                pressed = true
             end
-            if readfile('InfinityX/Settings/6284881984/switch3.lua') == 'true' then
-                switch3.set(true)
+        end,
+    })
+    Tab2:Button({
+        Text = "Remove kick + remote event",
+        CornerRadius = UDim.new(0.30, 0),
+        Callback = function()
+            local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService('UserInputService'):GetPlatform())
+            if IsOnMobile then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/support.lua", true))()
+            else
+                library:Notify(
+                    'WARING',
+                    'By executing this function you will also have the function above being executed, but be careful, because by executing this function you will be safer, but some codes like god mode may end up not working over time because of the hook in the localscript. So use with caution.'
+                )
             end
-            if readfile('InfinityX/Settings/6284881984/switch5.lua') == 'true' then
-                switch5.set(true)
-            end
-            if readfile('InfinityX/Settings/6284881984/switch6.lua') == 'true' then
-                switch6.set(true)
-            end
-            if readfile('InfinityX/Settings/6284881984/switch7.lua') == 'true' then
-                switch6.set(true)
-            end
-        end
-    end
+        end,
+    })
 end
+
+
+warn('[InfinityX] - Loaded!')
