@@ -296,7 +296,24 @@ else
             end
         end,
     })
+
+
+    game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if input.KeyCode == Enum.KeyCode.K then
+            for _, v in pairs(game:GetService('CoreGui'):GetDescendants()) do
+                if v:IsA('Frame') and v.Name == 'Window_' then
+                    if v.Visible == true then
+                        v.Visible = false
+                    elseif v.Visible == false then
+                        v.Visible = true
+                    end
+                end
+            end
+        end
+    end)
 end
+
 
 
 warn('[InfinityX] - Loaded!')
