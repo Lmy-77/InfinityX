@@ -65,7 +65,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Button1.Position = UDim2.new(0.5, -130, 1, -50)
     Button1.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
     Button1.BorderSizePixel = 0
-    Button1.Text = "Confirmar"
+    Button1.Text = "Execute"
     Button1.Font = Enum.Font.GothamBold
     Button1.TextSize = 20
     Button1.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -87,7 +87,7 @@ function InfinityXNotify:Notify(nottitle, notsubtitle)
     Button2.Position = UDim2.new(0.5, 10, 1, -50)
     Button2.BackgroundColor3 = Color3.fromRGB(255, 75, 75)
     Button2.BorderSizePixel = 0
-    Button2.Text = "Cancelar"
+    Button2.Text = "Cancel"
     Button2.Font = Enum.Font.GothamBold
     Button2.TextSize = 20
     Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
