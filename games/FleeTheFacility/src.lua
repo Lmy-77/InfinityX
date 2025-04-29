@@ -293,7 +293,7 @@ sections.GameSection3:Header({
 	Name = "[🎮] Game Stats"
 })
 sections.GameSection4:Header({
-	Name = "[📶] Misc"
+	Name = "[🥚] Event"
 })
 sections.GameSection1:Toggle({
 	Name = "Auto hack",
@@ -507,7 +507,43 @@ task.spawn(function()
         task.wait(1)
     end
 end)
-sections.GameSection4:Label({ Text = 'In dev 😴' }, nil)
+
+sections.GameSection4:Toggle({
+	Name = "Collect all eggs",
+	Default = false,
+	Callback = function(bool)
+        event = bool
+        while event do task.wait()
+            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamong'}
+
+            for _, egg in ipairs(eggsName) do
+                local foundEgg = workspace:FindFirstChild(egg)
+                if foundEgg then
+                    fireclickdetector(foundEgg.Part.ClickDetector)
+                end
+            end
+        end
+	end,
+}, "Toggle")
+sections.GameSection4:Toggle({
+	Name = "Esp egg",
+	Default = false,
+	Callback = function(bool)
+        espEvent = bool
+        if espEvent then
+            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamong'}
+
+            for _, egg in ipairs(eggsName) do
+                local foundEgg = workspace:FindFirstChild(egg)
+                if foundEgg then
+                    local createEps = Instance.new('Highlight', foundEgg)
+                    createEps.FillColor = Color3.fromRGB(255, 0, 0)
+                end
+            end
+        end
+	end,
+}, "Toggle")
+
 
 
 sections.LPlayerSection1:Header({
