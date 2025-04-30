@@ -519,7 +519,11 @@ sections.GameSection4:Toggle({
             for _, egg in ipairs(eggsName) do
                 local foundEgg = workspace:FindFirstChild(egg)
                 if foundEgg then
-                    fireclickdetector(foundEgg.Part.ClickDetector)
+                    for _, v in pairs(foundEgg:GetDescendants()) do
+                        if v:IsA('ClickDetector') then
+                            fireclickdetector(v)
+                        end
+                    end
                 end
             end
         end
