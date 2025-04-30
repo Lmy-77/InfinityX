@@ -227,8 +227,7 @@ else
                         if buttonOne then
                             buttonOne.Size = UDim2.new(10, 0, 10, 0)
                             moveMouseAndClick(buttonOne)
-                        end
-                        if buttonTwo then
+                        elseif buttonTwo then
                             buttonTwo.Size = UDim2.new(10, 0, 10, 0)
                             moveMouseAndClick(buttonTwo)
                         end
