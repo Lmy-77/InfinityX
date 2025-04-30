@@ -34,7 +34,17 @@ end
 
 
 -- source
-repeat task.wait() until game:IsLoaded()
+local function moveMouseAndClick(button)
+    if button then
+        local buttonPosition = button.AbsolutePosition
+        local buttonSize = button.AbsoluteSize
+        local centerX = buttonPosition.X + (buttonSize.X / 2)
+        local centerY = buttonPosition.Y + (buttonSize.Y / 2)
+
+        mousemoveabs(centerX, centerY)
+        mouse1click()
+    end
+end
 local placeIds = {
     Main = 6284881984,
 }
@@ -130,7 +140,6 @@ if game.PlaceId == placeIds.Main then
         CloseNotification()
     end)
 else
-    local saveSettings = false
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/source.lua", true))()
     local SourceURL = 'https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'
     ImGui = loadstring(game:HttpGet(SourceURL))()
@@ -138,9 +147,10 @@ else
 
     local Window = ImGui:CreateWindow({
         Title = "InfinityX - Anime Mania",
-        Size = UDim2.new(0, 400, 0, 250),
+        Size = UDim2.new(0, 420, 0, 280),
         Position = UDim2.new(0.5, 0, 0, 70),
-        BackgroundTransparency = 0.2
+        BackgroundTransparency = 0.2,
+        NoResize = true
     })
     local Tab1 = Window:CreateTab({
         Name = "AutoFarm"
@@ -211,13 +221,27 @@ else
         end,
     })
     local switch5 = Tab1:Checkbox({
-        Label = "Auto replay (in dev)",
+        Label = "Auto replay",
         Value = false,
         Callback = function(self, bool)
             replay = bool
-            if replay then
-                print('a')
-            end
+            game.Players.LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
+                if replay then
+                    if child:IsA('ScreenGui') and child.Name == 'Result' then
+                        local buttonOne = game.Players.LocalPlayer.PlayerGui:WaitForChild('Result'):WaitForChild('DefeatFrame'):FindFirstChild('Replay')
+                        local buttonTwo = game.Players.LocalPlayer.PlayerGui:WaitForChild('Result'):WaitForChild('VictoryFrame'):FindFirstChild('Replay')
+
+                        if buttonOne then
+                            buttonOne.Size = UDim2.new(10, 0, 10, 0)
+                            moveMouseAndClick(buttonOne)
+                        end
+                        if buttonTwo then
+                            buttonTwo.Size = UDim2.new(10, 0, 10, 0)
+                            moveMouseAndClick(buttonTwo)
+                        end
+                    end
+                end
+            end)
         end,
     })
     local switch3 = Tab1:Checkbox({
@@ -283,7 +307,7 @@ else
     })
     Tab2:Button({
         Text = "Remove kick + remote event",
-        CornerRadius = UDim.new(0.30, 0),
+        CornerRadius = UDim.new(0.20, 0),
         Callback = function()
             local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService('UserInputService'):GetPlatform())
             if IsOnMobile then
