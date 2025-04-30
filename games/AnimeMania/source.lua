@@ -214,7 +214,7 @@ else
         end,
     })
     local switch5 = Tab1:Checkbox({
-        Label = "Auto replay",
+        Label = "Auto replay (In concert)",
         Value = false,
         Callback = function(self, bool)
             replay = bool
