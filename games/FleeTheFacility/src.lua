@@ -535,7 +535,7 @@ sections.GameSection4:Toggle({
 	Callback = function(bool)
         espEvent = bool
         if espEvent then
-            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamong'}
+            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamond'}
 
             for _, egg in ipairs(eggsName) do
                 local foundEgg = workspace:FindFirstChild(egg)
