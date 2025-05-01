@@ -143,6 +143,7 @@ sections.AutoFarmSection1:Toggle({
         end
 	end,
 }, "Toggle")
+sections.AutoFarmSection1:Divider()
 local stats = sections.AutoFarmSection1:Paragraph({
     Header = "Spins you've made",
     Body = 'nil'
