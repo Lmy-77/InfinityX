@@ -541,7 +541,14 @@ sections.GameSection4:Toggle({
                 local foundEgg = workspace:FindFirstChild(egg)
                 if foundEgg then
                     local createEps = Instance.new('Highlight', foundEgg)
+                    createEps.Name = 'INFX_Esp'
                     createEps.FillColor = Color3.fromRGB(255, 0, 0)
+                end
+            end
+        else
+            for _, v in pairs(game:GetDescendants()) do
+                if v:IsA('Highlight') and v.Name == 'INFX_Esp' then
+                    v:Destroy()
                 end
             end
         end
