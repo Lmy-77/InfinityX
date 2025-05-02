@@ -304,15 +304,10 @@ else
         Text = "Remove kick + remote event",
         CornerRadius = UDim.new(0.20, 0),
         Callback = function()
-            local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService('UserInputService'):GetPlatform())
-            if IsOnMobile then
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/support.lua", true))()
-            else
-                library:Notify(
-                    'WARING',
-                    'By executing this function you will also have the function above being executed, but be careful, because by executing this function you will be safer, but some codes like god mode may end up not working over time because of the hook in the localscript. So use with caution.'
-                )
-            end
+            library:Notify(
+                'WARING',
+                'By executing this function you will also have the function above being executed, but be careful, because by executing this function you will be safer, but some codes like god mode may end up not working over time because of the hook in the localscript. So use with caution.'
+            )
         end,
     })
 
