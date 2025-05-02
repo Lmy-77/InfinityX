@@ -1,3 +1,13 @@
+-- queue_on_teleport
+queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+	if  queueteleport then
+        queueteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/source.lua", true))()]])
+	end
+end)
+
+
+-- variables
 local currentPlaceId = game.PlaceId
 local supportedGames = { 
         [{893973440}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/FleeTheFacility/src.lua',
@@ -20,6 +30,9 @@ local function findScript()
     end
     return nil
 end
+
+
+-- detect game
 local scriptUrl = findScript()
 if scriptUrl then
     print("InfinityX - Game supported")
