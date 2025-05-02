@@ -3,7 +3,6 @@ local mt = getrawmetatable(game)
 local lscript = game:GetService("Players").LocalPlayer.Backpack:WaitForChild("ClientMain")
 local senv = getsenv(lscript)
 
-
 setreadonly(mt, false)
 local oldNamecall = mt.__namecall
 mt.__namecall = newcclosure(function(self, ...)
@@ -14,17 +13,14 @@ mt.__namecall = newcclosure(function(self, ...)
     return oldNamecall(self, ...)
 end)
 
-for k, v in pairs(senv) do
-    if typeof(v) == "function" and islclosure(v) then
-        hookfunction(v, function(...)
-            local constants = debug.getconstants(v)
-            for _, const in ipairs(constants) do
-                if typeof(const) == "string" and const:lower():find("kick") then
-                    return
-                end
-            end
-            return v(...)
-        end)
-    end
-end
+hookfunction(game.Players.LocalPlayer.Kick, newcclosure(function(...)
+    return nil
+end))
+mt.__namecall = newcclosure(function(self, ...)
+  local method = getnamecallmethod()
+  if self == game.Players.LocalPlayer and method == "Kick" then
+      return nil
+  end
+  return oldNamecall(self, ...)
+end)
 setreadonly(mt, true)
