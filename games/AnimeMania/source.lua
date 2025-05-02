@@ -214,23 +214,26 @@ else
         end,
     })
     local switch5 = Tab1:Checkbox({
-        Label = "Auto replay (In concert)",
+        Label = "Auto replay (Beta)",
         Value = false,
         Callback = function(self, bool)
             replay = bool
             game.Players.LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
                 if replay then
                     if child:IsA('ScreenGui') and child.Name == 'Result' then
-                        local buttonOne = game.Players.LocalPlayer.PlayerGui:WaitForChild('Result'):WaitForChild('DefeatFrame'):FindFirstChild('Replay')
-                        local buttonTwo = game.Players.LocalPlayer.PlayerGui:WaitForChild('Result'):WaitForChild('VictoryFrame'):FindFirstChild('Replay')
-
-                        if buttonOne then
-                            buttonOne.Size = UDim2.new(10, 0, 10, 0)
-                            moveMouseAndClick(buttonOne)
-                        elseif buttonTwo then
-                            buttonTwo.Size = UDim2.new(10, 0, 10, 0)
-                            moveMouseAndClick(buttonTwo)
+                        for _, v in pairs(child:GetDescendants()) do
+                            if v:IsA('ImageButton') and v.Name == 'Replay' then
+                                v.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(v)
+                            end
                         end
+                        -- if buttonOne then
+                        --     buttonOne.Size = UDim2.new(10, 0, 10, 0)
+                        --     moveMouseAndClick(buttonOne)
+                        -- elseif buttonTwo then
+                        --     buttonTwo.Size = UDim2.new(10, 0, 10, 0)
+                        --     moveMouseAndClick(buttonTwo)
+                        -- end
                     end
                 end
             end)
