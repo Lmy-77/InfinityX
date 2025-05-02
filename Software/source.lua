@@ -2,7 +2,7 @@
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 	if  queueteleport then
-        	queueteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/source.lua", true))()]])
+		queueteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/source.lua", true))()]])
 	end
 end)
 
