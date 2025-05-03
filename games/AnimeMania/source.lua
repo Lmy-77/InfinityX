@@ -294,7 +294,9 @@ elseif game.PlaceId == placeIds.Arena then
             game.Players.LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
                 if autoSelect then
                     if child:IsA('ScreenGui') and child.Name == 'SelectedCharacter' then
+                        wait(0.5)
                         child.LocalScript.Disabled = true
+
                         if numbersOfCharacters == '1' then
                             if characterSelected == '1' then
                                 wait(1.5)
@@ -453,6 +455,7 @@ elseif game.PlaceId == placeIds.Arena then
             end
         end
     end)
+
 
     wait(2)
     if not isfile('InfinityX/Settings/save_bypass.lua') then
