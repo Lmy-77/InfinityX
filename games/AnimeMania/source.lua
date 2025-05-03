@@ -297,7 +297,7 @@ elseif game.PlaceId == placeIds.Arena then
                         child.LocalScript.Disabled = true
                         if numbersOfCharacters == '1' then
                             if characterSelected == '1' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
@@ -306,13 +306,13 @@ elseif game.PlaceId == placeIds.Arena then
 
                         if numbersOfCharacters == '2' then
                             if characterSelected == '1' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '2' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[4]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
@@ -321,19 +321,19 @@ elseif game.PlaceId == placeIds.Arena then
 
                         if numbersOfCharacters == '3' then
                             if characterSelected == '1' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '2' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[4]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '3' then
-                                wait(0.5)
+                                wait(1.5)
                                 local button1 = child.Characters:GetChildren()[5]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
