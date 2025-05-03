@@ -140,7 +140,7 @@ else
 
     local Window = ImGui:CreateWindow({ 
         Title = "InfinityX - Anime Mania",
-        Size = UDim2.new(0, 420, 0, 280),
+        Size = UDim2.new(0, 420, 0, 310),
         Position = UDim2.new(0.5, 0, 0, 70),
         BackgroundTransparency = 0.2,
         NoResize = true
@@ -244,6 +244,26 @@ else
                 if humanoid and humanoid.Health ~= 0 then
                     clCheck:InvokeServer('Dash')
                 end
+            end
+        end,
+    })
+    Tab1:Button({
+        Text = "Reedem all codes",
+        CornerRadius = UDim.new(0.20, 0),
+        Callback = function()
+            local codes = {
+                'WelcomeNewAnimeManiaPlayers!',
+                'THANKSFOR175KLIKES',
+                'SOLOLEVELINGBUFFS',
+                'MONEYMONEY',
+                'FIRSTFREECODE'
+            }
+            for _, v in ipairs(codes) do
+                local args = {
+                    [1] = v
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SubmitCode"):InvokeServer(unpack(args))
+                task.wait(0.5)
             end
         end,
     })
@@ -387,38 +407,34 @@ else
         Text = ''
     })
     Tab2:Label({
-        Text = '--// AntiCheater Bypass',
+        Text = '--// AntiCheater Bypass Manual',
     })
     Tab2:Button({
-        Text = "Remove remote event (recommended)",
+        Text = "Bypass (remote)",
         CornerRadius = UDim.new(0.20, 0),
         Callback = function()
-            local pressed = false
-            if not pressed then
-                local remoteName = "Ban"
-                local mt = getrawmetatable(game)
+            local remoteName = "Ban"
+            local mt = getrawmetatable(game)
 
-                setreadonly(mt, false)
-                local oldNamecall = mt.__namecall
-                mt.__namecall = newcclosure(function(self, ...)
-                    local method = getnamecallmethod()
-                    if method == "FireServer" and tostring(self) == remoteName then
-                        return
-                    end
-                    return oldNamecall(self, ...)
-                end)
-                setreadonly(mt, true)
-                pressed = true
-            end
+            setreadonly(mt, false)
+            local oldNamecall = mt.__namecall
+            mt.__namecall = newcclosure(function(self, ...)
+                local method = getnamecallmethod()
+                if method == "FireServer" and tostring(self) == remoteName then
+                    return
+                end
+                return oldNamecall(self, ...)
+            end)
+            setreadonly(mt, true)
         end,
     })
     Tab2:Button({
-        Text = "Remove kick + remote event",
+        Text = "Bypass (all)",
         CornerRadius = UDim.new(0.20, 0),
         Callback = function()
             library:Notify(
                 'WARING',
-                'By executing this function you will also have the function above being executed, but be careful, because by executing this function you will be safer, but some codes like god mode may end up not working over time because of the hook in the localscript. So use with caution.'
+                'Are you sure you want to run this function? This function will remove the kick and remote event from the game.'
             )
         end,
     })
