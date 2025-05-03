@@ -40,6 +40,7 @@ local function moveMouseAndClick(button)
 end
 local placeIds = {
     Main = 6284881984,
+    Arena = 6314042276
 }
 if game.PlaceId == placeIds.Main then
     local ScreenGui = Instance.new("ScreenGui")
@@ -132,7 +133,7 @@ if game.PlaceId == placeIds.Main then
         Button.Visible = false
         CloseNotification()
     end)
-else
+elseif game.PlaceId == placeIds.Arena then
     local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/source.lua", true))()
     local SourceURL = 'https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'
     ImGui = loadstring(game:HttpGet(SourceURL))()
@@ -251,13 +252,7 @@ else
         Text = "Reedem all codes",
         CornerRadius = UDim.new(0.20, 0),
         Callback = function()
-            local codes = {
-                'WelcomeNewAnimeManiaPlayers!',
-                'THANKSFOR175KLIKES',
-                'SOLOLEVELINGBUFFS',
-                'MONEYMONEY',
-                'FIRSTFREECODE'
-            }
+            local codes = {'WelcomeNewAnimeManiaPlayers!', 'THANKSFOR175KLIKES', 'SOLOLEVELINGBUFFS', 'MONEYMONEY', 'FIRSTFREECODE'}
             for _, v in ipairs(codes) do
                 local args = {
                     [1] = v
@@ -302,7 +297,7 @@ else
                         child.LocalScript.Disabled = true
                         if numbersOfCharacters == '1' then
                             if characterSelected == '1' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
@@ -311,13 +306,13 @@ else
 
                         if numbersOfCharacters == '2' then
                             if characterSelected == '1' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '2' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[4]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
@@ -326,19 +321,19 @@ else
 
                         if numbersOfCharacters == '3' then
                             if characterSelected == '1' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[3]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '2' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[4]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
                             end
                             if characterSelected == '3' then
-                                wait(1.5)
+                                wait(0.5)
                                 local button1 = child.Characters:GetChildren()[5]
                                 button1.Size = UDim2.new(10, 0, 10, 0)
                                 moveMouseAndClick(button1)
