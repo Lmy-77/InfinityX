@@ -1,27 +1,3 @@
--- make folder
-local url = 'https://work.ink/1Zoq/vz02hali'
-local key = 'Key_2r70AmLaKmxW56k_SLMRDft&9$w(@d'
-if not isfolder('InfinityX') then
-    makefolder('InfinityX')
-    makefolder('InfinityX/Key-System')
-    makefolder('InfinityX/Game')
-    makefolder('InfinityX/Settings')
-end
-if isfile('InfinityX/Key-System/key.lua') then
-    if readfile('InfinityX/Key-System/key.lua') == key then
-        warn('Key aleary used')
-				loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/source.lua", true))()
-        return
-    end
-end
-if not isfile('InfinityX/Game/Info.lua') then
-	writefile('InfinityX/Game/Info.lua', '{Id = "'..tostring(game.PlaceId)..'", Name = "'..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)..'"}')
-elseif isfile('InfinityX/Game/Info.lua') then
-	writefile('InfinityX/Game/Info.lua', '{Id = "'..tostring(game.PlaceId)..'", Name = "'..tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)..'"}')
-end
-
-
-
 -- source
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
