@@ -138,7 +138,7 @@ else
     ImGui = loadstring(game:HttpGet(SourceURL))()
 
 
-    local Window = ImGui:CreateWindow({
+    local Window = ImGui:CreateWindow({ 
         Title = "InfinityX - Anime Mania",
         Size = UDim2.new(0, 420, 0, 280),
         Position = UDim2.new(0.5, 0, 0, 70),
@@ -148,7 +148,7 @@ else
     local Tab1 = Window:CreateTab({
         Name = "AutoFarm"
     })
-    local Table = Tab1:Table({
+    local Table1 = Tab1:Table({
         RowBackground = true,
         Border = true,
         RowsFill = false,
@@ -157,7 +157,7 @@ else
     local Tab2 = Window:CreateTab({
         Name = "Settings"
     })
-    local Table = Tab2:Table({
+    local Table2 = Tab2:Table({
         RowBackground = true,
         Border = true,
         RowsFill = false,
@@ -214,7 +214,7 @@ else
         end,
     })
     local switch5 = Tab1:Checkbox({
-        Label = "Auto replay (Beta)",
+        Label = "Auto replay",
         Value = false,
         Callback = function(self, bool)
             replay = bool
@@ -227,13 +227,6 @@ else
                                 moveMouseAndClick(v)
                             end
                         end
-                        -- if buttonOne then
-                        --     buttonOne.Size = UDim2.new(10, 0, 10, 0)
-                        --     moveMouseAndClick(buttonOne)
-                        -- elseif buttonTwo then
-                        --     buttonTwo.Size = UDim2.new(10, 0, 10, 0)
-                        --     moveMouseAndClick(buttonTwo)
-                        -- end
                     end
                 end
             end)
@@ -254,12 +247,104 @@ else
             end
         end,
     })
+    Tab1:Label({
+        Text = ''
+    })
+    Tab1:Combo({
+        Placeholder = "Select the number of characters",
+        Label = "",
+        Items = {'1', '2', '3'},
+        Callback = function(self, Value)
+            numbersOfCharacters = Value
+        end,
+    })
+    Tab1:Combo({
+        Placeholder = "Select the character",
+        Label = "",
+        Items = {'1', '2', '3'},
+        Callback = function(self, Value)
+            characterSelected = Value
+        end,
+    })
+    local Row1 = Tab1:Row()
+    Row1:Checkbox({
+        Label = "Auto select",
+        Value = false,
+        Callback = function(self, bool)
+            autoSelect = bool
+            if autoSelect then
+                print(numbersOfCharacters)
+                print(characterSelected)
+            end
+            game.Players.LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
+                if autoSelect then
+                    if child:IsA('ScreenGui') and child.Name == 'SelectedCharacter' then
+                        child.LocalScript.Disabled = true
+                        if numbersOfCharacters == '1' then
+                            if characterSelected == '1' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[3]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                        end
+
+                        if numbersOfCharacters == '2' then
+                            if characterSelected == '1' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[3]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                            if characterSelected == '2' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[4]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                        end
+
+                        if numbersOfCharacters == '3' then
+                            if characterSelected == '1' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[3]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                            if characterSelected == '2' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[4]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                            if characterSelected == '3' then
+                                wait(1.5)
+                                local button1 = child.Characters:GetChildren()[5]
+                                button1.Size = UDim2.new(10, 0, 10, 0)
+                                moveMouseAndClick(button1)
+                            end
+                        end
+                    end
+                end
+            end)
+        end,
+    })
+    Row1:Label({
+        Text = '   |'
+    })
+    Row1:Button({
+        Text = "How to use",
+        CornerRadius = UDim.new(0.20, 0),
+        Callback = function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/HowToUse.lua", true))()
+        end,
+    })
 
 
     local switch7 = Tab2:Checkbox({
         Label = "Anti afk",
         Value = false,
-        Callback = function(bool)
+        Callback = function(self, bool)
             afk = bool
             if afk then
                 local VirtualUser = game:GetService("VirtualUser")
@@ -271,6 +356,33 @@ else
             end
         end,
     })
+    local row2 = Tab2:Row()
+    local switch8 = row2:Checkbox({
+        Label = "Auto bypass",
+        Value = false,
+        Callback = function(self, Value)
+            savebypass = Value
+            if savebypass then
+                if not isfile('InfinityX/Settings/save_bypass.lua') then
+                    writefile('InfinityX/Settings/save_bypass.lua', 'true')
+                elseif isfile('InfinityX/Settings/save_bypass.lua') then
+                    writefile('InfinityX/Settings/save_bypass.lua', 'true')
+                end
+                print('Bypass executed')
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Bypass.lua", true))()
+            end
+        end,
+    })
+    row2:Label({
+        Text = '   |'
+    })
+    row2:Button({
+        Text = "Deleted save settings",
+        CornerRadius = UDim.new(0.20, 0),
+        Callback = function()
+            delfile('InfinityX/Settings/save_bypass.lua')
+        end,
+    })
     Tab2:Label({
         Text = ''
     })
@@ -279,7 +391,7 @@ else
     })
     Tab2:Button({
         Text = "Remove remote event (recommended)",
-        CornerRadius = UDim.new(0.30, 0),
+        CornerRadius = UDim.new(0.20, 0),
         Callback = function()
             local pressed = false
             if not pressed then
@@ -330,6 +442,17 @@ else
             end
         end
     end)
+
+    wait(2)
+    if not isfile('InfinityX/Settings/save_bypass.lua') then
+        warn('File does not exist')
+    elseif isfile('InfinityX/Settings/save_bypass.lua') then
+        if readfile('InfinityX/Settings/save_bypass.lua') == 'true' then
+            switch8:SetTicked(true)
+            print('Bypass executed')
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Bypass.lua", true))()
+        end
+    end
 end
 
 
