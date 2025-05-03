@@ -27,4 +27,5 @@ if hookmetamethod and hookfunction and getsenv and newcclosure and getnamecallme
 	setreadonly(mt, true)
 else
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Notification/return.lua", true))()
+	return
 end
