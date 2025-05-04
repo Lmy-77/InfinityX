@@ -1,3 +1,33 @@
+-- bypass
+local remoteName = "Ban"
+local mt = getrawmetatable(game)
+local lscript = game:GetService("Players").LocalPlayer.Backpack:WaitForChild("ClientMain")
+local senv = getsenv(lscript)
+
+setreadonly(mt, false)
+local oldNamecall = mt.__namecall
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if method == "FireServer" and tostring(self) == remoteName then
+        return
+    end
+    return oldNamecall(self, ...)
+end)
+
+hookfunction(game.Players.LocalPlayer.Kick, newcclosure(function(...)
+    return nil
+end))
+mt.__namecall = newcclosure(function(self, ...)
+  local method = getnamecallmethod()
+  if self == game.Players.LocalPlayer and method == "Kick" then
+      return nil
+  end
+  return oldNamecall(self, ...)
+end)
+setreadonly(mt, true)
+
+
+
 -- variables
 function gradient(text, startColor, endColor)
   local result = ""
@@ -26,39 +56,18 @@ local function moveMouseAndClick(button)
       mouse1click()
   end
 end
+function GetSize()
+  if game:GetService('UserInputService').TouchEnabled and not game:GetService('UserInputService').KeyboardEnabled and not game:GetService('UserInputService').MouseEnabled then
+      return UDim2.fromOffset(600, 350)
+  else
+      return UDim2.fromOffset(830, 525)
+  end
+end
 scriptVersion = "3.2a"
 
 
 -- source
 local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
-function gradient(text, startColor, endColor)
-    local result = ""
-    local length = #text
-
-    for i = 1, length do
-        local t = (i - 1) / math.max(length - 1, 1)
-        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
-        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
-        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
-
-        local char = text:sub(i, i)
-        result = result .. "<font color=\"rgb(" .. r ..", " .. g .. ", " .. b .. ")\">" .. char .. "</font>"
-    end
-
-    return result
-end
-local function moveMouseAndClick(button)
-    if button then
-        local buttonPosition = button.AbsolutePosition
-        local buttonSize = button.AbsoluteSize
-        local centerX = buttonPosition.X + (buttonSize.X / 2)
-        local centerY = buttonPosition.Y + (buttonSize.Y / 2)
-
-        mousemoveabs(centerX, centerY)
-        mouse1click()
-    end
-end
-
 local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
   Icon = "rbxassetid://78609244215270",
@@ -89,11 +98,6 @@ local Tabs = {
     Icon = "banknote",
     Desc = "AutoFarm tab",
   }),
-  Bypass = Window:Tab({
-    Title = "Bypass",
-    Icon = "shield-ban",
-    Desc = "Bypass tab",
-  }),
   Misc = Window:Tab({
     Title = "Misc",
     Icon = "layers",
@@ -101,6 +105,7 @@ local Tabs = {
   }),
 }
 Window:SelectTab(1)
+
 -- source
 local Section = Tabs.AutoFarm:Section({
   Title = "Clear Wave",
@@ -171,19 +176,6 @@ local Toggle = Tabs.AutoFarm:Toggle({
     end
   end,
 })
-local Button = Tabs.AutoFarm:Button({
-  Title = "Reedem all codes",
-  Callback = function()
-    local codes = {'WelcomeNewAnimeManiaPlayers!', 'THANKSFOR175KLIKES', 'SOLOLEVELINGBUFFS', 'MONEYMONEY', 'FIRSTFREECODE'}
-    for _, v in ipairs(codes) do
-      local args = {
-          [1] = v
-      }
-      game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SubmitCode"):InvokeServer(unpack(args))
-      task.wait(0.5)
-    end
-  end
-})
 local Section = Tabs.AutoFarm:Section({
   Title = "Settings",
   TextXAlignment = "Center",
@@ -191,7 +183,7 @@ local Section = Tabs.AutoFarm:Section({
 })
 local Dropdown = Tabs.AutoFarm:Dropdown({
   Title = "Select the number of characters",
-  Desc = "",
+  Desc = "Select the number of characters you have equipped",
   Value = "nil",
   Multi = false,
   AllowNone = true,
@@ -204,7 +196,7 @@ local Dropdown = Tabs.AutoFarm:Dropdown({
 })
 local Dropdown = Tabs.AutoFarm:Dropdown({
   Title = "Select the character",
-  Desc = "",
+  Desc = "Select the character you want to use",
   Value = "nil",
   Multi = false,
   AllowNone = true,
@@ -316,122 +308,6 @@ local Button = Tabs.AutoFarm:Button({
     }) Dialog:Open()
   end
 })
-local Section = Tabs.Bypass:Section({
-  Title = "Anti Cheater Bypass (Automatic)",
-  TextXAlignment = "Center",
-  TextSize = 17,
-})
-local BypassToggle = Tabs.Bypass:Toggle({
-  Title = "Auto bypass",
-  Desc = "Press here to auto bypass anti cheater if you have rejoin server",
-  Icon = "check",
-  Value = false,
-  Callback = function(state)
-    save_bypass = state
-    if save_bypass then
-        if not hookmetamethod and hookfunction and getsenv and newcclosure and getnamecallmethod and getrawmetatable then
-            local Dialog = Window:Dialog({
-              Icon = "droplet",
-              Title = "Bypass failed",
-              Content = "Your exploit dont support this bypass.",
-              Buttons = {
-                {
-                  Title = "OK!", 
-                  Callback = function() end,
-                  Variant = "Primary"
-                }
-              }
-            }) Dialog:Open()
-        else
-            if not isfile('InfinityX/Settings/save_bypass.lua') then
-                writefile('InfinityX/Settings/save_bypass.lua', 'true')
-            elseif isfile('InfinityX/Settings/save_bypass.lua') then
-                writefile('InfinityX/Settings/save_bypass.lua', 'true')
-            end
-        end
-    end
-  end,
-})
-local Button = Tabs.Bypass:Button({
-  Title = "Delete settings",
-  Desc = "Deletes the auto bypass setting",
-  Callback = function()
-    delfile('InfinityX/Settings/save_bypass.lua')
-  end
-})
-if not isfile('InfinityX/Settings/save_bypass.lua') then
-  warn('File does not exist')
-elseif isfile('InfinityX/Settings/save_bypass.lua') then
-  if readfile('InfinityX/Settings/save_bypass.lua') == 'true' then
-    BypassToggle:SetValue(true)
-    if hookmetamethod and hookfunction and getsenv and newcclosure and getnamecallmethod and getrawmetatable then
-        warn('Bypass success')
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Bypass.lua", true))()
-    else
-        warn('Bypass failed')
-    end
-  end
-end
-local Section = Tabs.Bypass:Section({
-  Title = "Anti Cheater Bypass (Manual)",
-  TextXAlignment = "Center",
-  TextSize = 17,
-})
-local Button = Tabs.Bypass:Button({
-  Title = "Bypass remote",
-  Desc = "Bypass the remote that detects the script",
-  Callback = function()
-    if not hookmetamethod and hookfunction and getsenv and newcclosure and getnamecallmethod and getrawmetatable then
-        local Dialog = Window:Dialog({
-          Icon = "droplet",
-          Title = "Bypass failed",
-          Content = "Your exploit dont support this bypass.",
-          Buttons = {
-            {
-              Title = "OK!", 
-              Callback = function() end,
-              Variant = "Primary"
-            }
-          }
-        }) Dialog:Open()
-    else
-        local remoteName = "Ban"
-        local mt = getrawmetatable(game)
-        setreadonly(mt, false)
-        local oldNamecall = mt.__namecall
-        mt.__namecall = newcclosure(function(self, ...)
-          local method = getnamecallmethod()
-          if method == "FireServer" and tostring(self) == remoteName then
-            return
-          end
-          return oldNamecall(self, ...)
-        end)
-        setreadonly(mt, true)
-    end
-  end
-})
-local Button = Tabs.Bypass:Button({
-  Title = "Bypass all",
-  Desc = "Bypass all functions that detect the script",
-  Callback = function()
-    if not hookmetamethod and hookfunction and getsenv and newcclosure and getnamecallmethod and getrawmetatable then
-        local Dialog = Window:Dialog({
-          Icon = "droplet",
-          Title = "Bypass failed",
-          Content = "Your exploit dont support this bypass.",
-          Buttons = {
-            {
-              Title = "OK!", 
-              Callback = function() end,
-              Variant = "Primary"
-            }
-          }
-        }) Dialog:Open()
-    else
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeMania/Bypass.lua", true))()
-    end
-  end
-})
 local Section = Tabs.Misc:Section({
   Title = "Misc Options",
   TextXAlignment = "Center",
@@ -439,7 +315,7 @@ local Section = Tabs.Misc:Section({
 })
 local Toggle = Tabs.Misc:Toggle({
   Title = "Anti afk",
-  Desc = "Make the character immortal",
+  Desc = "Dont have kiked at 20 minutes idled",
   Icon = "check",
   Value = false,
   Callback = function(state)
@@ -453,4 +329,17 @@ local Toggle = Tabs.Misc:Toggle({
       end)
     end
   end,
+})
+local Button = Tabs.Misc:Button({
+  Title = "Reedem all codes",
+  Callback = function()
+    local codes = {'WelcomeNewAnimeManiaPlayers!', 'THANKSFOR175KLIKES', 'SOLOLEVELINGBUFFS', 'MONEYMONEY', 'FIRSTFREECODE'}
+    for _, v in ipairs(codes) do
+      local args = {
+          [1] = v
+      }
+      game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SubmitCode"):InvokeServer(unpack(args))
+      task.wait(0.5)
+    end
+  end
 })
