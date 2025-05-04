@@ -58,27 +58,7 @@ local function moveMouseAndClick(button)
         mouse1click()
     end
 end
-WindUI:Popup({
-  Title = "Welcome!",
-  Icon = "info",
-  Content = "Welcome " .. game.Players.LocalPlayer.Name .. " to " .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)) .. " Script",
-  Buttons = {
-      {
-          Title = "Cancel",
-          Callback = function() end,
-          Variant = "Tertiary",
-      },
-      {
-          Title = "Continue",
-          Icon = "arrow-right",
-          Callback = function()
-            Confirmed = true
-          end,
-          Variant = "Primary",
-      }
-  }
-})
-repeat wait() until Confirmed
+
 local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
   Icon = "rbxassetid://78609244215270",
