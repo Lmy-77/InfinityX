@@ -1,3 +1,35 @@
+-- variables
+function gradient(text, startColor, endColor)
+  local result = ""
+  local length = #text
+
+  for i = 1, length do
+      local t = (i - 1) / math.max(length - 1, 1)
+      local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+      local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+      local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+
+      local char = text:sub(i, i)
+      result = result .. "<font color=\"rgb(" .. r ..", " .. g .. ", " .. b .. ")\">" .. char .. "</font>"
+  end
+
+  return result
+end
+local function moveMouseAndClick(button)
+  if button then
+      local buttonPosition = button.AbsolutePosition
+      local buttonSize = button.AbsoluteSize
+      local centerX = buttonPosition.X + (buttonSize.X / 2)
+      local centerY = buttonPosition.Y + (buttonSize.Y / 2)
+
+      mousemoveabs(centerX, centerY)
+      mouse1click()
+  end
+end
+scriptVersion = "3.2a"
+
+
+-- source
 local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
 function gradient(text, startColor, endColor)
     local result = ""
