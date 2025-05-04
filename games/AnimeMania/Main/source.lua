@@ -15,6 +15,17 @@ function gradient(text, startColor, endColor)
 
     return result
 end
+local function moveMouseAndClick(button)
+    if button then
+        local buttonPosition = button.AbsolutePosition
+        local buttonSize = button.AbsoluteSize
+        local centerX = buttonPosition.X + (buttonSize.X / 2)
+        local centerY = buttonPosition.Y + (buttonSize.Y / 2)
+
+        mousemoveabs(centerX, centerY)
+        mouse1click()
+    end
+end
 WindUI:Popup({
       Title = "Welcome!",
       Icon = "info",
