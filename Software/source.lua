@@ -9,7 +9,6 @@ game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 end)
 
 
-
 -- variables
 local currentPlaceId = game.PlaceId
 local supportedGames = { 
