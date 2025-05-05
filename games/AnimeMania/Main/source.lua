@@ -5,25 +5,25 @@ local lscript = game:GetService("Players").LocalPlayer.Backpack:WaitForChild("Cl
 local senv = getsenv(lscript)
 
 setreadonly(mt, false)
-local oldNamecall = mt.__namecall
-mt.__namecall = newcclosure(function(self, ...)
+  local oldNamecall = mt.__namecall
+  mt.__namecall = newcclosure(function(self, ...)
+      local method = getnamecallmethod()
+      if method == "FireServer" and tostring(self) == remoteName then
+          return
+      end
+      return oldNamecall(self, ...)
+  end)
+
+  hookfunction(game.Players.LocalPlayer.Kick, newcclosure(function(...)
+      return nil
+  end))
+  mt.__namecall = newcclosure(function(self, ...)
     local method = getnamecallmethod()
-    if method == "FireServer" and tostring(self) == remoteName then
-        return
+    if self == game.Players.LocalPlayer and method == "Kick" then
+        return nil
     end
     return oldNamecall(self, ...)
-end)
-
-hookfunction(game.Players.LocalPlayer.Kick, newcclosure(function(...)
-    return nil
-end))
-mt.__namecall = newcclosure(function(self, ...)
-  local method = getnamecallmethod()
-  if self == game.Players.LocalPlayer and method == "Kick" then
-      return nil
-  end
-  return oldNamecall(self, ...)
-end)
+  end)
 setreadonly(mt, true)
 
 
@@ -68,6 +68,23 @@ scriptVersion = "3.2a"
 
 -- source
 local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
+
+WindUI:Popup({
+  Title = 'Welcome to ' .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
+  Icon = "info",
+  Content = game.Players.LocalPlayer.Name .. " welcome to the script.\nI hope you enjoy using the script.",
+  Buttons = {
+      {
+          Title = "Continue",
+          Callback = function() confirmed = true end,
+          Icon = "arrow-right",
+          Variant = "Primary",
+      },
+  }
+})
+
+repeat task.wait() until confirmed == true
+
 local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
   Icon = "rbxassetid://78609244215270",
@@ -131,7 +148,7 @@ local Toggle = Tabs.AutoFarm:Toggle({
   end,
 })
 local Toggle = Tabs.AutoFarm:Toggle({
-  Title = "Use skills + m1",
+  Title = "Use all skills + m1",
   Desc = "When activated, the player uses all skills and m1",
   Icon = "check",
   Value = false,
@@ -346,3 +363,23 @@ local Button = Tabs.Misc:Button({
     end
   end
 })
+local Section = Tabs.Misc:Section({
+  Title = "Skills Options",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local skills = {1, 2, 3, 4}
+for _, v in pairs(skills) do
+  local Toggle = Tabs.Misc:Toggle({
+    Title = "Auto use " .. v .. " skill",
+    Desc = "Click to use " .. v .. " skill automatically",
+    Icon = "check",
+    Value = false,
+    Callback = function(state)
+      local skillsSelected = state
+      while skillsSelected do task.wait()
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Skill', v})
+      end
+    end,
+  })
+end
