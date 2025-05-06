@@ -37,7 +37,6 @@ end
 local scriptVersion = '3.2a'
 local ls1 = game:GetService("Players").LocalPlayer.PlayerScripts.LocalScript
 local ls2 = game:GetService("Players").LocalPlayer.PlayerScripts.LocalScript2
-local ls3 = game.Players.LocalPlayer.Character.KillScript
 local tower = workspace:FindFirstChild('tower')
 local tweenPart = tower.sections.finish.start
 local senv = getsenv(ls1)
@@ -182,13 +181,15 @@ sections.GameSection2:Toggle({
 	Default = false,
 	Callback = function(bool)
         gm = bool
-        ls3.Disabled = gm
+        while gm do task.wait()
+            game:GetService("ReplicatedStorage").GameValues.killbricksDisabled.Value = gm
+        end
 	end,
 }, "Toggle")
 sections.GameSection2:Button({
 	Name = "Get all tools",
 	Callback = function()
-        for _, v in pairs(game:GetService("ReplicatedStorage").Gear:GetChildren()) do
+        for _, v in pairs(game:GetService("ReplicatedStorage").Assets.Gear:GetChildren()) do
             if v:IsA('Tool') then
                 local tclone = v:Clone()
                 tclone.Parent = game.Players.LocalPlayer.Backpack
