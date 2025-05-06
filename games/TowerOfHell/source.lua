@@ -225,16 +225,34 @@ sections.GameSection2:Input({
 
 
 -- execute bypass
-disconnectAll(ls2.Changed)
-hookfunction(func, function(...)
-    return nil
-end)
-for _, conn in pairs(getconnections(ls1.Changed)) do
-	conn:Disable()
+if not hookfunction and getconnections and getsenv  then
+    Window:Dialog({
+        Title = "WARING",
+        Description = "We have detected that the executor you are using is not able to support all the functions needed to bypass AntiCheater. You can use the script normally, but some functions such as “Get All Tools” are kicked.",
+        Buttons = {
+            {
+                Name = "Confirm",
+                Callback = function()
+                    print("Confirmed!")
+                end,
+            },
+            {
+                Name = "Cancel"
+            }
+        }
+    })
+else
+    disconnectAll(ls2.Changed)
+    hookfunction(func, function(...)
+        return nil
+    end)
+    for _, conn in pairs(getconnections(ls1.Changed)) do
+        conn:Disable()
+    end
+
+
+    task.spawn(function() while true do task.wait() ls1.Disabled = true ls2.Disabled = true end end)
+
+    warn('[ InfinityX ] - Loaded!')
+    warn('[ InfinityX ] - Scripts and kick functions has been canceled, enjoy!')
 end
-
-
-task.spawn(function() while true do task.wait() ls1.Disabled = true ls2.Disabled = true end end)
-
-warn('[ InfinityX ] - Loaded!')
-warn('[ InfinityX ] - Scripts and kick functions has been canceled, enjoy!')
