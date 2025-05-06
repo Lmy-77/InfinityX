@@ -140,16 +140,6 @@ local function updateESP()
         end
     end
 end
-game:GetService("Players").PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function()
-        if ESPEnabled then
-            updateESP()
-        end
-    end)
-end)
-game:GetService("Players").PlayerRemoving:Connect(function(player)
-    removeESP(player)
-end)
 local function updateComputerESP()
     local map = workspace:FindFirstChild(tostring(game.ReplicatedStorage.CurrentMap.Value))
     if map then
@@ -275,6 +265,7 @@ local sections = {
     LPlayerSection1 = tabs.LPayer:Section({ Side = "Left" }),
     LPlayerSection2 = tabs.LPayer:Section({ Side = "Right" }),
     LPlayerSection3 = tabs.LPayer:Section({ Side = "Left" }),
+    LPlayerSection4 = tabs.LPayer:Section({ Side = "Right" }),
     EspSection1 = tabs.Esp:Section({ Side = "Left" }),
     EspSection2 = tabs.Esp:Section({ Side = "Right" }),
     EspSeettingsSection1 = tabs.EspSettings:Section({ Side = "Left" }),
@@ -546,6 +537,18 @@ sections.GameSection4:Toggle({
                     createEps.FillColor = Color3.fromRGB(255, 0, 0)
                 end
             end
+            workspace.ChildAdded:Connect(function(egg)
+                for _, eggs in ipairs(eggsName) do
+                    if espEvent then
+                        local foundEgg = workspace:FindFirstChild(eggs)
+                        if foundEgg then
+                            local createEps = Instance.new('Highlight', foundEgg)
+                            createEps.Name = 'INFX_Esp'
+                            createEps.FillColor = Color3.fromRGB(255, 0, 0)
+                        end
+                    end
+                end
+            end)
         else
             for _, v in pairs(game:GetDescendants()) do
                 if v:IsA('Highlight') and v.Name == 'INFX_Esp' then
@@ -555,7 +558,25 @@ sections.GameSection4:Toggle({
         end
 	end,
 }, "Toggle")
+sections.GameSection4:Divider()
+local mapName = sections.GameSection4:Label({ Text = 'nil' }, nil)
+local eggName = sections.GameSection4:Label({ Text = 'nil' }, nil)
+task.spawn(function()
+    while true do task.wait()
+        local map = workspace:FindFirstChild(tostring(game.ReplicatedStorage.CurrentMap.Value))
+        mapName:UpdateName("Map: " .. map.Name)
 
+        local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamond'}
+        for _, egg in ipairs(eggsName) do
+            local foundEgg = workspace:FindFirstChild(egg)
+            if foundEgg then
+                eggName:UpdateName("Eggs Spawned: " .. foundEgg.Name)
+            else
+                eggName:UpdateName("Eggs Spawned: not spawned")
+            end
+        end
+    end
+end)
 
 
 sections.LPlayerSection1:Header({
@@ -861,6 +882,13 @@ sections.EspSection1:Toggle({
                 Description = "Esp players actived!"
             })
             updateESP()
+            game.Players.PlayerAdded:Connect(function(player)
+                if ESPEnabled then
+                    local character = player.CharacterAdded:Wait()
+                    character:WaitForChild("HumanoidRootPart")
+                    updateESP()
+                end
+            end)
         end
         while ESPEnabled do task.wait()
             updateESPColors()
