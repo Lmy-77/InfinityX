@@ -134,6 +134,11 @@ local Tabs = {
     Icon = "hand-coins",
     Desc = "Shop tab",
   }),
+  LPlayer = Window:Tab({
+    Title = "Character",
+    Icon = "user",
+    Desc = "Character tab",
+  }),
 }
 Window:SelectTab(1)
 
@@ -291,4 +296,45 @@ local Button = Tabs.Shop:Button({
     local ohNumber1 = eggSelected
     game:GetService("ReplicatedStorage").GameEvents.BuyPetEgg:FireServer(ohNumber1)
   end
+})
+local Section = Tabs.LPlayer:Section({
+  Title = "Character Options",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local Input = Tabs.LPlayer:Input({
+  Title = "WalkSpeed",
+  Desc = "Set your walk speed value",
+  Value = "",
+  InputIcon = "person-standing",
+  Placeholder = "16",
+  Callback = function(input)
+    walkspeedSelected = input
+  end
+})
+local Input = Tabs.LPlayer:Input({
+  Title = "JumpPower",
+  Desc = "Set your jump power value",
+  Value = "",
+  InputIcon = "person-standing",
+  Placeholder = "50",
+  Callback = function(input)
+    jumppowerSelected = input
+  end
+})
+local Toggle = Tabs.LPlayer:Toggle({
+  Title = "Set",
+  Desc = "Set walk speed and jump power value to your character",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    value = state
+    if value then
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkspeedSelected
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = jumppowerSelected
+    else
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+    end
+  end,
 })
