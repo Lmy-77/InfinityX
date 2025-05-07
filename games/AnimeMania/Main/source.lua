@@ -67,7 +67,7 @@ scriptVersion = "3.2a"
 
 
 -- source
-local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 WindUI:Popup({
   Title = 'Welcome to ' .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
@@ -89,13 +89,19 @@ local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
   Icon = "rbxassetid://78609244215270",
   Author = game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
-  Folder = "UiLib",
+  Folder = "CloudHub",
   Size = GetSize(),
   Transparent = false,
   Theme = "Dark",
-  UserEnabled = false,
-  SideBarWidth = 200,
-  HasOutline = true,
+  SideBarWidth = 180,
+  Background = "",
+  User = {
+      Enabled = true,
+      Anonymous = false,
+      Callback = function()
+          print("clicked")
+      end,
+  },
 })
 Window:EditOpenButton({
   Title = "Click here to open "..gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
