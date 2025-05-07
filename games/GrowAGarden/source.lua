@@ -200,8 +200,8 @@ local Toggle = Tabs.AutoFarm:Toggle({
         if v:IsA('StringValue') and v.Value == game.Players.LocalPlayer.Name then
           for _, x in pairs(v.Parent.Parent.Plants_Physical:GetDescendants()) do
             if x:IsA('ProximityPrompt') and x.Name == 'ProximityPrompt' then
+              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = x.Parent.CFrame
               x.MaxActivationDistance = math.huge
-              wait(.2)
               fireproximityprompt(x)
             end
           end
