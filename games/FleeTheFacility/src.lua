@@ -559,24 +559,8 @@ sections.GameSection4:Toggle({
 	end,
 }, "Toggle")
 sections.GameSection4:Divider()
-local mapName = sections.GameSection4:Label({ Text = 'nil' }, nil)
-local eggName = sections.GameSection4:Label({ Text = 'nil' }, nil)
-task.spawn(function()
-    while true do task.wait()
-        local map = workspace:FindFirstChild(tostring(game.ReplicatedStorage.CurrentMap.Value))
-        mapName:UpdateName("Map: " .. map.Name)
+local mapName = sections.GameSection4:Label({ Text = 'More options in coming' }, nil)
 
-        local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamond'}
-        for _, egg in ipairs(eggsName) do
-            local foundEgg = workspace:FindFirstChild(egg)
-            if foundEgg then
-                eggName:UpdateName("Eggs Spawned: " .. foundEgg.Name)
-            else
-                eggName:UpdateName("Eggs Spawned: not spawned")
-            end
-        end
-    end
-end)
 
 
 sections.LPlayerSection1:Header({
@@ -587,6 +571,9 @@ sections.LPlayerSection2:Header({
 })
 sections.LPlayerSection3:Header({
     Name = "[🙍] Character Options"
+})
+sections.LPlayerSection4:Header({
+    Name = "[📶] Misc"
 })
 sections.LPlayerSection1:Toggle({
 	Name = "Anti ragdoll",
@@ -857,6 +844,7 @@ sections.LPlayerSection3:Button({
         jumppowerInput:UpdateText('value')
 	end,
 })
+local mapName = sections.LPlayerSection4:Label({ Text = 'In dev' }, nil)
 
 
 sections.EspSection1:Header({
