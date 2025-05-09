@@ -285,7 +285,7 @@ local Dropdown = Tabs.Shop:Dropdown({
   Value = "nil",
   Multi = false,
   AllowNone = true,
-  Values = {1 , 2, 3},
+  Values = {1, 2, 3, 4, 5},
   Callback = function(Options)
     eggSelected = Options
   end
