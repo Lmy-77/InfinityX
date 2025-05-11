@@ -154,7 +154,19 @@ local Toggle = Tabs.AutoFarm:Toggle({
   end,
 })
 local Toggle = Tabs.AutoFarm:Toggle({
-  Title = "Use all skills + m1",
+  Title = "Use m1",
+  Desc = "When activated, the player uses m1",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    m1 = state
+    while m1 do task.wait()
+      game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Input"):FireServer({'Light'}, false)
+    end
+  end,
+})
+local Toggle = Tabs.AutoFarm:Toggle({
+  Title = "Use all skills",
   Desc = "When activated, the player uses all skills and m1",
   Icon = "check",
   Value = false,
