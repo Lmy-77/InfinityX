@@ -1,14 +1,3 @@
--- queue_on_teleport
-local hasQueued = false
-local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-	if queueteleport and not hasQueued then
-		hasQueued = true
-		queueteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/source.lua", true))()]])
-	end
-end)
-
-
 -- variables
 local currentPlaceId = game.PlaceId
 local supportedGames = { 
