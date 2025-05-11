@@ -44,6 +44,22 @@ function GetSeed()
   end
   return seedName
 end
+function GetMoonlitPlants()
+  local moonlintName = {}
+  for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+    if item:IsA("Tool") and item.Name:match("%[.-Moonlit.-%]") then
+      table.insert(moonlintName, item.Name)
+    end
+  end
+  return moonlintName
+end
+function GetMoonlitEvent()
+  if game:GetService("Players").LocalPlayer.PlayerGui.Bottom_UI.BottomFrame.Holder.List.Night.Visible == false then
+    return 'false'
+  else
+    return 'true'
+  end
+end
 function gradient(text, startColor, endColor)
   local result = ""
   local length = #text
@@ -128,6 +144,11 @@ local Tabs = {
     Title = "Auto Farm",
     Icon = "banknote",
     Desc = "AutoFarm tab",
+  }),
+  Event = Window:Tab({
+    Title = "Event",
+    Icon = "moon-star",
+    Desc = "Event tab",
   }),
   Shop = Window:Tab({
     Title = "Shop",
@@ -227,6 +248,95 @@ local Toggle = Tabs.AutoFarm:Toggle({
       game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
     end
   end,
+})
+local Section = Tabs.Event:Section({
+  Title = "Event Options",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local EventParagraph = Tabs.Event:Paragraph({
+  Title = "Event Stats",
+  Desc = "nil",
+  Locked = false,
+}) 
+task.spawn(function()
+  while true do task.wait()
+    EventParagraph:SetDesc(
+      " - Event Time: " .. workspace.NightEvent.OwlNPCTree.Model:GetChildren()[6].BillboardGui.Timer.Text ..
+      "\n - Moon Event: " .. GetMoonlitEvent()
+    )
+  end
+end)
+local Toggle = Tabs.Event:Toggle({
+  Title = "Auto collect moonlit plants",
+  Desc = "Activate to auto collect moonlit plants",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    collectMP = state
+    while collectMP do task.wait()
+      for _, v in pairs(workspace.Farm:GetDescendants()) do
+        if v:IsA('StringValue') and v.Value == game.Players.LocalPlayer.Name then
+          for _, x in pairs(v.Parent.Parent.Plants_Physical:GetDescendants()) do
+            if x:IsA('ProximityPrompt') and x.Name == 'ProximityPrompt' then
+              for _, z in pairs(v.Parent.Parent.Plants_Physical:GetDescendants()) do
+                if z:IsA('ParticleEmitter') then
+                  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = x.Parent.CFrame
+                  fireproximityprompt(x)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end,
+})
+local toolName = {}
+local ignoreList = {}
+for _, name in ipairs(toolName) do
+  ignoreList[name] = true
+end
+local Toggle = Tabs.Event:Toggle({
+  Title = "Auto collect lunar point",
+  Desc = "Activate to auto collect lunar point",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    autoLunar = state
+    while autoLunar do task.wait()
+      for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if item:IsA("Tool") and item.Name:match("%[.-Moonlit.-%]") and not ignoreList[item.Name] then
+          item.Parent = game.Players.LocalPlayer.Character
+          local args = { "SubmitHeldPlant" }
+          game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("NightQuestRemoteEvent"):FireServer(unpack(args))
+        end
+      end
+    end
+  end,
+})
+local EventDropdown = Tabs.Event:Dropdown({
+  Title = "Block list",
+  Desc = "Select the plants you do NOT want to turn into lunar point",
+  Values = GetMoonlitPlants(),
+  Value = {},
+  Multi = true,
+  AllowNone = true,
+  Callback = function(option)
+		toolName = {}
+		ignoreList = {}
+		for _, name in ipairs(option) do
+			table.insert(toolName, name)
+			ignoreList[name] = true
+		end
+  end
+})
+local Button = Tabs.Event:Button({
+  Title = "Refresh",
+  Desc = "Refresh the block list",
+  Callback = function()
+    EventDropdown:Refresh( GetMoonlitPlants() )
+  end
 })
 local Section = Tabs.Shop:Section({
   Title = "Buy Gears",
