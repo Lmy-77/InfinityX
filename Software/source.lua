@@ -1,3 +1,8 @@
+-- custom profile
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Profile/source.lua", true))()
+warn('Custom profile loaded')
+
+
 -- variables
 local currentPlaceId = game.PlaceId
 local supportedGames = { 
