@@ -83,7 +83,7 @@ Window:EditOpenButton({
 })
 local Tabs = {
   Lobby = Window:Tab({
-    Title = "Lobby",
+    Title = "| Lobby",
     Icon = "layers",
     Desc = "Lobby tab",
   }),
