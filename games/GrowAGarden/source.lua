@@ -141,22 +141,22 @@ Window:EditOpenButton({
 })
 local Tabs = {
   AutoFarm = Window:Tab({
-    Title = "Auto Farm",
+    Title = "| Auto Farm",
     Icon = "banknote",
     Desc = "AutoFarm tab",
   }),
   Event = Window:Tab({
-    Title = "Event",
+    Title = "| Event",
     Icon = "moon-star",
     Desc = "Event tab",
   }),
   Shop = Window:Tab({
-    Title = "Shop",
+    Title = "| Shop",
     Icon = "hand-coins",
     Desc = "Shop tab",
   }),
   LPlayer = Window:Tab({
-    Title = "Character",
+    Title = "| Character",
     Icon = "user",
     Desc = "Character tab",
   }),
