@@ -1,7 +1,4 @@
 -- variables
-local places = {
-  Lobby = 17850641257
-}
 local rollSettings = {
   rollAmount = nil,
   delayToOpen = 0.5,
@@ -249,6 +246,6 @@ local Button = Tabs.Join:Button({
     local ohBoolean6 = false
     game:GetService("ReplicatedStorage").Event.JoinRoom:FireServer(ohString1, ohString2, ohNumber3, ohNumber4, ohNumber5, ohBoolean6)
     wait(0.2)
-    
+
   end
 })
