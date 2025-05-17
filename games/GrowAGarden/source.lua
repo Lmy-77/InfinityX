@@ -111,7 +111,7 @@ repeat wait() until Confirmed
 
 local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
-  Icon = "rbxassetid://78609244215270",
+  Icon = "rbxassetid://126527122577864",
   Author = game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
   Folder = "CloudHub",
   Size = GetSize(),
@@ -448,3 +448,19 @@ local Toggle = Tabs.LPlayer:Toggle({
     end
   end,
 })
+
+
+
+
+
+
+--[[
+- Auto Collect
+- Auto Plant
+- Auto Sell
+- Buy All Gears
+- Buy All Seeds
+- Buy All Pets
+- Auto Collect Lunar Point
+- Auto Collect Moonlit Plants
+]]--
