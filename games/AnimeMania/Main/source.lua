@@ -117,12 +117,12 @@ Window:EditOpenButton({
 })
 local Tabs = {
   AutoFarm = Window:Tab({
-    Title = "Auto Farm",
+    Title = "| Auto Farm",
     Icon = "banknote",
     Desc = "AutoFarm tab",
   }),
   Misc = Window:Tab({
-    Title = "Misc",
+    Title = "| Misc",
     Icon = "layers",
     Desc = "Misc tab",
   }),
