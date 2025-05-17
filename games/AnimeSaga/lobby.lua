@@ -124,9 +124,16 @@ local Toggle = Tabs.Lobby:Toggle({
   end,
 })
 local Section = Tabs.Lobby:Section({
-  Title = "Codes",
+  Title = "Misc",
   TextXAlignment = "Center",
   TextSize = 17,
+})
+local Button = Tabs.Lobby:Button({
+  Title = "Claim all rewards",
+  Desc = "Click here to claim all rewards",
+  Callback = function()
+    game:GetService("ReplicatedStorage").Event.ClaimReward:FireServer()
+  end
 })
 local Button = Tabs.Lobby:Button({
   Title = "Reedem all codes",
@@ -139,4 +146,3 @@ local Button = Tabs.Lobby:Button({
     end
   end
 })
--- game:GetService("ReplicatedStorage").Event.ClaimReward:FireServer()
