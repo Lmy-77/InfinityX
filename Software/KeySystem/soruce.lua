@@ -144,6 +144,7 @@ CheckKey.MouseButton1Click:Connect(function()
     CheckKey.Text = "Check Key"
   end
 end)
+
 local GetKey = makeButton("Get Key", UDim2.new(0.525, 0, 0, 150))
 GetKey.MouseButton1Click:Connect(function()
 	setclipboard(url)
@@ -151,6 +152,14 @@ GetKey.MouseButton1Click:Connect(function()
   wait(1)
   GetKey.Text = "Get Key"
 end)
+
+local logo = create("ImageLabel", {
+	Parent = header,
+	Size = UDim2.new(0, 30, 0, 30),
+	Position = UDim2.new(0, 8, 0.5, -15),
+	BackgroundTransparency = 1,
+	Image = "rbxassetid://126527122577864"
+})
 
 local discordBtn = create("TextButton", {
 	Parent = main,
