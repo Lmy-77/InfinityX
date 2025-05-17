@@ -87,7 +87,7 @@ repeat task.wait() until confirmed == true
 
 local Window = WindUI:CreateWindow({
   Title = "InfinityX - "..scriptVersion,
-  Icon = "rbxassetid://78609244215270",
+  Icon = "rbxassetid://126527122577864",
   Author = game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
   Folder = "CloudHub",
   Size = GetSize(),
