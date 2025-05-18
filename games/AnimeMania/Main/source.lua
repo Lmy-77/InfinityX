@@ -129,28 +129,7 @@ local Tabs = {
   }),
 }
 Window:SelectTab(1)
-for _, id in ipairs(betaTesters) do
-  if game.Players.LocalPlayer.UserId == id then
-    Window:Divider()
-    local betaTabs = {
-      BetaTesters = Window:Tab({
-        Title = gradient("| Beta Testers", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")),
-        Icon = "users",
-        Desc = "Beta Testers tab",
-      }),
-    }
-    local Section = betaTabs.BetaTesters:Section({
-      Title = "Beta Testers Options",
-      TextXAlignment = "Center",
-      TextSize = 17,
-    })
-    local Paragraph = betaTabs.BetaTesters:Paragraph({
-      Title = "WARING",
-      Desc = "This tab is for authorized personnel only\nThe functions that are below or will be coming are only functions in their beta version for users to test and tell us if there are any current errors.",
-      Locked = false,
-    })
-  end
-end
+
 
 
 -- source
@@ -424,4 +403,60 @@ for _, v in pairs(skills) do
       end
     end,
   })
+end
+
+
+
+-- beta testers
+for _, id in ipairs(betaTesters) do
+  if game.Players.LocalPlayer.UserId == id then
+    Window:Divider()
+    local betaTabs = {
+      BetaTesters = Window:Tab({
+        Title = gradient("| Beta Testers", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")),
+        Icon = "users",
+        Desc = "Beta Testers tab",
+      }),
+    }
+    local Section = betaTabs.BetaTesters:Section({
+      Title = "Beta Testers Options",
+      TextXAlignment = "Center",
+      TextSize = 17,
+    })
+    local Paragraph = betaTabs.BetaTesters:Paragraph({
+      Title = "WARING",
+      Desc = "This tab is for authorized personnel only\nThe functions that are below or will be coming are only functions in their beta version for users to test and tell us if there are any current errors.",
+      Locked = false,
+    })
+    local Toggle = betaTabs.BetaTesters:Toggle({
+      Title = "Instant Void",
+      Desc = "Activate to teleport all mobs to the void",
+      Icon = "check",
+      Value = false,
+      Callback = function(state)
+        void = state
+        while void do task.wait()
+          for _, v in pairs(workspace.Living:GetChildren()) do
+            if v:IsA('Model') and not game.Players:FindFirstChild(v.Name) then
+              local hrp = v:FindFirstChild("HumanoidRootPart")
+              if hrp then
+                hrp.Anchored = false
+                v.Humanoid.Health = 0
+                hrp.CFrame = CFrame.new(0, -1e6, 0)
+              end
+            end
+          end
+        end
+      end,
+    })
+    local Toggle = betaTabs.BetaTesters:Toggle({
+      Title = "Dupe gems/coins",
+      Desc = "The script source in development",
+      Icon = "check",
+      Value = false,
+      Callback = function(state)
+        print(state)
+      end,
+    })
+  end
 end
