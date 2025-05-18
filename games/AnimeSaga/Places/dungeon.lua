@@ -1,7 +1,23 @@
 -- variables
 local healthSettings = {
-  SelectedHealth = '50'
+  SelectedHealth = 50
 }
+function getCreate()
+  for _, v in pairs(workspace.Enemy.Crate:GetChildren()) do
+    if v:IsA('Model') then
+      return v
+    end
+  end
+end
+function getHealth()
+  for _, v in pairs(game:GetService("Players").LocalPlayer.CharValue:GetChildren()) do
+    if v:IsA('Folder') then
+      if v.Health.Value ~= 0 then
+        return v.Health.Value
+      end
+    end
+  end
+end
 local KeyPress = function(v)
   game:GetService("VirtualInputManager"):SendKeyEvent(true, v, true, game)
   wait(.1)
@@ -104,32 +120,46 @@ local Section = Tabs.Farm:Section({
   TextSize = 17,
 })
 local Toggle = Tabs.Farm:Toggle({
-  Title = "Safe Mob Target",
-  Desc = "Move near mobs safely",
+  Title = "Auto play",
+  Desc = "Move near mobs to farm",
   Icon = "check",
   Value = false,
   Callback = function(state)
     farm = state
-    local lp = game.Players.LocalPlayer
-    local char = lp.Character or lp.CharacterAdded:Wait()
-    local hrp = char:WaitForChild("HumanoidRootPart")
+    local TweenService = game:GetService("TweenService")
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 
-    while farm do
-        task.wait()
-        for _, v in pairs(workspace.Enemy.Mob:GetChildren()) do
-            if not farm then break end
-            if v:IsA("Model") and not game.Players:FindFirstChild(v.Name) then
-                local mobHRP = v:FindFirstChild("HumanoidRootPart")
-                if mobHRP then
-                    local offset = Vector3.new(3, 0, 3)
-                    local targetPos = mobHRP.Position + offset
-                    hrp.AssemblyLinearVelocity = Vector3.zero
-                    hrp.CFrame = CFrame.new(targetPos, mobHRP.Position)
-                end
-            end
+    local mobsFolder = workspace:WaitForChild("Enemy"):WaitForChild("Mob")
+
+    local function getTargetMob()
+      for _, mob in ipairs(mobsFolder:GetChildren()) do
+        local hum = mob:FindFirstChild("Humanoid")
+        if hum and hum.Health > 0 then
+          return mob
         end
+      end
     end
-    hrp.AssemblyLinearVelocity = Vector3.zero
+
+    local function safeTweenTo(pos)
+      local goal = {CFrame = CFrame.new(pos)}
+      local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+      local tween = TweenService:Create(HumanoidRootPart, info, goal)
+      tween:Play()
+    end
+
+    while farm do task.wait()
+      if getHealth() > healthSettings.SelectedHealth then
+        local mob = getTargetMob()
+        if mob and mob:FindFirstChild("HumanoidRootPart") then
+          local mobPos = mob.HumanoidRootPart.Position
+          local behindPos = mobPos - mob.HumanoidRootPart.CFrame.LookVector * 3 + Vector3.new(0, 0.5, 0)
+          safeTweenTo(behindPos)
+        end
+      end
+    end
   end,
 })
 local Toggle = Tabs.Farm:Toggle({
@@ -139,9 +169,9 @@ local Toggle = Tabs.Farm:Toggle({
   Value = false,
   Callback = function(state)
     punch = state
-    while punch do task.wait()
-      local senv = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Combat)
-      local func = senv.Combat()
+    while punch do task.wait(.5)
+      game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 0, true, game, 0)
+      game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 0, false, game, 0)
     end
   end,
 })
@@ -186,22 +216,43 @@ local Toggle = Tabs.Farm:Toggle({
   Value = false,
   Callback = function(state)
     health = state
-    if not game.Players.LocalPlayer.Character:FindFirstChild('CurrentHealth') then
-      local health = game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.info.bars.HealFrame.Slot1.Text
-      local healthNumber = Instance.new('NumberValue')
-      healthNumber.Parent = game.Players.LocalPlayer.Character
-      healthNumber.Name = "CurrentHealth"
-      task.spawn(function() while true do task.wait() healthNumber.Value = tostring(health) end end)
+    local TweenService = game:GetService("TweenService")
+    local HumanoidRootPart = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+    local function safeTweenTo(pos)
+      local goal = {CFrame = CFrame.new(pos)}
+      local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+      local tween = TweenService:Create(HumanoidRootPart, info, goal)
+      tween:Play()
     end
-    wait(.2)
+
     while health do task.wait()
-      if game.Players.LocalPlayer.Character.CurrentHealth <= healthSettings.SelectedHealth then
-        for _, v in pairs(workspace.Enemy.Crate:GetChildren()) do
-          if v:IsA('Model') then
-            game.Players.LocalPlayer.Character:PivotTo(v:GetPivot())
+      if getHealth() <= healthSettings.SelectedHealth then
+        local healPotion = workspace.Potion:FindFirstChild('Heal')
+        if not healPotion then
+          local cratePos = getCreate().HumanoidRootPart.Position
+          safeTweenTo(cratePos)
+        else
+          for _, v in pairs(workspace.Potion:GetChildren()) do
+            if v:IsA('Model') and v.Name == 'Heal' then
+              safeTweenTo(v.RootPart.Position)
+              KeyPress('F')
+            end
           end
         end
       end
     end
   end,
+})
+local Slider = Tabs.Farm:Slider({
+  Title = "Set min health",
+  Step = 1,
+  Value = {
+      Min = 0,
+      Max = 100,
+      Default = 50,
+  },
+  Callback = function(value)
+    healthSettings.SelectedHealth = value
+    print(healthSettings.SelectedHealth)
+  end
 })
