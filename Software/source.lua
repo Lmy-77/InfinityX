@@ -6,6 +6,7 @@ else
     warn('Custom profile loaded')
 end
 
+
 -- variables
 local currentPlaceId = game.PlaceId
 local supportedGames = {
