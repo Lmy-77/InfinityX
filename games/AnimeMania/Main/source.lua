@@ -29,6 +29,7 @@ setreadonly(mt, true)
 
 
 -- variables
+local betaTesters = {5642876199, 7464141669}
 function gradient(text, startColor, endColor)
   local result = ""
   local length = #text
@@ -128,6 +129,29 @@ local Tabs = {
   }),
 }
 Window:SelectTab(1)
+for _, id in ipairs(betaTesters) do
+  if game.Players.LocalPlayer.UserId == id then
+    Window:Divider()
+    local betaTabs = {
+      BetaTesters = Window:Tab({
+        Title = gradient("| Beta Testers", Color3.fromHex("#00FF87"), Color3.fromHex("#60EFFF")),
+        Icon = "users",
+        Desc = "Beta Testers tab",
+      }),
+    }
+    local Section = betaTabs.BetaTesters:Section({
+      Title = "Beta Testers Options",
+      TextXAlignment = "Center",
+      TextSize = 17,
+    })
+    local Paragraph = betaTabs.BetaTesters:Paragraph({
+      Title = "WARING",
+      Desc = "This tab is for authorized personnel only\nThe functions that are below or will be coming are only functions in their beta version for users to test and tell us if there are any current errors.",
+      Locked = false,
+    })
+  end
+end
+
 
 -- source
 local Section = Tabs.AutoFarm:Section({
