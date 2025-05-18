@@ -1,11 +1,14 @@
 -- custom profile
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Profile/source.lua", true))()
-warn('Custom profile loaded')
-
+if game:GetService('UserInputService').TouchEnabled and not game:GetService('UserInputService').KeyboardEnabled and not game:GetService('UserInputService').MouseEnabled then
+    warn('Custom profile dont support mobile')
+else
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Profile/source.lua", true))()
+    warn('Custom profile loaded')
+end
 
 -- variables
 local currentPlaceId = game.PlaceId
-local supportedGames = { 
+local supportedGames = {
         [{893973440}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/FleeTheFacility/src.lua',
         [{10260193230}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/MemeSea/src.lua',
         [{1962086868, 3582763398}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/TowerOfHell/source.lua',
