@@ -256,3 +256,26 @@ local Slider = Tabs.Farm:Slider({
     print(healthSettings.SelectedHealth)
   end
 })
+local Section = Tabs.Farm:Section({
+  Title = "Misc",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local Toggle = Tabs.Farm:Toggle({
+  Title = "Auto replay",
+  Desc = "This function is still under development",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+
+  end,
+})
+local Toggle = Tabs.Farm:Toggle({
+  Title = "Auto next",
+  Desc = "This function is still under development",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+
+  end,
+})
