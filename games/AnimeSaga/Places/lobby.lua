@@ -235,7 +235,7 @@ local Dropdown = Tabs.Join:Dropdown({
   end
 })
 local Button = Tabs.Join:Button({
-  Title = "Create lobby + join",
+  Title = "Create lobby",
   Desc = "Click to create a lobby",
   Callback = function()
     local ohString1 = "Create"
