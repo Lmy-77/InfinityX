@@ -1,5 +1,6 @@
 -- variables
 local healthSettings = {
+  enabled = false,
   SelectedHealth = 50
 }
 function getCreate()
@@ -49,15 +50,25 @@ scriptVersion = "3.2a"
 
 -- ui library
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+WindUI:AddTheme({
+  Name = "InfinityX",
+  Accent = "#18181b",
+  Outline = "#450b9c",
+  Text = "#924aff",
+  Placeholder = "#999999",
+  Background = "#0e0e10",
+  Button = "#924aff",
+  Icon = "#924aff",
+})
 
 WindUI:Popup({
   Title = "Welcome to " .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
   Icon = "info",
-  Content = game.Players.LocalPlayer.Name .. " I hope you enjoy the experience\nHave fun!",
+  Content = game.Players.LocalPlayer.Name .. ", I hope you enjoy the experience\nHave fun!",
   Buttons = {
       {
           Title = "Cancel",
-          --Icon = "",
+          Icon = "",
           Callback = function() end,
           Variant = "Tertiary",
       },
@@ -79,7 +90,7 @@ local Window = WindUI:CreateWindow({
   Folder = "CloudHub",
   Size = GetSize(),
   Transparent = false,
-  Theme = "Dark",
+  Theme = "InfinityX",
   SideBarWidth = 180,
   Background = "",
   User = {
@@ -107,6 +118,11 @@ local Tabs = {
     Title = "| Farm Options",
     Icon = "crosshair",
     Desc = "Farm tab",
+  }),
+  LPlayer = Window:Tab({
+    Title = "| Local Player",
+    Icon = "user",
+    Desc = "LPlayer tab",
   }),
 }
 Window:SelectTab(1)
@@ -151,7 +167,15 @@ local Toggle = Tabs.Farm:Toggle({
     end
 
     while farm do task.wait()
-      if getHealth() > healthSettings.SelectedHealth then
+      if not healthSettings.enabled then
+        local mob = getTargetMob()
+        if mob and mob:FindFirstChild("HumanoidRootPart") then
+          local mobPos = mob.HumanoidRootPart.Position
+          local behindPos = mobPos - mob.HumanoidRootPart.CFrame.LookVector * 3 + Vector3.new(0, 0.5, 0)
+          safeTweenTo(behindPos)
+        end
+      end
+      if healthSettings.enabled and getHealth() > healthSettings.SelectedHealth then
         local mob = getTargetMob()
         if mob and mob:FindFirstChild("HumanoidRootPart") then
           local mobPos = mob.HumanoidRootPart.Position
@@ -169,7 +193,7 @@ local Toggle = Tabs.Farm:Toggle({
   Value = false,
   Callback = function(state)
     punch = state
-    while punch do task.wait(.5)
+    while punch do task.wait(.2)
       game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 0, true, game, 0)
       game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 0, false, game, 0)
     end
@@ -190,20 +214,6 @@ local Toggle = Tabs.Farm:Toggle({
     end
   end,
 })
-local Toggle = Tabs.Farm:Toggle({
-  Title = "No stun",
-  Desc = "Activate to not get stunned",
-  Icon = "check",
-  Value = false,
-  Callback = function(state)
-    stun = state
-    while stun do task.wait()
-      if game.Players.LocalPlayer.Character.Skill.Value == true then
-        game.Players.LocalPlayer.Character.Skill.Value = false
-      end
-    end
-  end,
-})
 local Section = Tabs.Farm:Section({
   Title = "Auto Health",
   TextXAlignment = "Center",
@@ -215,33 +225,37 @@ local Toggle = Tabs.Farm:Toggle({
   Icon = "check",
   Value = false,
   Callback = function(state)
-    health = state
-    local TweenService = game:GetService("TweenService")
-    local HumanoidRootPart = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-    local function safeTweenTo(pos)
-      local goal = {CFrame = CFrame.new(pos)}
-      local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-      local tween = TweenService:Create(HumanoidRootPart, info, goal)
-      tween:Play()
-    end
+      healthSettings.enabled = state
+      local TweenService = game:GetService("TweenService")
+      local HumanoidRootPart = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+      local function safeTweenTo(pos)
+        local goal = {CFrame = CFrame.new(pos)}
+        local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(HumanoidRootPart, info, goal)
+        tween:Play()
+      end
 
-    while health do task.wait()
-      if getHealth() <= healthSettings.SelectedHealth then
-        local healPotion = workspace.Potion:FindFirstChild('Heal')
-        if not healPotion then
-          local cratePos = getCreate().HumanoidRootPart.Position
-          safeTweenTo(cratePos)
-        else
-          for _, v in pairs(workspace.Potion:GetChildren()) do
-            if v:IsA('Model') and v.Name == 'Heal' then
-              safeTweenTo(v.RootPart.Position)
-              KeyPress('F')
+      while healthSettings.enabled do task.wait()
+        if getHealth() <= healthSettings.SelectedHealth then
+         local healPotion = workspace.Potion:FindFirstChild('Heal')
+          if not healPotion then
+            local cratePos = getCreate().HumanoidRootPart.Position
+            safeTweenTo(cratePos)
+          else
+            for _, v in pairs(workspace.Potion:GetChildren()) do
+              if v:IsA('Model') and v.Name == 'Heal' then
+                if v:FindFirstChild('RootPart') then
+                safeTweenTo(v.RootPart.Position)
+                KeyPress('F')
+              elseif not v:FindFirstChild('RootPart') then
+                warn('lol')
+              end
             end
           end
         end
       end
     end
-  end,
+  end
 })
 local Slider = Tabs.Farm:Slider({
   Title = "Set min health",
@@ -263,19 +277,98 @@ local Section = Tabs.Farm:Section({
 })
 local Toggle = Tabs.Farm:Toggle({
   Title = "Auto replay",
-  Desc = "This function is still under development",
+  Desc = "Click to replay this act",
   Icon = "check",
   Value = false,
   Callback = function(state)
-
+    autoReplay = state
+    game:GetService("Players").LocalPlayer.PlayerGui.ChildAdded:Connect(function(replayFrame)
+      if autoReplay then
+        if replayFrame:IsA('ScreenGui') and (replayFrame.Name == 'Win' or replayFrame.Name == 'Lost') then
+          game:GetService("ReplicatedStorage").Events.WinEvent.Buttom:FireServer(
+            'RPlay'
+          )
+        end
+      end
+    end)
   end,
 })
 local Toggle = Tabs.Farm:Toggle({
   Title = "Auto next",
-  Desc = "This function is still under development",
+  Desc = "Click to next act automatically",
   Icon = "check",
   Value = false,
   Callback = function(state)
-
+    autoNext = state
+    game:GetService("Players").LocalPlayer.PlayerGui.ChildAdded:Connect(function(replayFrame)
+      if autoNext then
+        if replayFrame:IsA('ScreenGui') and (replayFrame.Name == 'Win' or replayFrame.Name == 'Lost') then
+          game:GetService("ReplicatedStorage").Events.WinEvent.Buttom:FireServer(
+            'NextLv'
+          )
+        end
+      end
+    end)
+  end,
+})
+local Button = Tabs.Farm:Button({
+  Title = "Force next level",
+  Desc = "Click on this button to teleport to the next act",
+  Callback = function()
+    game:GetService("ReplicatedStorage").Events.WinEvent.Buttom:FireServer(
+      'NextLv'
+    )
+  end
+})
+local Section = Tabs.LPlayer:Section({
+  Title = "Local PLayer Options",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local Toggle = Tabs.LPlayer:Toggle({
+  Title = "No stun",
+  Desc = "Activate to not get stunned",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    stun = state
+    while stun do task.wait()
+      if game.Players.LocalPlayer.Character.Skill.Value == true then
+        game.Players.LocalPlayer.Character.Skill.Value = false
+      end
+    end
+  end,
+})
+local Toggle = Tabs.LPlayer:Toggle({
+  Title = "Dash no cooldown",
+  Desc = "Activate to cancel dash cooldown",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    dash = state
+    while dash do task.wait()
+      for _, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+        if v:IsA('BoolValue') and v.Name == 'CooldownDash' then
+          v.Value = false
+          if v.Value == false then
+            v:Destroy()
+          end
+        end
+      end
+    end
+  end,
+})
+local Toggle = Tabs.LPlayer:Toggle({
+  Title = "Jump no cooldown",
+  Desc = "Activate to cancel jump cooldown",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    jump = state
+    if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('JumpCooldown') then
+      game:GetService("Players").LocalPlayer.PlayerGui.JumpCooldown.Disabled = jump
+    elseif not game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('JumpCooldown') then
+      warn('Script dont found')
+    end
   end,
 })
