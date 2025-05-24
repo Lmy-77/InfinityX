@@ -63,7 +63,7 @@ end
 function getQuest(name)
     for _, v in pairs(workspace.Location.QuestLocaion:GetChildren()) do
         if v:IsA('Part') and v.Name == name then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            game.Players.LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame = v.CFrame
         end
     end
     for _, v in pairs(workspace.NPCs.Quests_Npc:GetChildren()) do
@@ -79,7 +79,7 @@ end
 function teleportToQuest(name)
     for _, v in pairs(workspace.Location.QuestLocaion:GetChildren()) do
         if v:IsA('Part') and v.Name == name then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            game.Players.LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame = v.CFrame
         end
     end
 end
@@ -124,7 +124,7 @@ function teleportPlayersTo(pivotTo, model, cframe, x, y, z)
         game.Players.LocalPlayer.Character:PivotTo(model:GetPivot())
     end
     if cframe then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(x, y, z)
+        game.Players.LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame = CFrame.new(x, y, z)
     end
 end
 function Refresh(dropdown, table)
@@ -213,7 +213,8 @@ local sections = {
     RaidBossSection2 = tabs.RaidBoss:Section({ Side = "Right" }),
     RaidBossSection3 = tabs.RaidBoss:Section({ Side = "Left" }),
     RaidBossSection4 = tabs.RaidBoss:Section({ Side = "Right" }),
-    MiscSection1 = tabs.Misc:Section({ Side = 'Left' })
+    MiscSection1 = tabs.Misc:Section({ Side = 'Left' }),
+    MiscSection2 = tabs.Misc:Section({ Side = 'Right' })
 }
 tabs.AutoFarm:Select()
 
@@ -1269,7 +1270,7 @@ sections.AutoFarmSection2:Toggle({
 	Callback = function(bool)
         aura = bool
         while aura do task.wait()
-            local auraFolder = game.Players.LocalPlayer.Character.AuraColor_Folder
+            local auraFolder = game.Players.LocalPlayer.Character:WaitForChild('AuraColor_Folder')
             local auraFind = auraFolder:FindFirstChild('LeftHand_AuraColor')
             if not auraFind then
                 game:GetService('VirtualInputManager'):SendKeyEvent(true, 'B', false, game)
@@ -1880,6 +1881,61 @@ sections.RaidBossSection4:Toggle({
 sections.MiscSection1:Header({
 	Name = "[➕] Misc Options"
 })
+sections.MiscSection2:Header({
+	Name = "[🏯] Raid"
+})
+sections.MiscSection2:Toggle({
+	Name = "Auto start raid",
+	Default = false,
+	Callback = function(bool)
+        startRaid = bool
+        while startRaid do task.wait()
+            local args = {
+                "Start"
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("OtherEvent"):WaitForChild("MiscEvents"):WaitForChild("StartRaid"):FireServer(unpack(args))            
+        end
+	end,
+}, "Toggle")
+sections.MiscSection2:Toggle({
+	Name = "Auto farm mobs",
+	Default = false,
+	Callback = function(bool)
+        raidMobs = bool
+        while raidMobs do task.wait()
+            local closest = nil
+            local shortestDistance = math.huge
+            local player = game:GetService("Players").LocalPlayer
+            local character = player.Character or player.CharacterAdded:Wait()
+            local hrp = character:FindFirstChild("HumanoidRootPart")
+
+            if hrp then
+                for _, mob in pairs(workspace.Monster:GetChildren()) do
+                    local head = mob:FindFirstChild("Head")
+                    local humanoid = mob:FindFirstChild("Humanoid")
+
+                    if head and humanoid and humanoid.Health > 0 then
+                        local dist = (head.Position - hrp.Position).Magnitude
+                        if dist < shortestDistance then
+                            shortestDistance = dist
+                            closest = mob
+                        end
+                    end
+                end
+
+                if closest then
+                    local head = closest:FindFirstChild("Head")
+                    if head then
+                        local tpPos = head.Position + Vector3.new(0, 5, 0)
+                        hrp.CFrame = CFrame.new(tpPos) * CFrame.Angles(math.rad(270), 0, 0)
+                    end
+                else
+                    game.Players.LocalPlayer.Character:WaitForChild('HumanoidRootPart').CFrame = CFrame.new(-19421, 56, -22499)
+                end
+            end
+        end
+	end,
+}, "Toggle")
 sections.MiscSection1:Button({
 	Name = "Reedem all codes",
 	Callback = function()
@@ -1890,6 +1946,12 @@ sections.MiscSection1:Button({
             }
             game:GetService("ReplicatedStorage"):WaitForChild("OtherEvent"):WaitForChild("MainEvents"):WaitForChild("Code"):InvokeServer(unpack(args))
         end
+	end,
+})
+sections.MiscSection2:Button({
+	Name = "Teleport to raid",
+	Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Region.RaidArea.CFrame
 	end,
 })
 
