@@ -14,15 +14,20 @@ function gradient(text, startColor, endColor)
 
   return result
 end
-local getPlayersList = game:GetService("CoreGui").PlayerList.Children.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame
-for _, v in pairs(getPlayersList:GetChildren()) do
-  if v:IsA('Frame') and v.Name == tostring('p_' .. game.Players.LocalPlayer.UserId) then
-    for _, x in pairs(v:GetDescendants()) do
-      if x:IsA('ImageLabel') and x.Name == 'PlayerIcon' then
-        x.Image = 'rbxassetid://126527122577864'
-        x.Parent.PlayerName.PlayerName.RichText = true
-        x.Parent.PlayerName.PlayerName.Text = gradient(game.Players.LocalPlayer.Name, Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204))
-      end
+local playerList = game:GetService("CoreGui"):FindFirstChild('PlayerList')
+if PlayerList then
+    local getPlayersList = playerList.Children.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame
+    for _, v in pairs(getPlayersList:GetChildren()) do
+        if v:IsA('Frame') and v.Name == tostring('p_' .. game.Players.LocalPlayer.UserId) then
+            for _, x in pairs(v:GetDescendants()) do
+                if x:IsA('ImageLabel') and x.Name == 'PlayerIcon' then
+                    x.Image = 'rbxassetid://126527122577864'
+                    x.Parent.PlayerName.PlayerName.RichText = true
+                    x.Parent.PlayerName.PlayerName.Text = gradient(game.Players.LocalPlayer.Name, Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204))
+                end
+            end
+        end
     end
-  end
+elseif not playerList then
+    warn('PlayerList dont found')
 end
