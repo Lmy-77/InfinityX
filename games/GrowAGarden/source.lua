@@ -86,6 +86,16 @@ scriptVersion = "3.2a"
 
 -- make library
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+WindUI:AddTheme({
+  Name = "InfinityX",
+  Accent = "#18181b",
+  Outline = "#450b9c",
+  Text = "#924aff",
+  Placeholder = "#999999",
+  Background = "#0e0e10",
+  Button = "#924aff",
+  Icon = "#924aff",
+})
 
 WindUI:Popup({
   Title = "Welcome to " .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
@@ -116,7 +126,7 @@ local Window = WindUI:CreateWindow({
   Folder = "CloudHub",
   Size = GetSize(),
   Transparent = false,
-  Theme = "Dark",
+  Theme = "InfinityX",
   SideBarWidth = 180,
   Background = "",
   User = {
