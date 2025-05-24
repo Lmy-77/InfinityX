@@ -34,11 +34,21 @@ scriptVersion = "3.2a"
 
 -- ui library
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+WindUI:AddTheme({
+  Name = "InfinityX",
+  Accent = "#18181b",
+  Outline = "#450b9c",
+  Text = "#924aff",
+  Placeholder = "#999999",
+  Background = "#0e0e10",
+  Button = "#924aff",
+  Icon = "#924aff",
+})
 
 WindUI:Popup({
   Title = "Welcome to " .. gradient("InfinityX", Color3.fromRGB(129, 63, 214), Color3.fromRGB(63, 61, 204)),
   Icon = "info",
-  Content = game.Players.LocalPlayer.Name .. " I hope you enjoy the experience\nHave fun!",
+  Content = game.Players.LocalPlayer.Name .. ", I hope you enjoy the experience\nHave fun!",
   Buttons = {
       {
           Title = "Cancel",
@@ -64,7 +74,7 @@ local Window = WindUI:CreateWindow({
   Folder = "CloudHub",
   Size = GetSize(),
   Transparent = false,
-  Theme = "Dark",
+  Theme = "InfinityX",
   SideBarWidth = 180,
   Background = "",
   User = {
@@ -235,7 +245,7 @@ local Dropdown = Tabs.Join:Dropdown({
   end
 })
 local Button = Tabs.Join:Button({
-  Title = "Create lobby",
+  Title = "Create lobby + join",
   Desc = "Click to create a lobby",
   Callback = function()
     local ohString1 = "Create"
@@ -245,7 +255,15 @@ local Button = Tabs.Join:Button({
     local ohNumber5 = teleportSettings.SelectedDifficulty
     local ohBoolean6 = false
     game:GetService("ReplicatedStorage").Event.JoinRoom:FireServer(ohString1, ohString2, ohNumber3, ohNumber4, ohNumber5, ohBoolean6)
-    wait(0.2)
-
+    wait(1)
+    local args = {
+      "TeleGameplay",
+      "Story",
+      teleportSettings.SelectedWorld,
+      teleportSettings.SelectedAct,
+      teleportSettings.SelectedDifficulty,
+      false
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Event"):WaitForChild("JoinRoom"):FireServer(unpack(args))
   end
 })
