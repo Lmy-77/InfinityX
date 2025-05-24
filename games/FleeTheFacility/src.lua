@@ -1,3 +1,13 @@
+-- notification
+local args = {
+    "Welcome to InfinityX!",
+    Color3.fromRGB(127, 42, 212)
+}
+firesignal(game:GetService("ReplicatedStorage").AnnouncementEvent.OnClientEvent, unpack(args))
+wait(2.5)
+
+
+
 -- detect service
 local UserInputService = game:GetService("UserInputService")
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
@@ -285,7 +295,7 @@ sections.GameSection3:Header({
 	Name = "[🎮] Game Stats"
 })
 sections.GameSection4:Header({
-	Name = "[🥚] Event"
+	Name = "[🗡️] Arsenal Event"
 })
 sections.GameSection1:Toggle({
 	Name = "Auto hack",
@@ -501,20 +511,19 @@ task.spawn(function()
 end)
 
 sections.GameSection4:Toggle({
-	Name = "Collect all eggs",
+	Name = "Collect all drops",
 	Default = false,
 	Callback = function(bool)
         event = bool
         while event do task.wait()
-            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamong'}
-
-            for _, egg in ipairs(eggsName) do
-                local foundEgg = workspace:FindFirstChild(egg)
-                if foundEgg then
-                    for _, v in pairs(foundEgg:GetDescendants()) do
-                        if v:IsA('ClickDetector') then
-                            fireclickdetector(v)
-                        end
+            local map = workspace:FindFirstChild(tostring(game.ReplicatedStorage.CurrentMap.Value))
+            local path = map:WaitForChild('ArsenalSpawnPoint')
+            if path:FindFirstChild('ClickDetector') then
+                fireclickdetector(path.ClickDetector)
+            elseif not path:FindFirstChild('ClickDetector') then
+                for _, v in pairs(map:GetDescendants()) do
+                    if v:IsA('ClickDetector') then
+                        fireclickdetector(v)
                     end
                 end
             end
@@ -522,29 +531,30 @@ sections.GameSection4:Toggle({
 	end,
 }, "Toggle")
 sections.GameSection4:Toggle({
-	Name = "Esp egg",
+	Name = "Esp spawn",
 	Default = false,
 	Callback = function(bool)
         espEvent = bool
         if espEvent then
-            local eggsName = {'Facility_0', 'Homestead', 'Airport', 'Optimus', 'Arcade', 'Nuclear', 'Mansion', 'School', 'Zoo', 'Sewer', 'Golden', 'Faberge', 'Diamond'}
-
-            for _, egg in ipairs(eggsName) do
-                local foundEgg = workspace:FindFirstChild(egg)
-                if foundEgg then
-                    local createEps = Instance.new('Highlight', foundEgg)
-                    createEps.Name = 'INFX_Esp'
-                    createEps.FillColor = Color3.fromRGB(255, 0, 0)
+            local createEps = Instance.new('Highlight')
+            createEps.Name = 'INFX_Esp'
+            createEps.FillColor = Color3.fromRGB(255, 0, 0)
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA('Part') and v.Name == 'ArsenalSpawnPoint' then
+                    createEps.Parent = v
+                    v.Transparency = 0
                 end
             end
-            workspace.ChildAdded:Connect(function(egg)
-                for _, eggs in ipairs(eggsName) do
-                    if espEvent then
-                        local foundEgg = workspace:FindFirstChild(eggs)
-                        if foundEgg then
-                            local createEps = Instance.new('Highlight', foundEgg)
-                            createEps.Name = 'INFX_Esp'
-                            createEps.FillColor = Color3.fromRGB(255, 0, 0)
+
+            workspace.ChildAdded:Connect(function(drop)
+                if espEvent then
+                    local createEps = Instance.new('Highlight')
+                    createEps.Name = 'INFX_Esp'
+                    createEps.FillColor = Color3.fromRGB(255, 0, 0)
+                    for _, v in pairs(workspace:GetDescendants()) do
+                        if v:IsA('Part') and v.Name == 'ArsenalSpawnPoint' then
+                            createEps.Parent = v
+                            v.Transparency = 0
                         end
                     end
                 end
@@ -559,8 +569,18 @@ sections.GameSection4:Toggle({
 	end,
 }, "Toggle")
 sections.GameSection4:Divider()
-local mapName = sections.GameSection4:Label({ Text = 'More options in coming' }, nil)
-
+local progressLabel = sections.GameSection4:Label({ Text = 'In dev' }, nil)
+task.spawn(function()
+    while true do task.wait()
+        local count = 0
+        for _, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.ArsenalScreenGui.ArsenalFrame:GetChildren()) do
+            if v:IsA('ImageLabel') and v.ImageColor3 == Color3.fromRGB(255, 255, 255) then
+                count = count + 1
+                progressLabel:UpdateName('Progress of items collected: ' .. tostring(count))
+            end
+        end
+    end
+end)
 
 
 sections.LPlayerSection1:Header({
