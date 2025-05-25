@@ -40,7 +40,7 @@ Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Icon.BorderSizePixel = 0
 Icon.Position = UDim2.new(0.0447446592, 1, 0.114989087, 0)
 Icon.Size = UDim2.new(0.886666656, 0, 1.3909086, 0)
-Icon.Image = "http://www.roblox.com/asset/?id=80296585349065"
+Icon.Image = "http://www.roblox.com/asset/?id=126527122577864"
 
 UIAspectRatioConstraint.Parent = Icon
 UIAspectRatioConstraint.AspectRatio = 1.154
