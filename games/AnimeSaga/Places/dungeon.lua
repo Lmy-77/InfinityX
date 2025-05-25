@@ -3,6 +3,14 @@ local healthSettings = {
   enabled = false,
   SelectedHealth = 50
 }
+local farmSettings = {
+  Distance = 6,
+  Method = {
+    Above = false,
+    Behind = true,
+    Selected = ''
+  }
+}
 function getCreate()
   for _, v in pairs(workspace.Enemy.Crate:GetChildren()) do
     if v:IsA('Model') then
@@ -124,6 +132,11 @@ local Tabs = {
     Icon = "user",
     Desc = "LPlayer tab",
   }),
+  Settings = Window:Tab({
+    Title = "| Settings",
+    Icon = "settings",
+    Desc = "Settings tab",
+  }),
 }
 Window:SelectTab(1)
 
@@ -151,38 +164,41 @@ local Toggle = Tabs.Farm:Toggle({
     local mobsFolder = workspace:WaitForChild("Enemy"):WaitForChild("Mob")
 
     local function getTargetMob()
-      for _, mob in ipairs(mobsFolder:GetChildren()) do
-        local hum = mob:FindFirstChild("Humanoid")
-        if hum and hum.Health > 0 then
-          return mob
+        for _, mob in ipairs(mobsFolder:GetChildren()) do
+            local hum = mob:FindFirstChild("Humanoid")
+            if hum and hum.Health > 0 then
+                return mob
+            end
         end
-      end
     end
 
-    local function safeTweenTo(pos)
-      local goal = {CFrame = CFrame.new(pos)}
-      local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-      local tween = TweenService:Create(HumanoidRootPart, info, goal)
-      tween:Play()
+    local function safeTweenTo(cframe)
+        local goal = {CFrame = cframe}
+        local info = TweenInfo.new(0, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(HumanoidRootPart, info, goal)
+        tween:Play()
+    end
+
+    local function getTargetCFrame(mob)
+        local hrp = mob.HumanoidRootPart
+        local basePos = hrp.Position
+        if farmSettings.Method.Above then
+            local offset = Vector3.new(0, farmSettings.Distance, 0)
+            return CFrame.new(basePos + offset) * CFrame.Angles(math.rad(90), 0, 0)
+        elseif farmSettings.Method.Behind then
+            local offset = -hrp.CFrame.LookVector * farmSettings.Distance
+            return CFrame.new(basePos + offset + Vector3.new(0, 0.5, 0))
+        end
+        return hrp.CFrame
     end
 
     while farm do task.wait()
-      if not healthSettings.enabled then
-        local mob = getTargetMob()
-        if mob and mob:FindFirstChild("HumanoidRootPart") then
-          local mobPos = mob.HumanoidRootPart.Position
-          local behindPos = mobPos - mob.HumanoidRootPart.CFrame.LookVector * 3 + Vector3.new(0, 0.5, 0)
-          safeTweenTo(behindPos)
+        if not healthSettings.enabled or getHealth() > healthSettings.SelectedHealth then
+            local mob = getTargetMob()
+            if mob and mob:FindFirstChild("HumanoidRootPart") then
+                safeTweenTo(getTargetCFrame(mob))
+            end
         end
-      end
-      if healthSettings.enabled and getHealth() > healthSettings.SelectedHealth then
-        local mob = getTargetMob()
-        if mob and mob:FindFirstChild("HumanoidRootPart") then
-          local mobPos = mob.HumanoidRootPart.Position
-          local behindPos = mobPos - mob.HumanoidRootPart.CFrame.LookVector * 3 + Vector3.new(0, 0.5, 0)
-          safeTweenTo(behindPos)
-        end
-      end
     end
   end,
 })
@@ -371,4 +387,41 @@ local Toggle = Tabs.LPlayer:Toggle({
       warn('Script dont found')
     end
   end,
+})
+local Section = Tabs.Settings:Section({
+  Title = "Farm Settings",
+  TextXAlignment = "Center",
+  TextSize = 17,
+})
+local Dropdown = Tabs.Settings:Dropdown({
+  Title = "Select method to farm",
+  Value = "Behind",
+  Multi = false,
+  AllowNone = true,
+  Values = {'Above', 'Behind'},
+  Callback = function(Options)
+    farmSettings.Method.Selected = Options
+    if farmSettings.Method.Selected == 'Above' then
+      farmSettings.Method.Above = true
+      farmSettings.Method.Behind = false
+    elseif farmSettings.Method.Selected == 'Behind' then
+      farmSettings.Method.Behind = true
+      farmSettings.Method.Above = false
+    end
+    print('Behind: ' .. tostring(farmSettings.Method.Behind))
+    print('Above: ' .. tostring(farmSettings.Method.Above))
+  end
+})
+local Slider = Tabs.Settings:Slider({
+  Title = "Set distance",
+  Step = 1,
+  Value = {
+      Min = 0,
+      Max = 10,
+      Default = 6,
+  },
+  Callback = function(value)
+    farmSettings.Distance = value
+    print(farmSettings.Distance)
+  end
 })
