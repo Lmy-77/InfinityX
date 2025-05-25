@@ -217,7 +217,7 @@ local Toggle = Tabs.AutoFarm:Toggle({
     while godm do task.wait()
       local clCheck = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("clCheck")
       local character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
-      local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+      local humanoid = character:WaitForChild("Humanoid")
       if humanoid and humanoid.Health ~= 0 then
         clCheck:InvokeServer('Dash')
       end
