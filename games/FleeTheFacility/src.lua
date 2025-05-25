@@ -569,7 +569,7 @@ sections.GameSection4:Toggle({
 	end,
 }, "Toggle")
 sections.GameSection4:Divider()
-local progressLabel = sections.GameSection4:Label({ Text = 'In dev' }, nil)
+local progressLabel = sections.GameSection4:Label({ Text = 'error' }, nil)
 task.spawn(function()
     while true do task.wait()
         local count = 0
