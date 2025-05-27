@@ -163,6 +163,41 @@ local Toggle = Tabs.Main:Toggle({
     end
   end,
 })
+local Toggle = Tabs.Main:Toggle({
+  Title = "Collect all potions",
+  Desc = 'Collect all the potions on the map',
+  Value = false,
+  Callback = function(state)
+    collectPotions = state
+    while collectPotions do task.wait()
+      for _, v in pairs(game:GetService("ReplicatedStorage").Potions:GetChildren()) do
+        if v:IsA('Part') then
+          for _, x in pairs(workspace:GetChildren()) do
+            if x:IsA('Part') and x.Name == tostring(v) then
+              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = x.CFrame
+              fireproximityprompt(x.ProximityPrompt)
+            end
+          end
+        end
+      end
+    end
+  end
+})
+local Toggle = Tabs.Main:Toggle({
+  Title = "Auto find black market",
+  Desc = 'When the black market appears, it teleports you to it',
+  Value = false,
+  Callback = function(state)
+    blackMarket = state
+    game.Workspace.DescendantAdded:Connect(function(descendant)
+      if blackMarket then
+        if descendant:IsA('Model') and descendant.Name:lower():find('darkmarket') then
+          game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = descendant.PrimaryPart.CFrame
+        end
+      end
+    end)
+  end
+})
 local Button = Tabs.Main:Button({
   Title = "Get skip roll",
   Desc = 'Change your spins to be able to active skip roll',
@@ -190,26 +225,6 @@ local Button = Tabs.Main:Button({
   Desc = 'Change your spins to be able to use auto roll',
   Callback = function()
     game:GetService("Players").LocalPlayer.leaderstats.Rolls.Value = 200
-  end
-})
-local Button = Tabs.Main:Toggle({
-  Title = "Collect all potions",
-  Desc = 'Collect all the potions on the map',
-  Value = false,
-  Callback = function(state)
-    collectPotions = state
-    while collectPotions do task.wait()
-      for _, v in pairs(game:GetService("ReplicatedStorage").Potions:GetChildren()) do
-        if v:IsA('Part') then
-          for _, x in pairs(workspace:GetChildren()) do
-            if x:IsA('Part') and x.Name == tostring(v) then
-              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = x.CFrame
-              fireproximityprompt(x.ProximityPrompt)
-            end
-          end
-        end
-      end
-    end
   end
 })
 local Section = Tabs.Op:Section({
@@ -521,4 +536,21 @@ local Button = Tabs.Misc:Button({
       game:GetService("ReplicatedStorage").RedeemCodeEvent:FireServer(unpack(args))
     end
   end
+})
+local Toggle = Tabs.Misc:Toggle({
+  Title = "Anti afk",
+  Desc = "Dont have kiked at 20 minutes idled",
+  Icon = "check",
+  Value = false,
+  Callback = function(state)
+    afk = state
+    if afk then
+      local VirtualUser = game:GetService("VirtualUser")
+      game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+        task.wait(1)
+        VirtualUser:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+      end)
+    end
+  end,
 })
