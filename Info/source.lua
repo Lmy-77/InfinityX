@@ -1,4 +1,5 @@
 local UiLibrary = {}
+UiLibrary.__index = UiLibrary
 
 function UiLibrary:CreateWindow(titleText)
     local self = setmetatable({}, UiLibrary)
@@ -118,3 +119,5 @@ function UiLibrary:CreateWindow(titleText)
 
   return self
 end
+
+return UiLibrary
