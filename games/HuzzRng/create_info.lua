@@ -1,3 +1,10 @@
+local Time = ""
+function startTimer()
+    local start = os.clock()
+    game:GetService("RunService").RenderStepped:Connect(function()
+      Time = tostring(math.floor(os.clock() - start)) .. " seconds"
+    end)
+end
 local Info = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/library/Info/source.lua", true))()
 local UI = Info:CreateWindow("InfinityX - Auto Execute")
 UI:AddLabel("Server Stats", "center")
