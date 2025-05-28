@@ -115,6 +115,34 @@ function UiLibrary:CreateWindow(titleText)
       task.defer(function()
           Main.Size = UDim2.new(0, 380, 0, Container.UIListLayout.AbsoluteContentSize.Y + 50)
       end)
+
+      local InfoObj = {}
+      function InfoObj:Update(newValue)
+          V.Text = tostring(newValue)
+      end
+
+      return InfoObj
+  end
+
+  function self:AddLabel(titleText, align)
+    local Row = Instance.new("Frame", Container)
+    Row.Size = UDim2.new(1, 0, 0, 30)
+    Row.BackgroundTransparency = 1
+
+    local Box = Instance.new("Frame", Row)
+    Box.Size = UDim2.new(1, 0, 0, 30)
+    Box.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0, 4)
+
+    local T = Instance.new("TextLabel", Box)
+    T.Text = titleText
+    T.Font = Enum.Font.GothamSemibold
+    T.TextColor3 = Color3.fromRGB(200, 200, 200)
+    T.TextSize = 12
+    T.Position = UDim2.new(0, 8, 0, 6)
+    T.Size = UDim2.new(1, -16, 0, 18)
+    T.BackgroundTransparency = 1
+    T.TextXAlignment = align == "center" and Enum.TextXAlignment.Center or Enum.TextXAlignment.Left
   end
 
   return self
