@@ -61,12 +61,4 @@ repeat task.wait()
   task.wait()
 until triggered
 
-local TeleportCheck = false
-Game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-  if (not TeleportCheck) and queueteleport then
-    TeleportCheck = true
-    queueteleport('wait(0.5) loadstring(game:HttpGet("https://gitlab.com/Lmy77/menu/-/raw/main/infinityx"))()')
-  end
-end)
-
 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
