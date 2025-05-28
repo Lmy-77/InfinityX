@@ -25,11 +25,13 @@ setreadonly(mt, false)
   end)
 setreadonly(mt, true)
 
-game:GetService("Players").LocalPlayer.PlayerScripts["__Fdd_V22_#"]:Destroy()
-game:GetService("Players").LocalPlayer.PlayerScripts["__GLB2_V1_A4$#"]:Destroy()
-game:GetService("Players").LocalPlayer.PlayerScripts["__GLB_V1_#!@"]:Destroy()
-game:GetService("Players").LocalPlayer.PlayerScripts["___LSLC_V1_##@"]:Destroy()
-game:GetService("Players").LocalPlayer.PlayerScripts["__binSvc_v2\""]:Destroy()
+if game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild('__Fdd_V22_#') then
+  game:GetService("Players").LocalPlayer.PlayerScripts["__Fdd_V22_#"]:Destroy()
+  game:GetService("Players").LocalPlayer.PlayerScripts["__GLB2_V1_A4$#"]:Destroy()
+  game:GetService("Players").LocalPlayer.PlayerScripts["__GLB_V1_#!@"]:Destroy()
+  game:GetService("Players").LocalPlayer.PlayerScripts["___LSLC_V1_##@"]:Destroy()
+  game:GetService("Players").LocalPlayer.PlayerScripts["__binSvc_v2\""]:Destroy()
+end
 
 local rolls = game:GetService("Players").LocalPlayer.leaderstats:WaitForChild("Rolls")
 local target = rolls.Value + 450
