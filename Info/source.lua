@@ -1,5 +1,4 @@
 local UiLibrary = {}
-UiLibrary.__index = UiLibrary
 
 function UiLibrary:CreateWindow(titleText)
     local self = setmetatable({}, UiLibrary)
