@@ -16,6 +16,10 @@ print[[
 
 
 -- variables
+getgenv().infiniteSpinSettings = {
+  Keep = false,
+  Delete = false
+}
 local infiniteSpinSettings = {
   Keep = false,
   Delete = false
@@ -303,11 +307,13 @@ local Toggle = Tabs.Op:Toggle({
         end)
       setreadonly(mt, true)
 
-      game:GetService("Players").LocalPlayer.PlayerScripts["__Fdd_V22_#"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__GLB2_V1_A4$#"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__GLB_V1_#!@"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["___LSLC_V1_##@"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__binSvc_v2\""]:Destroy()
+      if game:GetService("Players").LocalPlayer.PlayerScripts:FindFirstChild('__Fdd_V22_#') then
+        game:GetService("Players").LocalPlayer.PlayerScripts["__Fdd_V22_#"]:Destroy()
+        game:GetService("Players").LocalPlayer.PlayerScripts["__GLB2_V1_A4$#"]:Destroy()
+        game:GetService("Players").LocalPlayer.PlayerScripts["__GLB_V1_#!@"]:Destroy()
+        game:GetService("Players").LocalPlayer.PlayerScripts["___LSLC_V1_##@"]:Destroy()
+        game:GetService("Players").LocalPlayer.PlayerScripts["__binSvc_v2\""]:Destroy()
+      end
 
       local rolls = game:GetService("Players").LocalPlayer.leaderstats:WaitForChild("Rolls")
       local target = rolls.Value + 450
@@ -378,76 +384,17 @@ local Toggle = Tabs.Op:Toggle({
         return
       end
 
-      if game:GetService("Players").LocalPlayer.PlayerGui.Game.MainRoll.Main_RollingFrame.SkipAnim.Status.Text == 'OFF' then
-        local Signals = {"Activated", "MouseButton1Down", "MouseButton2Down", "MouseButton1Click", "MouseButton2Click"}
-        for _,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Game.MainRoll.Main_RollingFrame.SkipAnim:GetChildren()) do
-          if v:IsA("TextButton") and v.Name == 'Button' then
-            for i,Signal in pairs(Signals) do
-              firesignal(v[Signal])
-            end
-          end
-        end
-      end
-
-      wait(2)
-
-      local mt = getrawmetatable(game)
-      setreadonly(mt, false)
-        local oldNamecall = mt.__namecall
-        hookfunction(game.Players.LocalPlayer.Kick, newcclosure(function(...)
-            return nil
-        end))
-        mt.__namecall = newcclosure(function(self, ...)
-            local method = getnamecallmethod()
-            if self == game.Players.LocalPlayer and method == "Kick" then
-                return nil
-            end
-            return oldNamecall(self, ...)
-        end)
-      setreadonly(mt, true)
-
-      game:GetService("Players").LocalPlayer.PlayerScripts["__Fdd_V22_#"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__GLB2_V1_A4$#"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__GLB_V1_#!@"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["___LSLC_V1_##@"]:Destroy()
-      game:GetService("Players").LocalPlayer.PlayerScripts["__binSvc_v2\""]:Destroy()
-
-      local rolls = game:GetService("Players").LocalPlayer.leaderstats:WaitForChild("Rolls")
-      local target = rolls.Value + 450
-      local triggered = false
-      rolls:GetPropertyChangedSignal("Value"):Connect(function()
-          if rolls.Value >= target then
-            triggered = true
-            game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 0
-          end
-      end)
-      repeat task.wait()
-        game:GetService("ReplicatedStorage"):WaitForChild("L5_z%Q1!Rx_"):FireServer()
-        if infiniteSpinSettings.Delete == true then
-          local args = {
-            "delete"
-          }
-          game:GetService("ReplicatedStorage"):WaitForChild("ConfirmAura"):FireServer(unpack(args))
-        end
-        if infiniteSpinSettings.Keep == true then
-          local args = {
-            "keep"
-          }
-          game:GetService("ReplicatedStorage"):WaitForChild("ConfirmAura"):FireServer(unpack(args))
-        end
-        task.wait()
-      until triggered
-
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/HuzzRng/create_info.lua",true))()
+      wait(.5)
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/HuzzRng/auto_execute.lua",true))()
 
       local TeleportCheck = false
       Game.Players.LocalPlayer.OnTeleport:Connect(function(State)
         if (not TeleportCheck) and queueteleport then
           TeleportCheck = true
-          queueteleport('wait(0.5) loadstring(game:HttpGet("https://gitlab.com/Lmy77/menu/-/raw/main/infinityx"))()')
+          queueteleport('repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.LoadingScreen.Enabled == false wait(2) loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/HuzzRng/create_info.lua",true))() wait(0.5) getgenv().infiniteSpinSettings = {Keep = false, Delete = false} loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/HuzzRng/auto_execute.lua",true))()')
         end
       end)
-
-      game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
     end
   end,
 })
@@ -463,6 +410,7 @@ local Toggle = Tabs.Op:Toggle({
   Value = false,
   Callback = function(state)
     infiniteSpinSettings.Keep = state
+    getgenv().infiniteSpinSettings.Keep = state
   end,
 })
 local Toggle = Tabs.Op:Toggle({
@@ -472,6 +420,7 @@ local Toggle = Tabs.Op:Toggle({
   Value = false,
   Callback = function(state)
     infiniteSpinSettings.Delete = state
+    getgenv().infiniteSpinSettings.Delete = state
   end,
 })
 local Section = Tabs.Main:Section({
