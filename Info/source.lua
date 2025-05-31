@@ -145,6 +145,49 @@ function UiLibrary:CreateWindow(titleText)
     T.TextXAlignment = align == "center" and Enum.TextXAlignment.Center or Enum.TextXAlignment.Left
   end
 
+  function self:AddButton(buttonText, textColor, callback)
+      local Row = Instance.new("Frame", Container)
+      Row.Size = UDim2.new(1, 0, 0, 35)
+      Row.BackgroundTransparency = 1
+
+      local Button = Instance.new("TextButton", Row)
+      Button.Size = UDim2.new(1, 0, 1, 0)
+      Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+      Button.Text = buttonText
+      Button.TextColor3 = textColor or Color3.fromRGB(255, 255, 255)
+      Button.TextSize = 14
+      Button.Font = Enum.Font.Gotham
+      Button.AutoButtonColor = false
+
+      local UICorner = Instance.new("UICorner", Button)
+      UICorner.CornerRadius = UDim.new(0, 4)
+
+      Button.MouseEnter:Connect(function()
+          Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+      end)
+      Button.MouseLeave:Connect(function()
+          Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+      end)
+      Button.MouseButton1Click:Connect(function()
+          if callback then
+              callback()
+          end
+      end)
+
+      local BtnObj = {}
+      function BtnObj:SetText(newText)
+          Button.Text = newText
+      end
+
+      return BtnObj
+  end
+
+  function self:Destroy()
+    if Gui and Gui.Parent then
+        Gui:Destroy()
+    end
+  end
+
   return self
 end
 
