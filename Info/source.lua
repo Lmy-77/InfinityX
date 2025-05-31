@@ -12,7 +12,7 @@ function UiLibrary:CreateWindow(titleText)
     Background.Size = UDim2.new(1, 0, 1, 0)
     Background.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 
-    for i = 1, 50 do
+    for i = 1, 100 do
         local dot = Instance.new("Frame", Background)
         dot.Size = UDim2.new(0, math.random(2, 4), 0, math.random(2, 4))
         dot.Position = UDim2.new(math.random(), 0, math.random(), 0)
