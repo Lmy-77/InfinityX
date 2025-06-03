@@ -477,7 +477,7 @@ local Section = Tabs.Misc:Section({
 local Button = Tabs.Misc:Button({
   Title = "Reedem all codes",
   Callback = function()
-    local codes = {'10KACTIVE', 'TYFOR4M!', 'SORRY', 'TYFOR1MIL!', 'UPDATEFINALLY', 'MBALLFORDELAY'}
+    local codes = {'WEARESOBACK', 'SORRYFORMINORLOSS!'}
     for _, v in pairs(codes) do
       local args = {
         v
