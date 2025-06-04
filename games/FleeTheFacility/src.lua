@@ -885,10 +885,10 @@ sections.LPlayerSection4:Toggle({
         local VirtualInput = game:GetService("VirtualInputManager")
         local ReplicatedStorage = game:GetService("ReplicatedStorage")
         local TweenService = game:GetService("TweenService")
-        
+
         local LocalPlayer = Players.LocalPlayer
         local function HRP() return LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-        
+
         local safePos = Vector3.new(400.9646301269531, 4.3987059593200684, 157.8434600830078)
         local savedPos
         local teleportedToSafe = false
@@ -899,7 +899,7 @@ sections.LPlayerSection4:Toggle({
         local progress = LocalPlayer.TempPlayerStatsModule.ActionProgress
         local computersLeft = ReplicatedStorage:WaitForChild("ComputersLeft")
         local exitTrigger, exitArea
-        
+
         local function CreatePlataform()
             local safezone = workspace:FindFirstChild("safezone")
             if not safezone then
@@ -928,7 +928,7 @@ sections.LPlayerSection4:Toggle({
                 end
             end
         end
-        
+
         local function getComputers()
             local map = workspace:FindFirstChild(tostring(ReplicatedStorage.CurrentMap.Value))
             if not map then return {} end
@@ -1002,12 +1002,12 @@ sections.LPlayerSection4:Toggle({
 
                 if beastHRP and hrp then
                     local dist = (beastHRP.Position - hrp.Position).Magnitude
-                    if dist < 30 and not teleportedToSafe then
+                    if dist < afkFarmSettings.Distance and not teleportedToSafe then
                         savedPos = hrp.Position
                         hrp.CFrame = CFrame.new(safePos)
                         KeyPressAfk("E")
                         teleportedToSafe = true
-                    elseif teleportedToSafe and savedPos and (beastHRP.Position - savedPos).Magnitude > 30 then
+                    elseif teleportedToSafe and savedPos and (beastHRP.Position - savedPos).Magnitude > afkFarmSettings.DistanceToBeast then
                         hrp.CFrame = CFrame.new(savedPos)
                         teleportedToSafe = false
                         returnedFromSafe = true
