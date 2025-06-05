@@ -880,6 +880,14 @@ sections.LPlayerSection4:Toggle({
 	Default = false,
 	Callback = function(bool)
         afkFarmToggle = bool
+        if afkFarmToggle then
+            Window:Notify({
+                Title = 'InfinityX',
+                Description = "Afk farm actived!"
+            })
+
+            workspace:FindFirstChild('LobbySpawnPad').Size = Vector3.new(65, 1, 65)
+        end
         local Players = game:GetService("Players")
         local RunService = game:GetService("RunService")
         local VirtualInput = game:GetService("VirtualInputManager")
@@ -1097,9 +1105,9 @@ sections.LPlayerSection4:Toggle({
                                                 if z.Value == 30 then
                                                     local pivotCFrame = x:GetPivot()
                                                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pivotCFrame
-                                                    wait(.5)
-                                                    KeyPress('E')
-                                                    wait(.2)
+                                                    wait(1)
+                                                    KeyPressAfk('E')
+                                                    wait(1)
                                                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(TeleportOldPos)
                                                     wait(2)
                                                 end
@@ -1236,4 +1244,6 @@ sections.EspSeettingsSection1:Button({
 
 
 
+-- extra functions
+workspace:FindFirstChild('LobbySpawnPad').Size = Vector3.new(65, 1, 65)
 warn('InfinityX - [ LOADED ]')
