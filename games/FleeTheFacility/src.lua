@@ -1087,12 +1087,13 @@ sections.LPlayerSection4:Toggle({
                 for _, v in pairs(game:GetService('Players'):GetChildren()) do
                     if (v.Name ~= game.Players.LocalPlayer.Name) then
                         if (v.TempPlayerStatsModule.Captured.Value == false) then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
-                            wait(.2)
-                            local ohString1 = "HammerHit"
-                            local ohInstance2 = v.Character["Left Arm"]
-                            game.Players.LocalPlayer.Character.Hammer.HammerEvent:FireServer(ohString1, ohInstance2)
-                            if v.TempPlayerStatsModule.Ragdoll.Value == true then
+                            if v.TempPlayerStatsModule.Ragdoll.Value == false then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+                                wait(.2)
+                                local ohString1 = "HammerHit"
+                                local ohInstance2 = v.Character["Left Arm"]
+                                game.Players.LocalPlayer.Character.Hammer.HammerEvent:FireServer(ohString1, ohInstance2)
+                            elseif v.TempPlayerStatsModule.Ragdoll.Value == true then
                                 local ohString1 = "HammerTieUp"
                                 local ohInstance2 = v.Character.Torso
                                 local ohVector33 = Vector3.new(v.Character.HumanoidRootPart.Position)
@@ -1105,11 +1106,14 @@ sections.LPlayerSection4:Toggle({
                                                 if z.Value == 30 then
                                                     local pivotCFrame = x:GetPivot()
                                                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pivotCFrame
-                                                    wait(1)
+                                                    wait(.2)
                                                     KeyPressAfk('E')
-                                                    wait(1)
-                                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(TeleportOldPos)
-                                                    wait(2)
+                                                    if v.TempPlayerStatsModule.Captured.Value == false then
+                                                        wait(.2)
+                                                    elseif v.TempPlayerStatsModule.Captured.Value == true then
+                                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(TeleportOldPos)
+                                                        wait(4)
+                                                    end
                                                 end
                                             end
                                         end
