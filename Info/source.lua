@@ -146,40 +146,96 @@ function UiLibrary:CreateWindow(titleText)
   end
 
   function self:AddButton(buttonText, textColor, callback)
-      local Row = Instance.new("Frame", Container)
-      Row.Size = UDim2.new(1, 0, 0, 35)
-      Row.BackgroundTransparency = 1
+        local Row = Instance.new("Frame", Container)
+        Row.Size = UDim2.new(1, 0, 0, 35)
+        Row.BackgroundTransparency = 1
 
-      local Button = Instance.new("TextButton", Row)
-      Button.Size = UDim2.new(1, 0, 1, 0)
-      Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-      Button.Text = buttonText
-      Button.TextColor3 = textColor or Color3.fromRGB(255, 255, 255)
-      Button.TextSize = 14
-      Button.Font = Enum.Font.Gotham
-      Button.AutoButtonColor = false
+        local Button = Instance.new("TextButton", Row)
+        Button.Size = UDim2.new(1, 0, 1, 0)
+        Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        Button.Text = buttonText
+        Button.TextColor3 = textColor or Color3.fromRGB(255, 255, 255)
+        Button.TextSize = 14
+        Button.Font = Enum.Font.Gotham
+        Button.AutoButtonColor = false
 
-      local UICorner = Instance.new("UICorner", Button)
-      UICorner.CornerRadius = UDim.new(0, 4)
+        local UICorner = Instance.new("UICorner", Button)
+        UICorner.CornerRadius = UDim.new(0, 4)
 
-      Button.MouseEnter:Connect(function()
-          Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-      end)
-      Button.MouseLeave:Connect(function()
-          Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-      end)
-      Button.MouseButton1Click:Connect(function()
-          if callback then
-              callback()
+        Button.MouseEnter:Connect(function()
+            Button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        end)
+        Button.MouseLeave:Connect(function()
+            Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        end)
+        Button.MouseButton1Click:Connect(function()
+            if callback then
+                callback()
+            end
+        end)
+
+        local BtnObj = {}
+        function BtnObj:SetText(newText)
+            Button.Text = newText
+        end
+
+        return BtnObj
+    end
+
+    function self:Notify(title, content, duration)
+      duration = duration or 3
+
+      local NotifyFrame = Instance.new("Frame", Gui)
+      NotifyFrame.Size = UDim2.new(0, 300, 0, 70)
+      NotifyFrame.Position = UDim2.new(1, -320, 1, -40)
+      NotifyFrame.AnchorPoint = Vector2.new(0, 1)
+      NotifyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+      NotifyFrame.BorderSizePixel = 0
+      NotifyFrame.BackgroundTransparency = 0
+      Instance.new("UICorner", NotifyFrame).CornerRadius = UDim.new(0, 6)
+
+      local Title = Instance.new("TextLabel", NotifyFrame)
+      Title.Text = title
+      Title.Font = Enum.Font.GothamSemibold
+      Title.TextSize = 14
+      Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+      Title.Size = UDim2.new(1, -16, 0, 20)
+      Title.Position = UDim2.new(0, 8, 0, 6)
+      Title.BackgroundTransparency = 1
+      Title.TextXAlignment = Enum.TextXAlignment.Left
+
+      local Body = Instance.new("TextLabel", NotifyFrame)
+      Body.Text = content
+      Body.Font = Enum.Font.Gotham
+      Body.TextSize = 12
+      Body.TextColor3 = Color3.fromRGB(200, 200, 200)
+      Body.Size = UDim2.new(1, -16, 0, 40)
+      Body.Position = UDim2.new(0, 8, 0, 26)
+      Body.BackgroundTransparency = 1
+      Body.TextXAlignment = Enum.TextXAlignment.Left
+      Body.TextWrapped = true
+
+      game:GetService("TweenService"):Create(NotifyFrame, TweenInfo.new(0.3), {
+          Position = NotifyFrame.Position - UDim2.new(0, 0, 0, 10)
+      }):Play()
+
+      task.delay(duration, function()
+          if NotifyFrame then
+              game:GetService("TweenService"):Create(NotifyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+                  BackgroundTransparency = 1,
+                  Position = NotifyFrame.Position + UDim2.new(0, 0, 0, 25)
+              }):Play()
+              for _, child in pairs(NotifyFrame:GetChildren()) do
+                  if child:IsA("TextLabel") then
+                      game:GetService("TweenService"):Create(child, TweenInfo.new(0.4), {
+                          TextTransparency = 1
+                      }):Play()
+                  end
+              end
+              task.wait(0.4)
+              NotifyFrame:Destroy()
           end
       end)
-
-      local BtnObj = {}
-      function BtnObj:SetText(newText)
-          Button.Text = newText
-      end
-
-      return BtnObj
   end
 
   function self:Destroy()
@@ -189,6 +245,66 @@ function UiLibrary:CreateWindow(titleText)
   end
 
   return self
+end
+function Notify(title, content, duration)
+    duration = duration or 3
+
+    local Gui = game.CoreGui:FindFirstChild("InfinityXNotifyGui") or Instance.new("ScreenGui", game.CoreGui)
+    Gui.Name = "InfinityXNotifyGui"
+    Gui.IgnoreGuiInset = true
+    Gui.ResetOnSpawn = false
+
+    local NotifyFrame = Instance.new("Frame", Gui)
+    NotifyFrame.Size = UDim2.new(0, 300, 0, 70)
+    NotifyFrame.Position = UDim2.new(1, -320, 1, -40)
+    NotifyFrame.AnchorPoint = Vector2.new(0, 1)
+    NotifyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    NotifyFrame.BorderSizePixel = 0
+    NotifyFrame.BackgroundTransparency = 0
+    Instance.new("UICorner", NotifyFrame).CornerRadius = UDim.new(0, 6)
+
+    local Title = Instance.new("TextLabel", NotifyFrame)
+    Title.Text = title
+    Title.Font = Enum.Font.GothamSemibold
+    Title.TextSize = 14
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.Size = UDim2.new(1, -16, 0, 20)
+    Title.Position = UDim2.new(0, 8, 0, 6)
+    Title.BackgroundTransparency = 1
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    local Body = Instance.new("TextLabel", NotifyFrame)
+    Body.Text = content
+    Body.Font = Enum.Font.Gotham
+    Body.TextSize = 12
+    Body.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Body.Size = UDim2.new(1, -16, 0, 40)
+    Body.Position = UDim2.new(0, 8, 0, 26)
+    Body.BackgroundTransparency = 1
+    Body.TextXAlignment = Enum.TextXAlignment.Left
+    Body.TextWrapped = true
+
+    game:GetService("TweenService"):Create(NotifyFrame, TweenInfo.new(0.3), {
+        Position = NotifyFrame.Position - UDim2.new(0, 0, 0, 10)
+    }):Play()
+
+    task.delay(duration, function()
+        if NotifyFrame then
+            game:GetService("TweenService"):Create(NotifyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+                BackgroundTransparency = 1,
+                Position = NotifyFrame.Position + UDim2.new(0, 0, 0, 25)
+            }):Play()
+            for _, child in pairs(NotifyFrame:GetChildren()) do
+                if child:IsA("TextLabel") then
+                    game:GetService("TweenService"):Create(child, TweenInfo.new(0.4), {
+                        TextTransparency = 1
+                    }):Play()
+                end
+            end
+            task.wait(0.4)
+            NotifyFrame:Destroy()
+        end
+    end)
 end
 
 return UiLibrary
