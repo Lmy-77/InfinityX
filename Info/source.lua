@@ -246,7 +246,7 @@ function UiLibrary:CreateWindow(titleText)
 
   return self
 end
-function Notify(title, content, duration)
+function UiLibrary:Notify(title, content, duration)
     duration = duration or 3
 
     local Gui = game.CoreGui:FindFirstChild("InfinityXNotifyGui") or Instance.new("ScreenGui", game.CoreGui)
