@@ -55,15 +55,21 @@ function GetSizeOfObject(Obj)
         return Obj:GetExtentsSize()
     end
 end
-local OldNameCall = nil
-OldNameCall = hookmetamethod(game, "__namecall", function(...)
-    local Args = {...}
-    local Self = Args[1]
-    if getnamecallmethod() == "FireServer" and tostring(Self) == "RemoteEvent" and Args[1] == "ReportPhysicsFPS" then
-        return wait(math.huge)
-    end
-    return OldNameCall(...)
-end)
+if hookmetamethod then
+    local OldNameCall = nil
+    OldNameCall = hookmetamethod(game, "__namecall", function(...)
+        local Args = {...}
+        local Self = Args[1]
+        if getnamecallmethod() == "FireServer" and tostring(Self) == "RemoteEvent" and Args[1] == "ReportPhysicsFPS" then
+            return wait(math.huge)
+        end
+        return OldNameCall(...)
+    end)
+else
+    local Info = loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/library/Info/source.lua", true))()
+    Info:Notify('Waring', 'your exploit does not support hookmetamethod. Please use a better exploit', 5)
+    return
+end
 local function WalkSpeedBypass()
     local gmt = getrawmetatable(game)
     setreadonly(gmt, false)
@@ -275,6 +281,7 @@ local sections = {
     GameSection2 = tabs.Game:Section({ Side = "Right" }),
     GameSection3 = tabs.Game:Section({ Side = "Left" }),
     GameSection4 = tabs.Game:Section({ Side = "Right" }),
+    GameSection5 = tabs.Game:Section({ Side = "Right" }),
     LPlayerSection1 = tabs.LPayer:Section({ Side = "Left" }),
     LPlayerSection2 = tabs.LPayer:Section({ Side = "Right" }),
     LPlayerSection3 = tabs.LPayer:Section({ Side = "Left" }),
@@ -299,6 +306,9 @@ sections.GameSection3:Header({
 })
 sections.GameSection4:Header({
 	Name = "[🗡️] Arsenal Event"
+})
+sections.GameSection5:Header({
+	Name = "[📶] Misc"
 })
 sections.GameSection1:Toggle({
 	Name = "Auto hack",
@@ -584,6 +594,132 @@ task.spawn(function()
         end
     end
 end)
+sections.GameSection5:Toggle({
+	Name = "Fly",
+	Default = false,
+	Callback = function(bool)
+        function _G.Fly(char)
+            local hrp = char:WaitForChild("HumanoidRootPart")
+            local bv = Instance.new("BodyVelocity")
+            local bg = Instance.new("BodyGyro")
+
+            bv.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+            bv.Velocity = Vector3.zero
+            bv.Parent = hrp
+
+            bg.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+            bg.P = 1e5
+            bg.CFrame = hrp.CFrame
+            bg.Parent = hrp
+
+            _G._flyConn = game:GetService("RunService").RenderStepped:Connect(function()
+                local cam = workspace.CurrentCamera
+                local move = Vector3.zero
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) then move += cam.CFrame.LookVector end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) then move -= cam.CFrame.LookVector end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) then move -= cam.CFrame.RightVector end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) then move += cam.CFrame.RightVector end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then move += cam.CFrame.UpVector end
+                if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then move -= cam.CFrame.UpVector end
+                bv.Velocity = move.Unit * 60
+                if move.Magnitude == 0 then bv.Velocity = Vector3.zero end
+                bg.CFrame = cam.CFrame
+            end)
+        end
+
+        function _G.Unfly()
+            if _G._flyConn then _G._flyConn:Disconnect() _G._flyConn = nil end
+            local char = game.Players.LocalPlayer.Character
+            if not char then return end
+            local hrp = char:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                if hrp:FindFirstChildOfClass("BodyVelocity") then hrp:FindFirstChildOfClass("BodyVelocity"):Destroy() end
+                if hrp:FindFirstChildOfClass("BodyGyro") then hrp:FindFirstChildOfClass("BodyGyro"):Destroy() end
+            end
+        end
+
+        fly = bool
+        if fly then
+            Window:Notify({
+                Title = 'InfinityX',
+                Description = "Fly actived!"
+            })
+            _G.Fly(game.Players.LocalPlayer.Character)
+        else
+            _G.Unfly()
+        end
+	end,
+}, "Toggle")
+sections.GameSection5:Toggle({
+	Name = "Noclip",
+	Default = false,
+	Callback = function(bool)
+        function _G.Noclip()
+            _G._noclipConn = game:GetService("RunService").Stepped:Connect(function()
+                local char = game.Players.LocalPlayer.Character
+                if char then
+                    for _, part in pairs(char:GetDescendants()) do
+                        if part:IsA("BasePart") and part.CanCollide then
+                            part.CanCollide = false
+                        end
+                    end
+                end
+            end)
+        end
+
+        function _G.Clip()
+            if _G._noclipConn then _G._noclipConn:Disconnect() _G._noclipConn = nil end
+            local char = game.Players.LocalPlayer.Character
+            if char then
+                for _, part in pairs(char:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = true
+                    end
+                end
+            end
+        end
+
+        Noclip = bool
+        if Noclip then
+            Window:Notify({
+                Title = 'InfinityX',
+                Description = "Noclip actived!"
+            })
+            _G.Noclip()
+        else
+            _G.Clip()
+        end
+	end,
+}, "Toggle")
+sections.GameSection5:Toggle({
+	Name = "Infinite Jump",
+	Default = false,
+	Callback = function(bool)
+        function _G.InfiniteJump()
+            _G._jumpConn = game:GetService("UserInputService").JumpRequest:Connect(function()
+                local char = game.Players.LocalPlayer.Character
+                if char and char:FindFirstChildOfClass("Humanoid") then
+                    char:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+                end
+            end)
+        end
+
+        function _G.DisableInfiniteJump()
+            if _G._jumpConn then _G._jumpConn:Disconnect() _G._jumpConn = nil end
+        end
+
+        infJump = bool
+        if infJump then
+            Window:Notify({
+                Title = 'InfinityX',
+                Description = "Infinite jump actived!"
+            })
+            _G.InfiniteJump()
+        else
+            _G.DisableInfiniteJump()
+        end
+	end,
+}, "Toggle")
 
 
 sections.LPlayerSection1:Header({
@@ -758,6 +894,21 @@ sections.LPlayerSection2:Toggle({
         end
 	end,
 }, "Toggle")
+sections.LPlayerSection2:Toggle({
+	Name = "No hammer cooldown",
+	Default = false,
+	Callback = function(bool)
+        nohCD = bool
+        while nohCD do task.wait()
+            local Character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:wait()
+            local Humanoid = Character:FindFirstChildOfClass("Humanoid") or Character:FindFirstChildOfClass("AnimationController")
+            if not Humanoid or not Character then continue end
+            for _, v in next, Humanoid:GetPlayingAnimationTracks() do
+                v:AdjustSpeed(15)
+            end
+        end
+	end,
+}, "Toggle")
 sections.LPlayerSection2:Button({
 	Name = "Capture a random player",
 	Callback = function()
@@ -808,34 +959,6 @@ sections.LPlayerSection2:Button({
                 end
             end
         end
-	end,
-})
-sections.LPlayerSection2:Button({
-	Name = "No hammer cooldown",
-	Callback = function()
-        Window:Dialog({
-            Title = "InfinityX 3.2a",
-            Description = "Are you sure? There's no way back to normal. Are you sure you want to activate it?",
-            Buttons = {
-                {
-                    Name = "Confirm",
-                    Callback = function()
-                        wait = task.wait
-                        local a = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:wait()
-                        while wait() do
-                            local b = a:FindFirstChildOfClass("Humanoid") or a:FindFirstChildOfClass("AnimationController")
-                            if not b or not a then continue end
-                            for c, d in next, b:GetPlayingAnimationTracks() do
-                                d:AdjustSpeed(15)
-                            end
-                        end
-                    end,
-                },
-                {
-                    Name = "Cancel"
-                }
-            }
-        })
 	end,
 })
 local walkspeedInput = sections.LPlayerSection3:Input({
