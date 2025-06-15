@@ -79,7 +79,7 @@ local versiontitle = create("TextLabel", {
 	Position = UDim2.new(0.1, 0, 0, 280),
 	Size = UDim2.new(0.8, 0, 0, 15),
 	BackgroundTransparency = 1,
-	Text = "Version: 3.2a",
+	Text = "Version: 4.2a",
 	TextColor3 = Color3.fromRGB(139, 139, 139),
 	TextTransparency = 0.5,
 	Font = Enum.Font.GothamBold,
@@ -199,6 +199,7 @@ closeBtn.MouseButton1Click:Connect(function()
   closeBtn:Destroy()
   blur:Destroy()
   versiontitle:Destroy()
+  logo:Destroy()
   wait(.4)
   gui:Destroy()
 end)
