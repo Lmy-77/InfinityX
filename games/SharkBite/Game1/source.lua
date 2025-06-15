@@ -1,8 +1,9 @@
 -- detect service
 local UserInputService = game:GetService("UserInputService")
-if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
+IsOnMobile = table.find({Enum.Platform.Android, Enum.Platform.IOS}, UserInputService:GetPlatform())
+if IsOnMobile then
     print("Mobile device")
-elseif not UserInputService.TouchEnabled and UserInputService.KeyboardEnabled and UserInputService.MouseEnabled then
+elseif not IsOnMobile then
     print("Computer device")
 end
 
@@ -75,6 +76,13 @@ scriptVersion = '4.2a'
 -- ui library
 local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+function getDpiScale()
+    if IsOnMobile then
+        return Library:SetDPIScale(75)
+    elseif not IsOnMobile then
+        Library:SetDPIScale(100)
+    end
+end
 local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
 local Options = Library.Options
@@ -271,7 +279,7 @@ SurvivalGroupBox:AddButton({
                                         Library:Notify({
                                             Title = "InfinityX",
                                             Description = "Infinite ammo added to "..tool.Name,
-                                            Time = 4,
+                                            Time = 2,
                                         })
                                     else
                                         Library:Notify({
@@ -607,7 +615,6 @@ SharkGroupBox:AddButton({
 	Visible = true,
 	Risky = false,
 })
-IsOnMobile = table.find({Enum.Platform.Android, Enum.Platform.IOS}, UserInputService:GetPlatform())
 if not IsOnMobile then
     CharacterGroupBox:AddSlider("MySlider", {
     	Text = "WalkSpeed",
@@ -673,6 +680,7 @@ elseif IsOnMobile then
         end,
     })
 end
+CharacterGroupBox:AddDivider()
 CharacterGroupBox:AddButton({
 	Text = "Remove remote event",
 	Func = function()
@@ -787,19 +795,35 @@ UiSettingsGroubBox:AddDropdown("NotificationSide", {
 		Library:SetNotifySide(Value)
 	end,
 })
-UiSettingsGroubBox:AddDropdown("DPIDropdown", {
-	Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
-	Default = "100%",
+if IsOnMobile then
+    UiSettingsGroubBox:AddDropdown("DPIDropdown", {
+        Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
+        Default = "75%",
 
-	Text = "DPI Scale",
+        Text = "DPI Scale",
 
-	Callback = function(Value)
-		Value = Value:gsub("%%", "")
-		local DPI = tonumber(Value)
+        Callback = function(Value)
+            Value = Value:gsub("%%", "")
+            local DPI = tonumber(Value)
 
-		Library:SetDPIScale(DPI)
-	end,
-})
+            Library:SetDPIScale(DPI)
+        end,
+    })
+elseif not IsOnMobile then
+    UiSettingsGroubBox:AddDropdown("DPIDropdown", {
+        Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
+        Default = "100%",
+
+        Text = "DPI Scale",
+
+        Callback = function(Value)
+            Value = Value:gsub("%%", "")
+            local DPI = tonumber(Value)
+
+            Library:SetDPIScale(DPI)
+        end,
+    })
+end
 UiSettingsGroubBox:AddDivider()
 UiSettingsGroubBox:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { Default = "K", NoUI = true, Text = "Menu keybind" })
 Library.ToggleKeybind = Options.MenuKeybind
@@ -807,7 +831,7 @@ UiSettingsGroubBox:AddButton("Unload", function()
 	Library:Unload()
 end)
 CreditsGroupBox:AddLabel("Script made by Lmy77")
-CreditsGroupBox:AddButton("Discor Server", function()
+CreditsGroupBox:AddButton("Discor server", function()
 	setclipboard("https://discord.gg/emKJgWMHAr")
     Library:Notify({
         Title = "InfinityX",
@@ -819,6 +843,7 @@ end)
 
 
 -- extra functions
+getDpiScale()
 Library:Notify({
     Title = "InfinityX",
     Description = "Welcome ".. game.Players.LocalPlayer.Name .."",
