@@ -1,6 +1,6 @@
 local placeId = {
   Game1 = 734159876,
-  Game2 = nil
+  Game2 = 8908228901
 }
 
 
