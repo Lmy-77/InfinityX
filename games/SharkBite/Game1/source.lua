@@ -401,7 +401,7 @@ MiscGroupBox:AddButton({
 	end,
 	DoubleClick = false,
 
-	Tooltip = "Click to teleport to lobby",
+	Tooltip = "Click to get the flare gun",
 	DisabledTooltip = "I am disabled!",
 
 	Disabled = false,
@@ -424,7 +424,7 @@ MiscGroupBox:AddButton({
 	end,
 	DoubleClick = false,
 
-	Tooltip = "Click to teleport to lobby",
+	Tooltip = "Click to remove barriers",
 	DisabledTooltip = "I am disabled!",
 
 	Disabled = false,
@@ -744,7 +744,29 @@ CharacterGroupBox:AddButton({
 	end,
 	DoubleClick = false,
 
-	Tooltip = "Remove remote event to prevent getting kicked",
+	Tooltip = "Remove remote event to prevent getting kicked for more security",
+	DisabledTooltip = "I am disabled!",
+
+	Disabled = false,
+	Visible = true,
+	Risky = false,
+})
+CharacterGroupBox:AddButton({
+	Text = "Force day",
+	Func = function()
+        Library:Notify({
+            Title = "InfinityX",
+            Description = "Force day actived",
+            Time = 4,
+        })
+        game.Lighting.ClockTime = 12
+        game.Lighting.Brightness = 2
+        game.Lighting.FogEnd = 1000000000000000
+        game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+	end,
+	DoubleClick = false,
+
+	Tooltip = "Click to force day",
 	DisabledTooltip = "I am disabled!",
 
 	Disabled = false,
@@ -754,6 +776,7 @@ CharacterGroupBox:AddButton({
 
 
 local UiSettingsGroubBox = Tabs.Settings:AddLeftGroupbox("Ui Settings", "brush")
+local CreditsGroupBox = Tabs.Settings:AddRightGroupbox("Credits", "scroll-text")
 UiSettingsGroubBox:AddDropdown("NotificationSide", {
 	Values = { "Left", "Right" },
 	Default = "Right",
@@ -783,6 +806,15 @@ Library.ToggleKeybind = Options.MenuKeybind
 UiSettingsGroubBox:AddButton("Unload", function()
 	Library:Unload()
 end)
+CreditsGroupBox:AddLabel("Script made by Lmy77")
+CreditsGroupBox:AddButton("Discor Server", function()
+	setclipboard("https://discord.gg/emKJgWMHAr")
+    Library:Notify({
+        Title = "InfinityX",
+        Description = "Discord server copied to clipboard",
+        Time = 4,
+    })
+end)
 
 
 
@@ -797,8 +829,9 @@ Library:Notify({
     Description = "Script Loaded!",
     Time = 6,
 })
+wait(1.5)
 Library:Notify({
     Title = "InfinityX",
-    Description = "If you're seeing this, it's probably due to a bug that will be fixed soon. But if you're still seeing it, it's because the script is in its BETA version and is still under development.",
-    Time = 25,
+    Description = "If there are any errors in the script, please let us know on the discord server. have fun 🥰",
+    Time = 10,
 })
