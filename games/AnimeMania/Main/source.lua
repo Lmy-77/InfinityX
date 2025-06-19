@@ -2,7 +2,8 @@
 local remoteName = "Ban"
 local mt = getrawmetatable(game)
 local lscript = game:GetService("Players").LocalPlayer.Backpack:WaitForChild("ClientMain")
-local senv = getsenv(lscript)
+lscript.Disabled = true
+wait(.5)
 
 setreadonly(mt, false)
   local oldNamecall = mt.__namecall
@@ -54,6 +55,7 @@ local function moveMouseAndClick(button)
       local centerY = buttonPosition.Y + (buttonSize.Y / 2)
 
       mousemoveabs(centerX, centerY)
+      wait(.2)
       mouse1click()
   end
 end
@@ -470,3 +472,8 @@ for _, id in ipairs(betaTesters) do
     })
   end
 end
+
+
+
+wait(2)
+lscript.Disabled = false
