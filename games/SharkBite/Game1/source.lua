@@ -29,7 +29,7 @@ print[[
 
 -- variables
 local EspSettings = {
-    SharkColor = Color3.fromRGB(146, 62, 214),
+    SharkColor = Color3.fromRGB(0, 200, 255),
     SurvivalColor = Color3.fromRGB(61, 240, 61),
     BoatColor = Color3.fromRGB(255, 62, 62),
 }
@@ -53,7 +53,7 @@ local function createSurvivalESP(player)
     label.Size = UDim2.new(1, 0, 1, 0)
     label.BackgroundTransparency = 1
     label.Text = "👤 " .. player.Name
-    label.TextColor3 = Color3.fromRGB(61, 240, 61)
+    label.TextColor3 = EspSettings.SurvivalColor
     label.TextStrokeTransparency = 0
     label.Font = Enum.Font.GothamBold
     label.TextScaled = true
@@ -152,7 +152,7 @@ SurvivalGroupBox:AddToggle("MyToggle", {
                     label.Size = UDim2.new(1, 0, 1, 0)
                     label.BackgroundTransparency = 1
                     label.Text = "🦈 Shark"
-                    label.TextColor3 = Color3.fromRGB(0, 200, 255)
+                    label.TextColor3 = EspSettings.SharkColor
                     label.TextStrokeTransparency = 0
                     label.Font = Enum.Font.GothamBold
                     label.TextScaled = true
@@ -189,7 +189,7 @@ SurvivalGroupBox:AddToggle("MyToggle", {
                 label.Size = UDim2.new(1, 0, 1, 0)
                 label.BackgroundTransparency = 1
                 label.Text = "🦈 Shark"
-                label.TextColor3 = Color3.fromRGB(0, 200, 255)
+                label.TextColor3 = EspSettings.SharkColor
                 label.TextStrokeTransparency = 0
                 label.Font = Enum.Font.GothamBold
                 label.TextScaled = true
@@ -197,7 +197,7 @@ SurvivalGroupBox:AddToggle("MyToggle", {
         end)
 	end,
 }):AddColorPicker("ColorPicker1", {
-    Default = Color3.fromRGB(146, 62, 214),
+    Default = Color3.fromRGB(0, 200, 255),
     Title = "Esp shark color",
     Transparency = 0,
 
@@ -376,10 +376,16 @@ SurvivalGroupBox:AddButton({
             Description = "Telporting to shark",
             Time = 4,
         })
+        local lp = game.Players.LocalPlayer
+        local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
         for _, v in pairs(workspace.Sharks:GetChildren()) do
             if v:IsA("Model") and v.PrimaryPart and v.PrimaryPart.Name == "Body" then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame * CFrame.new(20, 0, 0)
-                break
+                local initialPos = v.PrimaryPart.Position
+                task.wait(0.2)
+                if (v.PrimaryPart.Position - initialPos).Magnitude > 0.1 then
+                    hrp.CFrame = v.PrimaryPart.CFrame * CFrame.new(20, 0, 0)
+                    break
+                end
             end
         end
 	end,
@@ -497,7 +503,7 @@ SharkGroupBox:AddToggle("MyToggle", {
 	end,
 }):AddColorPicker("ColorPicker1", {
     Default = Color3.fromRGB(61, 240, 61),
-    Title = "Esp shark color",
+    Title = "Esp player color",
     Transparency = 0,
 
     Callback = function(Value)
@@ -538,7 +544,7 @@ SharkGroupBox:AddToggle("MyToggle", {
                     label.Size = UDim2.new(1, 0, 1, 0)
                     label.BackgroundTransparency = 1
                     label.Text = "🚤 Boat"
-                    label.TextColor3 = Color3.fromRGB(255, 62, 62)
+                    label.TextColor3 = EspSettings.BoatColor
                     label.TextStrokeTransparency = 0
                     label.Font = Enum.Font.GothamBold
                     label.TextScaled = true
@@ -562,7 +568,7 @@ SharkGroupBox:AddToggle("MyToggle", {
                 espBoat.Name = "EspBoat"
                 espBoat.FillColor = EspSettings.BoatColor
 
-                local primary = boat:WaitForChild("PrimaryPart", 5)
+                local primary = boat:WaitForChild("TP", 5)
                 if not primary then return end
 
                 local billboard = Instance.new("BillboardGui", primary)
@@ -575,7 +581,7 @@ SharkGroupBox:AddToggle("MyToggle", {
                 label.Size = UDim2.new(1, 0, 1, 0)
                 label.BackgroundTransparency = 1
                 label.Text = "🚤 Boat"
-                label.TextColor3 = Color3.fromRGB(255, 62, 62)
+                label.TextColor3 = EspSettings.BoatColor
                 label.TextStrokeTransparency = 0
                 label.Font = Enum.Font.GothamBold
                 label.TextScaled = true
@@ -584,7 +590,7 @@ SharkGroupBox:AddToggle("MyToggle", {
 	end,
 }):AddColorPicker("ColorPicker1", {
     Default = Color3.fromRGB(255, 62, 62),
-    Title = "Esp shark color",
+    Title = "Esp boat color",
     Transparency = 0,
 
     Callback = function(Value)
