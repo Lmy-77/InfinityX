@@ -26,6 +26,10 @@ print[[
 
 
 -- source
+local lscript = game:GetService("Players").LocalPlayer.Backpack:WaitForChild("ClientMain")
+lscript.Disabled = true
+wait(.5)
+
 local WindUIStart  = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 function gradient(text, startColor, endColor)
@@ -108,3 +112,5 @@ end
 
 
 warn('[InfinityX] - Loaded!')
+wait(2)
+lscript.Disabled = false
