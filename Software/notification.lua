@@ -1,5 +1,3 @@
--- WaveAI by SPDM Team
-
 local TweenService = game:GetService("TweenService")
 
 local gui = Instance.new("ScreenGui")
