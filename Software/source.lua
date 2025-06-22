@@ -14,7 +14,8 @@ local supportedGames = {
         [{126884695634066}] = "https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/GrowAGarden/source.lua",
         [{17850641257, 17850769550}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/AnimeSaga/source.lua',
         [{75852144330025}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/HuzzRng/source.lua',
-        [{734159876, 8908228901}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/SharkBite/Loader.lua'
+        [{734159876, 8908228901}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/SharkBite/Loader.lua',
+        [{5610197459}] = 'https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/GangUpOnPeopleSimulator/source.lua'
 }
 local function findScript()
     for key, scriptUrl in pairs(supportedGames) do
