@@ -1,6 +1,6 @@
 -- intro
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Intro/source.lua",true))()
-wait(.5)
+wait(.8)
 
 
 -- variables
