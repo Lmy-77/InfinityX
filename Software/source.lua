@@ -1,10 +1,6 @@
--- custom profile
-if game:GetService('UserInputService').TouchEnabled and not game:GetService('UserInputService').KeyboardEnabled and not game:GetService('UserInputService').MouseEnabled then
-    warn('Custom profile dont support mobile')
-else
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Profile/source.lua", true))()
-    warn('Custom profile loaded')
-end
+-- intro
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/Custom/Intro/source.lua",true))()
+wait(.5)
 
 
 -- variables
@@ -39,9 +35,10 @@ end
 -- detect game
 local scriptUrl = findScript()
 if scriptUrl then
-    print("InfinityX - Game supported")
+    print("[ InfinityX ] - Game supported 🟢")
     loadstring(game:HttpGet(scriptUrl))()
 else
-    print("InfinityX - Game not supported")
+    print("[ InfinityX ] - Game not supported 🔴")
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/main/Software/notification.lua"))()
 end
+warn("[ InfinityX ] - Thanks for using my script ❤️")
