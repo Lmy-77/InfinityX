@@ -1105,7 +1105,7 @@ SummerGroupBox:AddButton("Input all plants", function()
   end
 end)
 SummerGroupBox:AddButton("Teleport to event", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GetSummerEvent():FindFirstChild('Georgia').HumanoidRootPart.CFrame
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GetSummerEvent():FindFirstChild('Steps').Part.CFrame * CFrame.new(0, 0, 10)
 end)
 SummerShopGroupBox:AddDropdown("", {
 	Values = SummerShopItems,
