@@ -1,4 +1,5 @@
 -- detect service
+local TextService = game:GetService("TextService")
 local UserInputService = game:GetService("UserInputService")
 IsOnMobile = table.find({Enum.Platform.Android, Enum.Platform.IOS}, UserInputService:GetPlatform())
 if IsOnMobile then
@@ -224,41 +225,14 @@ SurvivalGroupBox:AddToggle("MyToggle", {
                 Time = 4,
             })
         end
-        workspace.ChildAdded:Connect(function(child)
-            if autoChest and child:IsA("Model") and child.Name == "ChestDrop" then
-                local chest = child:WaitForChild("Chest", 5)
-                local oldPos = ''
-                oldPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-                if not chest then return end
-
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-                wait(2)
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest:FindFirstChild('Union').CFrame
-
-                Library:Notify({
-                    Title = "InfinityX",
-                    Description = "Chest collected!",
-                    Time = 4,
-                })
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(oldPos)
+        while autoChest do task.wait()
+            for _, v in pairs(workspace:GetChildren()) do
+                if v:IsA('Model') and v.Name == 'ChestDrop' then
+                    local chestCF = v:FindFirstChildWhichIsA('Part')
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestCF.CFrame
+                end
             end
-        end)
+        end
 	end,
 })
 SurvivalGroupBox:AddButton({
