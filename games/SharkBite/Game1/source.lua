@@ -207,6 +207,41 @@ SurvivalGroupBox:AddToggle("MyToggle", {
     end,
 })
 SurvivalGroupBox:AddToggle("MyToggle", {
+	Text = "Auto teleport to shark",
+	Tooltip = "Active to teleport to all sharks automatically",
+	DisabledTooltip = "I am disabled!",
+
+	Default = false,
+	Disabled = false,
+	Visible = true,
+	Risky = false,
+
+	Callback = function(Value)
+        autoTpShark = Value
+        if autoTpShark then
+            Library:Notify({
+                Title = "InfinityX",
+                Description = "Auto teleport shark enabled",
+                Time = 4,
+            })
+        end
+        while autoTpShark do task.wait()
+            local lp = game.Players.LocalPlayer
+            local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+            for _, v in pairs(workspace.Sharks:GetChildren()) do
+                if v:IsA("Model") and v.PrimaryPart and v.PrimaryPart.Name == "Body" then
+                    local initialPos = v.PrimaryPart.Position
+                    task.wait()
+                    if (v.PrimaryPart.Position - initialPos).Magnitude > 0.1 then
+                        hrp.CFrame = v.PrimaryPart.CFrame * CFrame.new(20, 0, 0)
+                        break
+                    end
+                end
+            end
+        end
+	end,
+})
+SurvivalGroupBox:AddToggle("MyToggle", {
 	Text = "Auto chest",
 	Tooltip = "Active to automatically collect the chest",
 	DisabledTooltip = "I am disabled!",
@@ -226,10 +261,9 @@ SurvivalGroupBox:AddToggle("MyToggle", {
             })
         end
         while autoChest do task.wait()
-            for _, v in pairs(workspace:GetChildren()) do
+            for _, v in pairs(workspace:GetDescendants()) do
                 if v:IsA('Model') and v.Name == 'ChestDrop' then
-                    local chestCF = v:FindFirstChildWhichIsA('Part')
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestCF.CFrame
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChild('PrimaryPart').CFrame
                 end
             end
         end
