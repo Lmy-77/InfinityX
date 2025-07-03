@@ -1,3 +1,6 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua",true))()
+
+
 local NamecallInstanceDetector = nil
 
 for Index, Table in getgc(true) do
