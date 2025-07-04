@@ -104,7 +104,7 @@ end)
 
 local function stealthDisable(name)
     local target = cloneref(game:GetService("ReplicatedFirst")):FindFirstChild(name)
-    if target and target:IsA("Script") and not target.Disabled then
+    if target not target.Disabled then
         target.AncestryChanged:Connect(function()
             if not target:IsDescendantOf(game) then return end
             target.Disabled = true
@@ -113,5 +113,6 @@ local function stealthDisable(name)
     end
 end
 
-
-stealthDisable("Debris")
+pcall(function()
+    while true do task.wait() stealthDisable("Debris") end 
+end)
