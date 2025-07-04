@@ -4,9 +4,7 @@ local function deepHook(tbl)
             local consts = getconstants(fn)
             for _, c in ipairs(consts) do
                 if c == "Kick" or c == "kick" or c == "Ban" or c == "ban" then
-                    hookfunction(fn, function(...)
-                        return nil
-                    end)
+                    hookfunction(fn, function(...) return nil end)
                 end
             end
         end
@@ -19,15 +17,12 @@ for _, v in ipairs(getgc(true)) do
     end
 end
 
-
 local Players = game:GetService("Players")
 local Local = Players.LocalPlayer
-if Local then
-    hookfunction(Local.Kick, function(...) end)
-    hookfunction(Local.KickAsync, function(...) end)
-    if Local.Ban then
-        hookfunction(Local.Ban, function(...) end)
-    end
+hookfunction(Local.Kick, function(...) end)
+hookfunction(Local.KickAsync, function(...) end)
+if Local.Ban then
+    hookfunction(Local.Ban, function(...) end)
 end
 
 
@@ -71,26 +66,45 @@ end)
 
 
 local WhiteList = {
-  'Voucher_RemoveGuis', 'Voucher_OpenOption', 'Admin_GetBanStatus', 'Admin_GetCommandLibrary', 'Admin_GetData', 'Admin_GetTradeBanStatus', 'Admin_RunCommand', 'Admin_WipeData', 'Bindable_ItemHandler_RemoveItem', 'Bindable_ToolHandler_RemoveItem', 'Boss_Spawn', 'CharmChisel_Use', 'ClientCall_PlatformType', 'Complete_Code', 'Crate_OpenOption', 'Crate_RemoveGuis', 'CycleEvent_Horn_Use', 'Dig_GetClientGround', 'Dig_GetClientStatus', 'Emote_Play', 'Emote_Stop', 'GetBossID', 'GetWaypointPosition', 'JournalPage_Complete', 'Level_Check', 'Quest_DeliverPizza', 'Request_Copies_Data', 'Totem_GetStacks', 'Totem_Place', 'Trade_SendRequest', 'TravelingMerchant_BuyItem', 'TravelingMerchant_GetItems', 'TravelingMerchant_OpenGui', 'Vehicle_Purchase'
+  'Voucher_RemoveGuis','Voucher_OpenOption','Admin_GetBanStatus','Admin_GetCommandLibrary','Admin_GetData',
+  'Admin_GetTradeBanStatus','Admin_RunCommand','Admin_WipeData','Bindable_ItemHandler_RemoveItem',
+  'Bindable_ToolHandler_RemoveItem','Boss_Spawn','CharmChisel_Use','ClientCall_PlatformType','Complete_Code',
+  'Crate_OpenOption','Crate_RemoveGuis','CycleEvent_Horn_Use','Dig_GetClientGround','Dig_GetClientStatus',
+  'Emote_Play','Emote_Stop','GetBossID','GetWaypointPosition','JournalPage_Complete','Level_Check',
+  'Quest_DeliverPizza','Request_Copies_Data','Totem_GetStacks','Totem_Place','Trade_SendRequest',
+  'TravelingMerchant_BuyItem','TravelingMerchant_GetItems','TravelingMerchant_OpenGui','Vehicle_Purchase'
 }
+
 for _, remote in ipairs(game:GetService("ReplicatedStorage").Remotes:GetChildren()) do
-    if remote:IsA("RemoteFunction") then
-        if not table.find(WhiteList, remote.Name) then
-            pcall(function()
-                remote.OnClientInvoke = function() return nil end
-            end)
-        end
+    if remote:IsA("RemoteFunction") and not table.find(WhiteList, remote.Name) then
+        pcall(function()
+            remote.OnClientInvoke = function() return nil end
+        end)
     end
 end
 
 
-local spec = game:GetService("Players").LocalPlayer.PlayerScripts.CustomClientScripts:FindFirstChild("SpectateClient")
+local spec = Players.LocalPlayer.PlayerScripts.CustomClientScripts:FindFirstChild("SpectateClient")
 if spec then
     spec.Disabled = true
 end
 
 
-
 pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/Dig/ModDetect/source.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/Dig/Security/Admin_Detector/source.lua", true))()
 end)
+
+
+local function stealthDisable(name)
+    local target = cloneref(game:GetService("ReplicatedFirst")):FindFirstChild(name)
+    if target and target:IsA("Script") and not target.Disabled then
+        target.AncestryChanged:Connect(function()
+            if not target:IsDescendantOf(game) then return end
+            target.Disabled = true
+        end)
+        target.Disabled = true
+    end
+end
+
+
+stealthDisable("Debris")
