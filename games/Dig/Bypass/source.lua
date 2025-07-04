@@ -1,5 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua",true))()
-
+local scriptSource = loadstring(game:HttpGet("https://raw.githubusercontent.com/ktroTRB/perfect-hub/refs/heads/main/dig.lua"))()
 
 local NamecallInstanceDetector = nil
 
