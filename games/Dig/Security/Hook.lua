@@ -2,7 +2,7 @@
 pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/Dig/Security/Admin_Detector/source.lua", true))()
 end)
-print('Mod detector 🟢')
+print('[ BYPASS ] - Mod detector 🟢')
 
 
 
@@ -43,8 +43,8 @@ for _, remote in pairs(game:GetService("ReplicatedStorage").Remotes:GetChildren(
         end
     end
 end
-print('Remote blocking 🟢')
-print('RemoteFunction whitelist 🟢')
+print('[ BYPASS ] - Remote blocking 🟢')
+print('[ BYPASS ] - RemoteFunction whitelist 🟢')
 
 
 
@@ -69,7 +69,7 @@ end
 if NamecallInstanceDetector then
     hookfunction(NamecallInstanceDetector, function() return false end)
 end
-print('NamecallInstanceDetector bypass 🟢')
+print('[ BYPASS ] - NamecallInstanceDetector bypass 🟢')
 
 
 
@@ -89,4 +89,4 @@ spawn(function()
         stealthDisable("Debris")
     end)
 end)
-print('Stealth disable function 🟢')
+print('[ BYPASS ] - Stealth disable function 🟢')
