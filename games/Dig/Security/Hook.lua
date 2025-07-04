@@ -92,6 +92,13 @@ end
 
 pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/Dig/Security/Admin_Detector/source.lua", true))()
+    print('Kick/Ban Hook 🟢')
+    print('NamecallInstanceDetector bypass 🟢')
+    print('Remote blocking 🟢')
+    print('RemoteFunction whitelist 🟢')
+    print('SpectateClient disable 🟢')
+    print('Mod detector 🟢')
+    print('Stealth disable function 🟢')
 end)
 
 
