@@ -1,3 +1,11 @@
+-- mod detector
+pcall(function()
+    loadstring(game:HttpGet("https://github.com/Lmy-77/InfinityX/blob/scripts/games/Dig/Security/Admin_Detector/source.lua", true))()
+end)
+print('Mod detector 🟢')
+
+
+
 -- Remote blocking / Remote function white list
 local Targets = {}
 local mtHook
