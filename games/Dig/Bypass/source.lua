@@ -1,5 +1,5 @@
 pcall(function()
     print('Bypass loading...')
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Lmy-77/InfinityX/refs/heads/scripts/games/Dig/Security/Hook.lua", true))()
-    print('Bypass and mod dectector applied successfully')
+    print('Bypass applied successfully')
 end)
