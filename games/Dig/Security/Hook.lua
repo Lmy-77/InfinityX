@@ -90,3 +90,13 @@ spawn(function()
     end)
 end)
 print('[ BYPASS ] - Stealth disable function 🟢')
+
+
+
+-- LocalScript disable
+spawn(function()
+   game:GetService('RunService').RenderStepped:Connect(function()
+            game:GetService("Players").LocalPlayer.PlayerScripts.CustomClientScripts.SpectateClient.Disabled = true
+    end)
+end)
+print('[ BYPASS ] - LocalScript disable 🟢')
