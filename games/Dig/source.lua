@@ -174,6 +174,10 @@ if not bypassed then
     wait(1.2)
   end
 elseif bypassed then
+  firesignal(Event.OnClientEvent,
+  "<font color = '#03fc13'>Sucess:</font> Bypass already applied",
+  game:GetService("ReplicatedStorage").Resources.Sounds.SFX._UI.NPC_TravelingMerchant
+  )
   print('Bypass already applied')
 end
 pcall(function() getgenv().bypassed = true end)
@@ -557,7 +561,6 @@ BossesGroupBox:AddButton({
         for _, func in pairs(mscript) do
           if type(func) == 'function' then
             hookfunction(func, function(...) return nil end)
-            print('Hokked function: ' .. _, tostring(func))
           end
         end
       end
@@ -815,6 +818,7 @@ local CodesGroupBox = Tabs.Misc:AddLeftGroupbox("Codes", "code")
 local CharacterGroupBox = Tabs.Misc:AddRightGroupbox("Character", "user-round-pen")
 local VehicleGroupBox = Tabs.Misc:AddLeftGroupbox("Vehicles", "car")
 local MerchantGroupBox = Tabs.Misc:AddLeftGroupbox("Merchant", "sparkle")
+local MagnetGroupBox = Tabs.Misc:AddRightGroupbox("Magnets", "magnet")
 CodesGroupBox:AddButton({
 	Text = "Reedem all codes",
 	Func = function()
@@ -948,7 +952,7 @@ CharacterGroupBox:AddButton("Rejoin smallest server", function()
 
   local serverId = GetServer()
   if serverId then
-      TeleportService:TeleportToPlaceInstance(PlaceId, serverId, Players.LocalPlayer)
+    TeleportService:TeleportToPlaceInstance(PlaceId, serverId, Players.LocalPlayer)
   end
 end)
 CharacterGroupBox:AddToggle("EnableUiToggle", {
@@ -1008,6 +1012,24 @@ MerchantGroupBox:AddButton({
     for _, v in pairs(workspace.World.NPCs:GetChildren()) do
       if v:IsA('Model') and v.Name == 'Merchant Cart' then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v:FindFirstChild('Traveling Merchant').WorldPivot.Position)
+      end
+    end
+	end,
+	DoubleClick = false,
+
+	Tooltip = "Click to teleport to traveling merchant",
+	DisabledTooltip = "I am disabled!",
+
+	Disabled = false,
+	Visible = true,
+	Risky = false,
+})
+MagnetGroupBox:AddButton({
+	Text = "Teleport to magnus",
+	Func = function()
+    for _, v in pairs(workspace.World.NPCs:GetChildren()) do
+      if v:IsA('Model') and v.Name == 'Magnus' then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.WorldPivot.Position)
       end
     end
 	end,
