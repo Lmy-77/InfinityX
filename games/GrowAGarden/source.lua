@@ -1058,7 +1058,7 @@ spawn(function()
     end
   end
 end)
-DinoCraftGroupBox:AddDropdown("", {
+DinoCraftGroupBox:AddDropdown("DinoCraftDropdown", {
 	Values = GetDinoCrafts(),
 	Default = '...',
 	Multi = false,
@@ -1086,7 +1086,17 @@ DinoCraftGroupBox:AddButton("Place selected quest", function()
   game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("CraftingGlobalObjectService"):FireServer(unpack(args))  
 end)
 DinoCraftGroupBox:AddButton("Craft selected quest", function()
-
+  local findItem = workspace.Interaction.UpdateItems.DinoEvent.DinoCraftingTable:FindFirstChild('IngredientModelTemplate')
+  if not findItem then
+    Library:Notify("No item found in DinoCraftingTable. Please place a quest first.")
+    return
+  elseif findItem then
+    for _, v in pairs(workspace.Interaction.UpdateItems.DinoEvent.DinoCraftingTable:GetChildren()) do
+      if v:IsA('Model') and v.Name == 'IngredientModelTemplate' then
+        print(v)
+      end
+    end
+  end
 end)
 DinoCraftGroupBox:AddButton("Cancel quest", function()
   local args = {
@@ -1097,7 +1107,7 @@ DinoCraftGroupBox:AddButton("Cancel quest", function()
   game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("CraftingGlobalObjectService"):FireServer(unpack(args))
 end)
 DinoCraftGroupBox:AddDivider()
-DinoCraftGroupBox:AddButton("Refresh list", function()
+DinoCraftGroupBox:AddButton("Refresh craft list", function()
   Options.DinoCraftDropdown:SetValues(GetDinoCrafts())
 end)
 DinoEggGroupBox:AddDropdown("DinoPetsDropdown", {
@@ -1128,19 +1138,34 @@ DinoEggGroupBox:AddButton("Place pet", function()
     end
   end
 end)
+DinoEggGroupBox:AddButton("Collect egg", function()
+  local args = {
+    "ClaimReward"
+  }
+  game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("DinoMachineService_RE"):FireServer(unpack(args))  
+end)
 local EggTime = DinoEggGroupBox:AddLabel({
   Text = "Time: ",
   DoesWrap = true
 })
 spawn(function()
-  while true do task.wait(1)
-    local findBoard = workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4]:FindFirstChild('BillboardPart'):FindFirstChild('BillboardGui')
-    if not findBoard.Enabled then
-      SeedRestockLabel:SetText("Time: nil")
-    elseif findBoard.Enabled then
-      EggTime:SetText('Time: ' .. findBoard:FindFirstChildWhichIsA('TextLabel').Text)
+  spawn(function()
+    while true do
+      task.wait()
+      local findBoard = workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4]:FindFirstChild('BillboardPart'):FindFirstChild('BillboardGui')
+      if findBoard and findBoard.Enabled then
+        local textLabel = findBoard:FindFirstChildWhichIsA('TextLabel')
+        if textLabel then
+          local text = textLabel.Text
+          if string.find(text, "%d") then
+            EggTime:SetText('Time: ' .. text)
+          else
+            EggTime:SetText('Time: nil')
+          end
+        end
+      end
     end
-  end
+  end)
 end)
 
 
