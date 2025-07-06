@@ -1,4 +1,5 @@
 -- detect service
+local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
 	print("Mobile device")
@@ -147,16 +148,6 @@ local AllCropsNames = {
   "Ember Lily",
   "Elephant Ears"
 }
-local SummerShopItems = {
-  'Summer Seed Pack',
-  'Delphinium',
-  'Lily of the Valley',
-  "Traveler's Fruit",
-  'Mutation Spray Burnt',
-  'Oasis Crate',
-  'Oasis Egg',
-  'Hamster'
-}
 local currentHighlight = nil
 local currentBillboard = nil
 local lastBiggest = nil
@@ -178,6 +169,27 @@ function GetPlayersName()
     end
   end
   return plrs
+end
+function GetDinoCrafts()
+  local crafts = {}
+  for _, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('RecipeSelection_UI').Frame.ScrollingFrame:GetChildren()) do
+      if v:IsA('Frame') and v.Name ~= 'ItemPadding' then
+          if not string.find(v.Name, "_") then
+              table.insert(crafts, v.Name)
+          end
+      end
+  end
+  return crafts
+end
+function GetDinoPets()
+  local pets = {}
+  local mscript = require(game:GetService("ReplicatedStorage").Data.PetRegistry.PetList)
+  for _, v in pairs(mscript) do
+    if type(v) == 'table' then
+      table.insert(pets, _)
+    end
+  end
+  return pets
 end
 local function highlightBiggestFruit()
   local farm = nil
@@ -272,29 +284,6 @@ function GetPets()
     end
   end
   return petsName
-end
-function GetSummerEvent()
-  for _, v in ipairs(workspace:GetDescendants()) do
-    if v:IsA('Model') and v.Name == 'SummerHarvestEvent' then
-      return v
-    end
-  end
-end
-function GetTimeEvent()
-  local eventModel = GetSummerEvent()
-  for _, v in pairs(eventModel:GetDescendants()) do
-    if v:IsA('TextLabel') and v.Name == 'Timer' then
-      return v
-    end
-  end
-end
-function GetPointEvent()
-  local eventModel = GetSummerEvent()
-  for _, v in pairs(eventModel:GetDescendants()) do
-    if v:IsA('TextLabel') and v.Name == 'PointTextLabel' then
-      return v
-    end
-  end
 end
 local function getFormattedTimerText()
   local textLabel = GetTimeEvent()
@@ -998,159 +987,160 @@ Toggles.PetButtonsToggle:SetValue(true)
 Toggles.GearButtonsToggle:SetValue(true)
 
 
-local SummerGroupBox = Tabs.Event:AddLeftGroupbox("Summer", "sun")
-local SummerShopGroupBox = Tabs.Event:AddRightGroupbox("Summer Shop", "shopping-cart")
-local EventStatusLabel = SummerGroupBox:AddLabel({
-  Text = "Time: ",
-  DoesWrap = true
-})
-local PointsStatusLabel = SummerGroupBox:AddLabel({
-  Text = "",
-  DoesWrap = true
-})
-task.spawn(function()
-  while true do task.wait(1)
-    EventStatusLabel:SetText("Time: ".. getFormattedTimerText())
-    PointsStatusLabel:SetText(GetPointEvent().Text)
-  end
+local DinoGroupBox = Tabs.Event:AddLeftGroupbox("🦖 Dino Event")
+local DinoQuestGroupBox = Tabs.Event:AddRightGroupbox("🚩 Dino Quest")
+local DinoCraftGroupBox = Tabs.Event:AddLeftGroupbox("🔨 Dino Craft")
+local DinoEggGroupBox = Tabs.Event:AddRightGroupbox("🥚 Dino Egg")
+DinoGroupBox:AddButton("Teleport to event", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-100, 4, -31)
 end)
-SummerGroupBox:AddDivider()
-SummerGroupBox:AddDropdown("", {
-	Values = AllCropsNames,
-	Default = '...',
-	Multi = true,
-
-	Text = "Select plant",
-	Tooltip = "Select a plant you want to held",
-	DisabledTooltip = "I am disabled!",
-
-	Searchable = true,
-
-	Callback = function(Value)
-    selectedPlant = keysOf(Value)
-    Library:Notify("Selected plants: " .. table.concat(selectedPlant, ", "))
-	end,
-
-	Disabled = false,
-	Visible = true,
+local Quest1 = DinoQuestGroupBox:AddLabel({
+  Text = "1",
+  DoesWrap = true
 })
-SummerGroupBox:AddToggle("PetButtonsToggle", {
-	Text = "Held plants",
-	Tooltip = "Active to held all yours plant",
-	DisabledTooltip = "I am disabled!",
+local p1 = DinoQuestGroupBox:AddLabel({
+  Text = "p1",
+  DoesWrap = true
+})
+DinoQuestGroupBox:AddDivider()
+local Quest2 = DinoQuestGroupBox:AddLabel({
+  Text = "2",
+  DoesWrap = true
+})
+local p2 = DinoQuestGroupBox:AddLabel({
+  Text = "p2",
+  DoesWrap = true
+})
+DinoQuestGroupBox:AddDivider()
+local Quest3 = DinoQuestGroupBox:AddLabel({
+  Text = "3",
+  DoesWrap = true
+})
+local p3 = DinoQuestGroupBox:AddLabel({
+  Text = "p3",
+  DoesWrap = true
+})
+spawn(function()
+  while true do task.wait()
+    local taskNames = {}
+    local progressQuest = {}
 
-	Default = false,
-	Disabled = false,
-	Visible = true,
-	Risky = false,
-
-	Callback = function(Value)
-    local LocalPlayer = game.Players.LocalPlayer
-    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local Backpack = LocalPlayer:WaitForChild("Backpack")
-
-    heldPlants = Value
-
-    if heldPlants then
-      if #selectedPlant > 0 then
-        for _, tool in ipairs(Backpack:GetChildren()) do
-          if tool:IsA('Tool') and not tool.Name:lower():find('seed') then
-            local toolNameLower = tool.Name:lower()
-
-            local isBlocked = false
-            for _, blockedItemName in ipairs(RemoveTools()) do
-              if tool.Name == blockedItemName then
-                isBlocked = true
-                break
-              end
-            end
-
-            if not isBlocked then
-              for _, selectedPlantName in ipairs(selectedPlant) do
-                if toolNameLower:find(selectedPlantName:lower()) then
-                  if not heldPlants then return end
-
-                  tool.Parent = Character
-                  wait(0.2)
-
-                  local args = {
-                    "SubmitHeldPlant"
-                  }
-                  game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("SummerHarvestRemoteEvent"):FireServer(unpack(args))
-                end
-              end
-            end
+    for _, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('DinoQuests_UI').Frame.Main.Holder.Tasks:GetChildren()) do
+      if v:IsA('Frame') and v.Name:match('Segment') then
+        for _, x in pairs(v:GetChildren()) do
+          if x:IsA('TextLabel') and x.Name == 'TASK_NAME' then
+            table.insert(taskNames, x.Text)
           end
         end
       end
     end
-	end,
-})
-SummerGroupBox:AddButton("Input all plants", function()
-  local LocalPlayer = game.Players.LocalPlayer
-  local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-  local Backpack = LocalPlayer:WaitForChild("Backpack")
-
-  for _, item in pairs(AllCropsNames) do
-    for _, tool in ipairs(Backpack:GetChildren()) do
-      if tool:IsA('Tool') and tool.Name:lower():find(item:lower()) then
-          tool.Parent = Character
-          wait(0.2)
-          local args = {
-            "SubmitHeldPlant"
-          }
-          game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("SummerHarvestRemoteEvent"):FireServer(unpack(args))
+    for _, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('DinoQuests_UI').Frame.Main.Holder.Tasks:GetChildren()) do
+      if v:IsA('Frame') and v.Name:match('Segment') then
+        for _, x in pairs(v:GetChildren()) do
+          if x:IsA('TextLabel') and x.Name == 'PROGRESS' then
+            table.insert(progressQuest, x.Text)
+          end
+        end
       end
+    end
+
+    if taskNames[1] and progressQuest[1] then
+      Quest1:SetText("1 - " .. taskNames[1])
+      p1:SetText("  - " .. progressQuest[1])
+    end
+    if taskNames[2] and progressQuest[2] then
+      Quest2:SetText("2 - " .. taskNames[2])
+      p2:SetText("  - " .. progressQuest[2])
+    end
+    if taskNames[3] and progressQuest[3] then
+      Quest3:SetText("3 - " .. taskNames[3])
+      p3:SetText("  - " .. progressQuest[3])
     end
   end
 end)
-SummerGroupBox:AddButton("Teleport to event", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = GetSummerEvent():FindFirstChild('Steps').Part.CFrame * CFrame.new(0, 0, 10)
-end)
-SummerShopGroupBox:AddDropdown("", {
-	Values = SummerShopItems,
+DinoCraftGroupBox:AddDropdown("", {
+	Values = GetDinoCrafts(),
 	Default = '...',
 	Multi = false,
 
-	Text = "Select item",
-	Tooltip = "Select a item you want to buy",
+	Text = "Select craft",
+	Tooltip = "Select a craft you want to make",
 	DisabledTooltip = "I am disabled!",
 
 	Searchable = true,
 
 	Callback = function(Value)
-    selectedItem = Value
+    selectedQuest = Value
 	end,
 
 	Disabled = false,
 	Visible = true,
 })
-SummerShopGroupBox:AddToggle("PetButtonsToggle", {
-	Text = "Auto buy item",
-	Tooltip = "Active to buy event item automatically",
-	DisabledTooltip = "I am disabled!",
+DinoCraftGroupBox:AddButton("Place selected quest", function()
+  local args = {
+    "SetRecipe",
+    workspace:WaitForChild("Interaction"):WaitForChild("UpdateItems"):WaitForChild("DinoEvent"):WaitForChild("DinoCraftingTable"),
+    "DinoEventWorkbench",
+    selectedQuest
+  }
+  game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("CraftingGlobalObjectService"):FireServer(unpack(args))  
+end)
+DinoCraftGroupBox:AddButton("Craft selected quest", function()
 
-	Default = false,
-	Disabled = false,
-	Visible = true,
-	Risky = false,
+end)
+DinoCraftGroupBox:AddButton("Cancel quest", function()
+  local args = {
+    "Cancel",
+    workspace:WaitForChild("Interaction"):WaitForChild("UpdateItems"):WaitForChild("DinoEvent"):WaitForChild("DinoCraftingTable"),
+    "DinoEventWorkbench"
+  }
+  game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("CraftingGlobalObjectService"):FireServer(unpack(args))
+end)
+DinoCraftGroupBox:AddDivider()
+DinoCraftGroupBox:AddButton("Refresh list", function()
+  Options.DinoCraftDropdown:SetValues(GetDinoCrafts())
+end)
+DinoEggGroupBox:AddDropdown("DinoPetsDropdown", {
+	Values = GetDinoPets(),
+	Default = "...",
+
+  Searchable = true,
+
+	Text = "Select pet",
+  Tooltip = 'Select pet your want to add to dna machine',
 
 	Callback = function(Value)
-    autoBuyItem = Value
-    while autoBuyItem do task.wait()
-      local args = {
-        selectedItem
-      }
-      game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuyEventShopStock"):FireServer(unpack(args))
-      wait(.25)
-    end
+		selectedDinoPet = Value
 	end,
 })
-SummerShopGroupBox:AddButton("Buy item", function()
-  local args = {
-    selectedItem
-  }
-  game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuyEventShopStock"):FireServer(unpack(args))
+DinoEggGroupBox:AddButton("Teleport dna machine", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-114, 4, -13)
+end)
+DinoEggGroupBox:AddButton("Place pet", function()
+  for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+    if v:IsA('Tool') and v.Name:find(selectedDinoPet) then
+      v.Parent = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+      task.wait(0.25)
+      local args = {
+        "MachineInteract"
+      }
+      game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("DinoMachineService_RE"):FireServer(unpack(args))      
+    end
+  end
+end)
+local EggTime = DinoEggGroupBox:AddLabel({
+  Text = "Time: ",
+  DoesWrap = true
+})
+spawn(function()
+  while true do task.wait(1)
+    local findBoard = workspace.Interaction.UpdateItems.DinoEvent.DNAmachine.SideTable:GetChildren()[4]:FindFirstChild('BillboardPart'):FindFirstChild('BillboardGui')
+    if not findBoard.Enabled then
+      SeedRestockLabel:SetText("Time: nil")
+    elseif findBoard.Enabled then
+      EggTime:SetText('Time: ' .. findBoard:FindFirstChildWhichIsA('TextLabel').Text)
+    end
+  end
 end)
 
 
@@ -1169,7 +1159,6 @@ FeedGroupBox:AddDropdown("", {
 
 	Callback = function(Value)
     selectedPlantFeed = keysOf(Value)
-    Library:Notify("Selected plants: " .. table.concat(selectedPlantFeed, ", "))
 	end,
 
 	Disabled = false,
