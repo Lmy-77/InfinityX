@@ -1091,19 +1091,6 @@ DinoCraftGroupBox:AddButton("Place selected quest", function()
   }
   game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("CraftingGlobalObjectService"):FireServer(unpack(args))  
 end)
-DinoCraftGroupBox:AddButton("Craft selected quest", function()
-  local findItem = workspace.Interaction.UpdateItems.DinoEvent.DinoCraftingTable:FindFirstChild('IngredientModelTemplate')
-  if not findItem then
-    Library:Notify("No item found in DinoCraftingTable. Please place a quest first.")
-    return
-  elseif findItem then
-    for _, v in pairs(workspace.Interaction.UpdateItems.DinoEvent.DinoCraftingTable:GetChildren()) do
-      if v:IsA('Model') and v.Name == 'IngredientModelTemplate' then
-        print(v)
-      end
-    end
-  end
-end)
 DinoCraftGroupBox:AddButton("Cancel quest", function()
   local args = {
     "Cancel",
