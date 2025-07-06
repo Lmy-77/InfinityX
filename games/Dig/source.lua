@@ -1,5 +1,6 @@
 -- detect service
 local UserInputService = game:GetService("UserInputService")
+IsOnMobile = table.find({Enum.Platform.Android, Enum.Platform.IOS}, UserInputService:GetPlatform())
 if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled then
 	print("Mobile device")
 elseif not UserInputService.TouchEnabled and UserInputService.KeyboardEnabled and UserInputService.MouseEnabled then
@@ -194,6 +195,7 @@ scriptVersion = '4.2a'
 -- ui library
 local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+
 function getDpiScale()
     if IsOnMobile then
         return Library:SetDPIScale(75)
