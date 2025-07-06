@@ -961,7 +961,10 @@ ButtonsGroupBox:AddToggle("PetButtonsToggle", {
     petsButton = Value
     if petsButton then
       local ui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('Teleport_UI'):FindFirstChild('Frame'):FindFirstChild('Pets')
-      if ui then ui.Visible = petsButton end
+      if ui then ui.Visible = true end
+    else
+      local ui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('Teleport_UI'):FindFirstChild('Frame'):FindFirstChild('Pets')
+      if ui then ui.Visible = false end
     end
 	end,
 })
@@ -979,7 +982,10 @@ ButtonsGroupBox:AddToggle("GearButtonsToggle", {
     gearButton = Value
     if gearButton then
       local ui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('Teleport_UI'):FindFirstChild('Frame'):FindFirstChild('Gear')
-      if ui then ui.Visible = gearButton end
+      if ui then ui.Visible = true end
+    else
+      local ui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('Teleport_UI'):FindFirstChild('Frame'):FindFirstChild('Gear')
+      if ui then ui.Visible = false end
     end
 	end,
 })
