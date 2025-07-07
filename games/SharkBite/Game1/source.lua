@@ -283,6 +283,7 @@ SurvivalGroupBox:AddButton({
                                     debug.setupvalue(func, 4, math.huge)
                                     local check = debug.getupvalue(func, 4)
 
+                                    wait()
                                     if check == math.huge then
                                         Library:Notify({
                                             Title = "InfinityX",
@@ -292,7 +293,7 @@ SurvivalGroupBox:AddButton({
                                     else
                                         Library:Notify({
                                             Title = "InfinityX",
-                                            Description = "Your exploit doesn't support this function",
+                                            Description = "Unable to add infinite ammo function to weapon: "..tool.Name,
                                             Time = 4,
                                         })
                                     end
